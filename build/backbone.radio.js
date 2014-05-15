@@ -1,18 +1,18 @@
 // Backbone.Radio v0.1.0
 (function(root, factory) {
-
   if (typeof define === 'function' && define.amd) {
     define(['backbone', 'underscore'], function(Backbone, _) {
       return factory(Backbone, _);
     });
-  } else if (typeof exports !== 'undefined') {
+  }
+  else if (typeof exports !== 'undefined') {
     var Backbone = require('backbone');
     var _ = require('underscore');
     module.exports = factory(Backbone, _);
-  } else {
+  }
+  else {
     factory(root.Backbone, root._);
   }
-
 }(this, function(Backbone, _) {
   'use strict';
 
@@ -34,7 +34,7 @@
    *
    */
   
-  _.extend(Backbone.Radio, {
+  _.extend(Radio, {
     _channels: {},
   
     channel: function(channelName) {
@@ -73,7 +73,7 @@
       var handler = this[container][name];
       var cb = handler.callback;
       var context = handler.context;
-      var response = !_.isFunction(cb) ? cb : cb.apply(context, args);
+      var response = cb.apply(context, args);
       return returnValue ? response : undefined;
     },
   
@@ -83,6 +83,8 @@
       }
   
       context = context || this;
+  
+      callback = _.isFunction(callback) ? callback : _.constant(callback);
   
       this[container][name] = {
         callback: callback,
@@ -94,9 +96,10 @@
   
     handleOnce: function(container, execute, stopHandling, name, callback, context) {
       var self = this;
+      callback = _.isFunction(callback) ? callback : _.constant(callback);
       var once = _.once(function() {
         self[stopHandling](name);
-        return !_.isFunction(callback) ? callback : callback.apply(this, arguments);
+        return callback.apply(this, arguments);
       });
       return this[execute](name, once, context);
     },
@@ -146,7 +149,7 @@
     stopHandling: 'stopReacting'
   };
   
-  Backbone.Radio.Commands = new Factory('commands', {
+  Radio.Commands = new Factory('commands', {
     methodsMap: commandsMap,
     returnValue: false
   });
@@ -165,7 +168,7 @@
     stopHandling: 'stopResponding'
   };
   
-  Backbone.Radio.Requests = new Factory('requests', {
+  Radio.Requests = new Factory('requests', {
     methodsMap: requestsMap,
     returnValue: true
   });
@@ -178,7 +181,7 @@
    *
    */
   
-  Backbone.Radio.Channel = function(channelName) {
+  Radio.Channel = function(channelName) {
     this.channelName = channelName;
     _.extend(this, Backbone.Events, Radio.Commands, Radio.Requests);
   };
@@ -197,5 +200,4 @@
   
 
   return Backbone.Radio;
-
 }));

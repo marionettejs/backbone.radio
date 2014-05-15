@@ -14,7 +14,7 @@ var methods = {
     var handler = this[container][name];
     var cb = handler.callback;
     var context = handler.context;
-    var response = !_.isFunction(cb) ? cb : cb.apply(context, args);
+    var response = cb.apply(context, args);
     return returnValue ? response : undefined;
   },
 
@@ -24,6 +24,8 @@ var methods = {
     }
 
     context = context || this;
+
+    callback = _.isFunction(callback) ? callback : _.constant(callback);
 
     this[container][name] = {
       callback: callback,
@@ -35,9 +37,10 @@ var methods = {
 
   handleOnce: function(container, execute, stopHandling, name, callback, context) {
     var self = this;
+    callback = _.isFunction(callback) ? callback : _.constant(callback);
     var once = _.once(function() {
       self[stopHandling](name);
-      return !_.isFunction(callback) ? callback : callback.apply(this, arguments);
+      return callback.apply(this, arguments);
     });
     return this[execute](name, once, context);
   },
