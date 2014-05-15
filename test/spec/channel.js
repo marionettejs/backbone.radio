@@ -56,6 +56,7 @@ describe('Executing the `reset` method of a Channel', function() {
     stopListeningStub.restore();
     stopReactingStub.restore();
     stopRespondingStub.restore();
+    channel.reset();
   });
 
   it('should call the reset functions of Backbone.Events', function() {

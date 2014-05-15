@@ -32,6 +32,7 @@
   // @include commands.js
   // @include requests.js
   // @include channel.js
+  // @include proxy.js
 
   return Backbone.Radio;
 }));

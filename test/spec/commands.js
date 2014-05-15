@@ -23,6 +23,11 @@ describe('When commanding an action that has a handler', function() {
     returned = obj.command(actionName, true, 'asdf');
   });
 
+  afterEach(function() {
+    callbackSpy.reset();
+    obj.stopReacting();
+  });
+
   it('should execute the handler.', function() {
     expect(callbackSpy).to.have.been.calledOnce;
   });

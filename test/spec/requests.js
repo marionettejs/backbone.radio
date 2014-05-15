@@ -26,6 +26,11 @@ describe('When making a request that has a handler', function() {
     returned = obj.request(actionName, true, 'asdf');
   });
 
+  afterEach(function() {
+    callbackSpy.reset();
+    obj.stopResponding();
+  });
+
   it('should execute the handler.', function() {
     expect(callbackSpy).to.have.been.calledOnce;
   });
@@ -43,7 +48,6 @@ describe('When making a request that has a flat value as a handler', function() 
   var obj = {}, returned, actionName = 'test';
 
   beforeEach(function() {
-
     _.extend(obj, Backbone.Radio.Requests);
     obj.respond(actionName, 'hello');
 
