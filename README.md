@@ -1,4 +1,3 @@
-Backbone.Radio
-==============
+# Backbone.Radio
 
 The future of Backbone.Wreqr

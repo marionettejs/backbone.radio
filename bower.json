@@ -1,0 +1,33 @@
+{
+  "name": "backbone.radio",
+  "version": "0.1.0",
+  "homepage": "https://github.com/jmeas/backbone.radio",
+  "authors": [
+    "Jmeas <jellyes2@gmail.com>"
+  ],
+  "description": "The semantic messaging system for Backbone applications.",
+  "main": "build/backbone.radio.js",
+  "keywords": [
+    "backbone",
+    "marionette",
+    "decoupled",
+    "pubsub",
+    "publish",
+    "subscribe",
+    "messaging",
+    "architecture",
+    "spa"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "backbone": ">=0.9.9 <=1.1.2",
+    "underscore": ">=1.3.3 <=1.6.0"
+  }
+}
