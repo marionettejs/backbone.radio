@@ -22,3 +22,22 @@ _.extend(Backbone.Radio.Channel.prototype, {
     return this;
   }
 });
+
+function _connect(methodName, hash, context) {
+  if ( !hash ) { return; }
+  context = context || this;
+  _.each(hash, function(fn, eventName) {
+    this[methodName](eventName, _.bind(fn, context));
+  }, this);
+}
+
+var map = {
+  Events:   'on',
+  Commands: 'react',
+  Requests: 'respond'
+};
+
+_.each(map, function(methodName, systemName) {
+  var connectName = 'connect'+ systemName;
+  Radio.Channel.prototype[connectName] = _.partial(_connect, methodName);
+});

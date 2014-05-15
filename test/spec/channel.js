@@ -76,3 +76,84 @@ describe('Executing the `reset` method of a Channel', function() {
     expect(returned).to.equal(channel);
   });
 });
+
+describe('When passing an event hash to `connectEvents`', function() {
+  var channel, eventOne = 'one', eventTwo = 'two',
+  cbOne, cbTwo, internalEvents, eventsHash;
+
+  beforeEach(function() {
+    cbOne = function() {};
+    cbTwo = function() {};
+    channel = Backbone.Radio.channel('test');
+
+    eventsHash = {};
+    eventsHash[eventTwo] = cbOne;
+    eventsHash[eventOne] = cbTwo;
+
+    channel.connectEvents(eventsHash);
+
+    internalEvents = channel._events;
+  });
+
+  afterEach(function() {
+    channel.reset();
+  });
+
+  it('should attach the listeners to the Channel', function() {
+    expect(internalEvents).to.have.keys(eventTwo, eventOne);
+  });
+});
+
+describe('When passing a commands hash to `connectCommands`', function() {
+  var channel, commandOne = 'one', commandTwo = 'two',
+  cbOne, cbTwo, internalCommands, commandsHash, returned;
+
+  beforeEach(function() {
+    cbOne = function() {};
+    cbTwo = function() {};
+    channel = Backbone.Radio.channel('test');
+
+    commandsHash = {};
+    commandsHash[commandTwo] = cbOne;
+    commandsHash[commandOne] = cbTwo;
+
+    channel.connectCommands(commandsHash);
+
+    internalCommands = channel._commands;
+  });
+
+  afterEach(function() {
+    channel.reset();
+  });
+
+  it('should attach the listeners to the Channel', function() {
+    expect(internalCommands).to.have.keys(commandTwo, commandOne);
+  });
+});
+
+describe('When passing a requests hash to `connectRequests`', function() {
+  var channel, requestOne = 'one', requestTwo = 'two',
+  cbOne, cbTwo, internalRequests, requestsHash, returned;
+
+  beforeEach(function() {
+    cbOne = function() {};
+    cbTwo = function() {};
+    channel = Backbone.Radio.channel('test');
+
+    requestsHash = {};
+    requestsHash[requestTwo] = cbOne;
+    requestsHash[requestOne] = cbTwo;
+
+    channel.connectRequests(requestsHash);
+
+    internalRequests = channel._requests;
+  });
+
+  afterEach(function() {
+    channel.reset();
+  });
+
+  it('should attach the listeners to the Channel', function() {
+    expect(internalRequests).to.have.keys(requestTwo, requestOne);
+  });
+});
