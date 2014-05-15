@@ -12,7 +12,7 @@
   stopHandling: 'stopResponding'
 };
 
-Backbone.Radio.Requests = new Factory('requests', {
+Radio.Requests = new Factory('requests', {
   methodsMap: requestsMap,
   returnValue: true
 });

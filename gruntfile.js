@@ -57,10 +57,19 @@ module.exports = function(grunt) {
         jshintrc: '.jshintrc'
       },
       radio: [ 'src/*.js' ]
+    },
+
+    mocha: {
+      options: {
+        run: true
+      },
+      main: {
+        src: [ 'test/index.html' ]
+      }
     }
   });
 
-  grunt.registerTask('test', 'Test the library', ['jshint']);
+  grunt.registerTask('test', 'Test the library', ['jshint', 'mocha']);
 
   grunt.registerTask('build', 'Build the library', ['test', 'preprocess', 'template', 'concat', 'uglify']);
 

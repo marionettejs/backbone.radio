@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang='en'>
+<head>
+  <meta charset='utf-8'>
+  <title>Backbone.Radio Test</title>
+  <link rel='stylesheet' href='../bower_components/mocha/mocha.css' />
+</head>
+<body>
+  <!-- Required for browser reporter -->
+  <div id='mocha'></div>
+
+  <!-- Load & configure mocha -->
+  <script src='../bower_components/mocha/mocha.js'></script>
+  <script type='text/javascript' charset='utf-8'>
+    mocha.setup('bdd');
+  </script>
+
+  <!-- Load & configure chai & sinon -->
+  <script src='../bower_components/chai/chai.js'></script>
+  <script src='../bower_components/sinon-chai/lib/sinon-chai.js'></script>
+  <script src='../bower_components/sinonjs/sinon.js'></script>
+  <script>
+    var expect = chai.expect;
+  </script>
+
+  <!-- Load any dependencies (bower components) -->
+  <script src='../bower_components/underscore/underscore.js'></script>
+  <script src='../bower_components/backbone/backbone.js'></script>
+
+  <!-- Load the test scripts -->
+  <script src='../build/backbone.radio.js'></script>
+
+  <!-- Of course, the specs themselves as well -->
+  <script src='spec/form.js'></script>
+  <script src='spec/channel.js'></script>
+  <script src='spec/radio.js'></script>
+  <script src='spec/requests.js'></script>
+  <script src='spec/commands.js'></script>
+
+  <!-- Run mocha -->
+  <script type='text/javascript'>
+  if (navigator.userAgent.indexOf('PhantomJS') < 0) {
+    mocha
+      .globals(['Backbone', '_']) // Globals
+      .run();
+  }
+  </script>
+</body>
+</html>

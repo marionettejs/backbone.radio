@@ -12,7 +12,7 @@ var commandsMap = {
   stopHandling: 'stopReacting'
 };
 
-Backbone.Radio.Commands = new Factory('commands', {
+Radio.Commands = new Factory('commands', {
   methodsMap: commandsMap,
   returnValue: false
 });

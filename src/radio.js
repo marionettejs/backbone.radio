@@ -5,7 +5,7 @@
  *
  */
 
-_.extend(Backbone.Radio, {
+_.extend(Radio, {
   _channels: {},
 
   channel: function(channelName) {
