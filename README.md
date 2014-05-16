@@ -1,5 +1,7 @@
 # Backbone.Radio
 
+[![Travis Build Status](https://api.travis-ci.org/jmeas/backbone.radio.png)](https://travis-ci.org/jmeas/backbone.radio)
+
 Backbone.Radio is a messaging system for Backbone applications. It takes the precedent
 set by Backbone.Events and turns it into a sophisticated pubsub system. First, it
 adds two new messaging systems, Commands and Requests, which add a semantic layer to your
