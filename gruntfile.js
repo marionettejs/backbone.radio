@@ -57,10 +57,18 @@ module.exports = function(grunt) {
     },
 
     jshint: {
-      options: {
-        jshintrc: '.jshintrc'
+      radio: {
+        options: {
+          jshintrc: '.jshintrc'
+        },
+        src: ['src/*.js', '!src/wrapper.js']
       },
-      radio: [ 'src/*.js' ]
+      tests: {
+        options: {
+          jshintrc: 'test/.jshintrc'
+        },
+        src: ['test/spec/*.js']
+      }
     },
 
     mocha: {
@@ -68,7 +76,7 @@ module.exports = function(grunt) {
         run: true
       },
       main: {
-        src: [ 'test/index.html' ]
+        src: ['test/index.html']
       }
     }
   });
