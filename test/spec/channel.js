@@ -1,3 +1,19 @@
+describe('When calling Radio.channel with no name', function() {
+  var channelStub;
+
+  beforeEach(function() {
+    channelStub = sinon.spy(Backbone.Radio, 'channel');
+  });
+
+  afterEach(function() {
+    channelStub.restore();
+  });
+
+  it('should throw an error', function() {
+    expect(channelStub).to.throw(Error, 'You must provide a name for the channel.');
+  });
+});
+
 describe('Upon creation, a Channel', function() {
   var channel, channelName, name = 'test',
   eventKeys, requestKeys, commandKeys, channelKeys,
