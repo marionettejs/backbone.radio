@@ -14,6 +14,10 @@ module.exports = function(grunt) {
       radio: {
         src: 'src/wrapper.js',
         dest: 'build/backbone.radio.js'
+      },
+      test: {
+        src: 'src/wrapper.js',
+        dest: '.tmp/backbone.radio.js'
       }
     },
 
@@ -69,9 +73,9 @@ module.exports = function(grunt) {
     }
   });
 
-  grunt.registerTask('test', 'Test the library', ['build', 'jshint', 'mocha']);
+  grunt.registerTask('test', 'Test the library', ['preprocess:test', 'jshint', 'mocha']);
 
-  grunt.registerTask('build', 'Build the library', ['preprocess', 'template', 'concat', 'uglify']);
+  grunt.registerTask('build', 'Build the library', ['test', 'preprocess:radio', 'template', 'concat', 'uglify']);
 
   grunt.registerTask('default', 'An alias of test', ['test']);
 };
