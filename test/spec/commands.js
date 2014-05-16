@@ -1,42 +1,35 @@
 describe('When commanding an action that has no handler', function() {
-  var obj = {}, returned;
-
   beforeEach(function() {
-    _.extend(obj, Backbone.Radio.Commands);
-    returned = obj.command('null');
+    this.obj = _.extend({}, Backbone.Radio.Commands);
+    this.returned = this.obj.command('handlerDoesNotExist');
   });
 
   it('should not return anything.', function() {
-    expect(returned).to.be.undefined;
+    expect(this.returned).to.be.undefined;
   });
 });
 
 describe('When commanding an action that has a handler', function() {
-  var obj = {}, returned, callbackSpy, actionName = 'test';
-
   beforeEach(function() {
-    callbackSpy = sinon.spy();
+    this.actionName = 'foo';
+    this.passedArgument = 'bar';
+    this.obj = _.extend({}, Backbone.Radio.Commands);
 
-    _.extend(obj, Backbone.Radio.Commands);
-    obj.react(actionName, callbackSpy);
+    this.callbackSpy = this.sinon.spy();
 
-    returned = obj.command(actionName, true, 'asdf');
-  });
-
-  afterEach(function() {
-    callbackSpy.reset();
-    obj.stopReacting();
+    this.obj.react(this.actionName, this.callbackSpy);
+    this.returned = this.obj.command(this.actionName, true, this.passedArgument);
   });
 
   it('should execute the handler.', function() {
-    expect(callbackSpy).to.have.been.calledOnce;
+    expect(this.callbackSpy).to.have.been.calledOnce;
   });
 
   it('should pass along the arguments to the handler.', function() {
-    expect(callbackSpy).to.have.always.been.calledWithExactly(true, 'asdf');
+    expect(this.callbackSpy).to.have.always.been.calledWithExactly(true, this.passedArgument);
   });
 
   it('should not return anything.', function() {
-    expect(returned).to.be.undefined;
+    expect(this.returned).to.be.undefined;
   });
 });

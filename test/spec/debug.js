@@ -1,171 +1,135 @@
 describe('When in DEBUG mode and firing a command on a channel without a handler', function() {
-  var consoleSpy,
-  channelName = 'global',
-  globalChannel,
-  commandName = 'some:command';
-
   beforeEach(function() {
-    Backbone.Radio.DEBUG = true;
-    globalChannel = Backbone.Radio.channel(channelName);
-    consoleSpy = sinon.stub(console, 'warn');
-    globalChannel.command(commandName);
-  });
+    this.channelName = 'foobar';
+    this.commandName = 'foo:command';
+    this.channel = Backbone.Radio.channel(this.channelName);
 
-  afterEach(function() {
-    Backbone.Radio.DEBUG = false;
-    consoleSpy.restore();
+    this.consoleSpy = this.sinon.stub(console, 'warn');
+
+    Backbone.Radio.DEBUG = true;
+    this.channel.command(this.commandName);
   });
 
   it('should throw a console warning, including the channel', function() {
-    var warning = 'An unhandled event was fired on the ' + channelName + ' channel: "' + commandName + '"';
-    expect(consoleSpy).to.have.been.calledOnce;
-    expect(consoleSpy).to.have.been.calledWithExactly(warning);
+    var warning = 'An unhandled event was fired on the ' + this.channelName + ' channel: "' + this.commandName + '"';
+    expect(this.consoleSpy).to.have.been.calledOnce;
+    expect(this.consoleSpy).to.have.been.calledWithExactly(warning);
   });
 });
 
 describe('When not in DEBUG mode and firing a command on a channel without a handler', function() {
-  var consoleSpy,
-  channelName = 'global',
-  globalChannel,
-  commandName = 'some:command';
-
   beforeEach(function() {
-    globalChannel = Backbone.Radio.channel(channelName);
-    consoleSpy = sinon.stub(console, 'warn');
-    globalChannel.command(commandName);
-  });
+    this.channelName = 'foobar';
+    this.commandName = 'foo:command';
+    this.channel = Backbone.Radio.channel(this.channelName);
 
-  afterEach(function() {
-    consoleSpy.restore();
+    this.consoleSpy = this.sinon.stub(console, 'warn');
+
+    this.channel.command(this.commandName);
   });
 
   it('should not throw a console warning', function() {
-    expect(consoleSpy).to.not.have.been.called;
+    expect(this.consoleSpy).to.not.have.been.called;
   });
 });
 
 describe('When in DEBUG mode and firing a request on a channel without a handler', function() {
-  var consoleSpy,
-  channelName = 'global',
-  globalChannel,
-  requestName = 'some:request';
-
   beforeEach(function() {
-    Backbone.Radio.DEBUG = true;
-    globalChannel = Backbone.Radio.channel(channelName);
-    consoleSpy = sinon.stub(console, 'warn');
-    globalChannel.request(requestName);
-  });
+    this.channelName = 'foobar';
+    this.commandName = 'foo:command';
+    this.channel = Backbone.Radio.channel(this.channelName);
 
-  afterEach(function() {
-    Backbone.Radio.DEBUG = false;
-    consoleSpy.restore();
+    this.consoleSpy = this.sinon.stub(console, 'warn');
+
+    Backbone.Radio.DEBUG = true;
+    this.channel.request(this.requestName);
   });
 
   it('should throw a console warning, including the channel', function() {
-    var warning = 'An unhandled event was fired on the ' + channelName + ' channel: "' + requestName + '"';
-    expect(consoleSpy).to.have.been.calledOnce;
-    expect(consoleSpy).to.have.been.calledWithExactly(warning);
+    var warning = 'An unhandled event was fired on the ' + this.channelName + ' channel: "' + this.requestName + '"';
+    expect(this.consoleSpy).to.have.been.calledOnce;
+    expect(this.consoleSpy).to.have.been.calledWithExactly(warning);
   });
 });
 
 describe('When not in DEBUG mode and firing a request on a channel without a handler', function() {
-  var consoleSpy,
-  channelName = 'global',
-  globalChannel,
-  requestName = 'some:request';
-
   beforeEach(function() {
-    globalChannel = Backbone.Radio.channel(channelName);
-    consoleSpy = sinon.stub(console, 'warn');
-    globalChannel.request(requestName);
-  });
+    this.channelName = 'foobar';
+    this.commandName = 'foo:command';
+    this.channel = Backbone.Radio.channel(this.channelName);
 
-  afterEach(function() {
-    consoleSpy.restore();
+    this.consoleSpy = this.sinon.stub(console, 'warn');
+
+    this.channel.request(this.requestName);
   });
 
   it('should not throw a console warning', function() {
-    expect(consoleSpy).to.not.have.been.called;
+    expect(this.consoleSpy).to.not.have.been.called;
   });
 });
 
 describe('When in DEBUG mode and firing a command on an object without a handler', function() {
-  var consoleSpy, obj, commandName = 'some:command';
-
   beforeEach(function() {
-    obj = _.extend({}, Backbone.Radio.Commands);
-    Backbone.Radio.DEBUG = true;
-    consoleSpy = sinon.stub(console, 'warn');
-    obj.command(commandName);
-  });
+    this.commandName = 'foo:command';
+    this.obj = _.extend({}, Backbone.Radio.Commands);
 
-  afterEach(function() {
-    Backbone.Radio.DEBUG = false;
-    consoleSpy.restore();
+    this.consoleSpy = this.sinon.stub(console, 'warn');
+
+    Backbone.Radio.DEBUG = true;
+    this.obj.command(this.commandName);
   });
 
   it('should throw a console warning', function() {
-    var warning = 'An unhandled event was fired: "' + commandName + '"';
-    expect(consoleSpy).to.have.been.calledOnce;
-    expect(consoleSpy).to.have.been.calledWithExactly(warning);
+    var warning = 'An unhandled event was fired: "' + this.commandName + '"';
+    expect(this.consoleSpy).to.have.been.calledOnce;
+    expect(this.consoleSpy).to.have.been.calledWithExactly(warning);
   });
 });
 
 describe('When not in DEBUG mode and firing a command on an object without a handler', function() {
-  var consoleSpy, obj, commandName = 'some:command';
-
   beforeEach(function() {
-    obj = _.extend({}, Backbone.Radio.Commands);
-    consoleSpy = sinon.stub(console, 'warn');
-    obj.command(commandName);
-  });
+    this.commandName = 'foo:command';
+    this.obj = _.extend({}, Backbone.Radio.Commands);
 
-  afterEach(function() {
-    consoleSpy.restore();
+    this.consoleSpy = this.sinon.stub(console, 'warn');
+
+    this.obj.command(this.commandName);
   });
 
   it('should not throw a console warning', function() {
-    expect(consoleSpy).to.not.have.been.called;
+    expect(this.consoleSpy).to.not.have.been.called;
   });
 });
 
 describe('When in DEBUG mode and firing a request on an object without a handler', function() {
-  var consoleSpy, obj, requestName = 'some:request';
-
   beforeEach(function() {
-    obj = _.extend({}, Backbone.Radio.Requests);
-    Backbone.Radio.DEBUG = true;
-    consoleSpy = sinon.stub(console, 'warn');
-    obj.request(requestName);
-  });
+    this.requestName = 'foo:request';
+    this.obj = _.extend({}, Backbone.Radio.Requests);
 
-  afterEach(function() {
-    Backbone.Radio.DEBUG = false;
-    consoleSpy.restore();
+    this.consoleSpy = this.sinon.stub(console, 'warn');
+
+    Backbone.Radio.DEBUG = true;
+    this.obj.request(this.requestName);
   });
 
   it('should throw a console warning', function() {
-    var warning = 'An unhandled event was fired: "' + requestName + '"';
-    expect(consoleSpy).to.have.been.calledOnce;
-    expect(consoleSpy).to.have.been.calledWithExactly(warning);
+    var warning = 'An unhandled event was fired: "' + this.requestName + '"';
+    expect(this.consoleSpy).to.have.been.calledOnce;
+    expect(this.consoleSpy).to.have.been.calledWithExactly(warning);
   });
 });
 
 describe('When not in DEBUG mode and firing a command on an object without a handler', function() {
-  var consoleSpy, obj, requestName = 'some:request';
-
   beforeEach(function() {
-    obj = _.extend({}, Backbone.Radio.Requests);
-    consoleSpy = sinon.stub(console, 'warn');
-    obj.request(requestName);
-  });
+    this.requestName = 'foo:request';
+    this.obj = _.extend({}, Backbone.Radio.Requests);
 
-  afterEach(function() {
-    consoleSpy.restore();
+    this.consoleSpy = this.sinon.stub(console, 'warn');
+
+    this.obj.request(this.requestName);
   });
 
   it('should not throw a console warning', function() {
-    expect(consoleSpy).to.not.have.been.called;
+    expect(this.consoleSpy).to.not.have.been.called;
   });
 });
