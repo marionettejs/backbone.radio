@@ -153,6 +153,116 @@ var settingsChannel = Backbone.Radio.channel('settings');
 The whole point of Channels is that they provide a way to explicitly namespace events in your application. It gives you greater
 control over which objects are able to talk to one another.
 
+## API
+
+### Commands
+
+##### `command( commandName [, args...] )`
+
+Order a command to be completed. Optionally pass arguments to send along to the callback.
+
+##### `react( commandName, callback [, context] )`
+
+Register a handler for `commandName` on this object. `callback` will be executed whenever the command is run. Optionally
+pass a `context` for the callback, defaulting to `this`.
+
+##### `reactOnce( commandName, callback [, context] )`
+
+Register a handler for `commandName` that only executes a single time.
+
+##### `stopReacting( [commandName] )`
+
+If `commandName` is passed then that reaction is removed from the object. Otherwise, all reactions are removed.
+
+### Requests
+
+##### `request( requestName [, args...] )`
+
+Make a request for `requestName`. Optionally pass arguments to send along to the callback.
+
+##### `respond( requestName, callback [, context] )`
+
+Register a handler for `requestName` on this object. `callback` will be executed whenever the request is made. Optionally
+pass a `context` for the callback, defaulting to `this`.
+
+##### `respondOnce( requestName, callback [, context] )`
+
+Register a handler for `requestName` that will only be called a single time.
+
+##### `stopResponding( [requestName] )`
+
+If `requestName` is passed then this method will remove that response. Otherwise, all responses are removed from the object.
+
+### Channel
+
+##### `reset`
+
+Destroy all handlers from Backbone.Events, Radio.Commands, and Radio.Requests from the channel.
+
+##### `connectEvents( eventsHash )`
+
+A convenience method for connecting a hash of events to the channel.
+
+```js
+// Set up a hash of events
+var eventsHash = {
+  'some:event': myCallback,
+  'some:other:event': someOtherCallback
+};
+
+// Connect all of the events at once
+myChannel.connectEvents(eventsHash);
+```
+
+##### `connectCommands( commandsHash )`
+
+A convenience method for connecting a hash of Commands reactions to the channel.
+
+##### `connectRequests( requestsHash )`
+
+A convenience method for connecting a hash of Requests responses to the channel.
+
+### Radio
+
+##### `channel( channelName )`
+
+Get a reference to a channel by name. If a name is not provided an Error will be thrown.
+
+```js
+var globalChannel = Backbone.Radio.channel('hello');
+```
+
+##### `DEBUG`
+
+This is a property, not a method. Setting it to `true` will cause console warnings to be issued
+whenever you make a `request` or `command` that goes unhandled. This is useful in development when you want to
+ensure that you've got your event names in order.
+
+```js
+// Turn on debug mode
+Backbone.Radio.DEBUG = true;
+
+// This will log a warning to the console if it goes unhandled
+myChannel.command('show:view');
+```
+
+##### `tuneIn( channelName )`
+
+Tuning into a Channel is another useful tool for debugging. It logs all triggers, commands, and requests made on the channel
+to the console, including the arguments passed.
+
+```js
+Backbone.Radio.tuneIn('calendar');
+```
+
+##### `tuneOut( channelName )`
+
+Once you're done tuning in you can call `tuneOut` to stop the logging.
+
+```js
+Backbone.Radio.tuneOut('calendar');
+```
+
 ### 'Top-level' API
 
 If you'd like to execute a method on a channel, yet you don't need to keep a handle of the channel around, you can do so with the proxy
