@@ -20,9 +20,9 @@
 
   var Radio = Backbone.Radio = {};
 
-  Backbone.Radio.VERSION = '0.1.0';
+  Radio.VERSION = '0.1.0';
 
-  Backbone.Radio.noConflict = function () {
+  Radio.noConflict = function () {
     Backbone.Radio = previousRadio;
     return this;
   };
@@ -43,19 +43,57 @@
       if (!channelName) {
         throw new Error('You must provide a name for the channel.');
       }
-  
       return Radio._getChannel( channelName );
     },
   
     _getChannel: function(channelName) {
       var channel = Radio._channels[channelName];
-  
       if(!channel) {
         channel = new Radio.Channel(channelName);
         Radio._channels[channelName] = channel;
       }
-  
       return channel;
+    }
+  });
+  
+  /*
+   * tune-in
+   * -------
+   * Get console logs of a channel's activity
+   *
+   */
+  
+  var _logs = {};
+  
+  // This is to produce an identical function in both tuneIn and tuneOut,
+  // so that Backbone.Events unregisters it.
+  var _partial = function(channelName) {
+    return _logs[channelName] || (_logs[channelName] = _.partial(_log, channelName));
+  };
+  
+  // Log information about the channel and event
+  var _log = function(channelName, eventName) {
+    var args = Array.prototype.slice.call(arguments, 2);
+    console.log('[' + channelName + '] "'+eventName+'"', args);
+  };
+  
+  _.extend(Radio, {
+  
+    // Logs all events on this channel to the console. It sets an 
+    // internal value on the channel telling it we're listening,
+    // then sets a listener on the Backbone.Events
+    tuneIn: function(channelName) {
+      var channel = Radio.channel(channelName);
+      channel._tunedIn = true;
+      channel.on('all', _partial(channelName));
+    },
+  
+    // Stop logging all of the activities on this channel to the console
+    tuneOut: function(channelName) {
+      var channel = Radio.channel(channelName);
+      channel._tunedIn = false;
+      channel.off('all', _partial(channelName));
+      delete _logs[channelName];
     }
   });
   
@@ -68,14 +106,23 @@
   
   Radio.Commands = {
     command: function(name) {
+      var args = Array.prototype.slice.call(arguments, 1);
+      var isChannel = this._channelName ? true : false;
+  
+      // Check if we should log the request, and if so, do it
+      if (isChannel && this._tunedIn) {
+        _log.apply(this, [this._channelName, name].concat(args));
+      }
+  
+      // If the command isn't handled, log it in DEBUG mode and exit
       if (!this._commands || !this._commands[name]) {
-        if (Backbone.Radio.DEBUG) {
-          var channelText = this.channelName ? ' on the ' + this.channelName + ' channel' : '';
+        if (Radio.DEBUG) {
+          var channelText = isChannel ? ' on the ' + this._channelName + ' channel' : '';
           console.warn('An unhandled event was fired' + channelText + ': "' + name + '"');
         }
         return;
       }
-      var args = Array.prototype.slice.call(arguments, 1);
+  
       var handler = this._commands[name];
       var cb = handler.callback;
       var context = handler.context;
@@ -117,21 +164,29 @@
   
   /*
    * Backbone.Radio.Requests
-   * ----------------------
+   * -----------------------
    * A messaging system for requesting data.
    *
    */
    
   Radio.Requests = {
     request: function(name) {
+      var args = Array.prototype.slice.call(arguments, 1);
+      var isChannel = this._channelName ? true : false;
+  
+      // Check if we should log the request, and if so, do it
+      if (isChannel && this._tunedIn) {
+        _log.apply(this, [this._channelName, name].concat(args));
+      }
+  
+      // If the request isn't handled, log it in DEBUG mode and exit
       if (!this._requests || !this._requests[name]) {
-        if (Backbone.Radio.DEBUG) {
-          var channelText = this.channelName ? ' on the ' + this.channelName + ' channel' : '';
+        if (Radio.DEBUG) {
+          var channelText = isChannel ? ' on the ' + this._channelName + ' channel' : '';
           console.warn('An unhandled event was fired' + channelText + ': "' + name + '"');
         }
         return;
       }
-      var args = Array.prototype.slice.call(arguments, 1);
       var handler = this._requests[name];
       var cb = handler.callback;
       var context = handler.context;
@@ -183,11 +238,11 @@
    */
   
   Radio.Channel = function(channelName) {
-    this.channelName = channelName;
+    this._channelName = channelName;
     _.extend(this, Backbone.Events, Radio.Commands, Radio.Requests);
   };
   
-  _.extend(Backbone.Radio.Channel.prototype, {
+  _.extend(Radio.Channel.prototype, {
   
     // Remove all handlers from the messaging systems of this channel
     reset: function() {
@@ -238,5 +293,5 @@
   });
   
 
-  return Backbone.Radio;
+  return Radio;
 }));

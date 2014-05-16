@@ -19,18 +19,19 @@
 
   var Radio = Backbone.Radio = {};
 
-  Backbone.Radio.VERSION = '<%= version %>';
+  Radio.VERSION = '<%= version %>';
 
-  Backbone.Radio.noConflict = function () {
+  Radio.noConflict = function () {
     Backbone.Radio = previousRadio;
     return this;
   };
 
   // @include radio.js
+  // @include tune-in.js
   // @include commands.js
   // @include requests.js
   // @include channel.js
   // @include proxy.js
 
-  return Backbone.Radio;
+  return Radio;
 }));
