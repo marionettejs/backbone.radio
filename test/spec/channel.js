@@ -1,175 +1,135 @@
 describe('When calling Radio.channel with no name', function() {
-  var channelStub;
-
   beforeEach(function() {
-    channelStub = sinon.spy(Backbone.Radio, 'channel');
-  });
-
-  afterEach(function() {
-    channelStub.restore();
+    this.channelStub = this.sinon.spy(Backbone.Radio, 'channel');
   });
 
   it('should throw an error', function() {
-    expect(channelStub).to.throw(Error, 'You must provide a name for the channel.');
+    expect(this.channelStub).to.throw(Error, 'You must provide a name for the channel.');
   });
 });
 
 describe('Upon creation, a Channel', function() {
-  var channel, channelName, name = 'test',
-  eventKeys, requestKeys, commandKeys, channelKeys,
-  eventIntersect, requestIntersect, commandIntersect;
-
   beforeEach(function() {
-    channel = new Backbone.Radio.Channel(name);
-    channelName = channel._channelName;
+    this.name = 'foobar';
+    this.channel = new Backbone.Radio.Channel(this.name);
 
-    channelKeys = _.keys(channel);
+    this.channelName = this.channel._channelName;
+    this.channelKeys = _.keys(this.channel);
+    this.eventKeys   = _.keys(Backbone.Events);
+    this.requestKeys = _.keys(Backbone.Radio.Requests);
+    this.commandKeys = _.keys(Backbone.Radio.Commands);
 
-    eventKeys = _.keys(Backbone.Events);
-    requestKeys = _.keys(Backbone.Radio.Requests);
-    commandKeys = _.keys(Backbone.Radio.Commands);
-
-    eventIntersect = _.intersection(eventKeys, channelKeys);
-    requestIntersect = _.intersection(requestKeys, channelKeys);
-    commandIntersect = _.intersection(commandKeys, channelKeys);
+    this.eventIntersect   = _.intersection(this.eventKeys, this.channelKeys);
+    this.requestIntersect = _.intersection(this.requestKeys, this.channelKeys);
+    this.commandIntersect = _.intersection(this.commandKeys, this.channelKeys);
   });
 
   it('should have its name set', function() {
-    expect(channelName).to.equal(name);
+    expect(this.channelName).to.equal(this.name);
   });
 
   it('should have all of the Backbone.Events methods', function() {
-    expect(eventIntersect.length).to.equal(eventKeys.length);
+    expect(this.eventIntersect.length).to.equal(this.eventKeys.length);
   });
 
   it('should have all of the Radio.Commands methods', function() {
-    expect(commandIntersect.length).to.equal(commandKeys.length);
+    expect(this.commandIntersect.length).to.equal(this.commandKeys.length);
   });
 
   it('should have all of the Radio.Requests methods', function() {
-    expect(requestIntersect.length).to.equal(requestKeys.length);
+    expect(this.requestIntersect.length).to.equal(this.requestKeys.length);
   });
 });
 
 describe('Executing the `reset` method of a Channel', function() {
-  
-  var channel, returned,
-  offStub, stopListeningStub,
-  stopReactingStub, stopRespondingStub;
-
   beforeEach(function() {
-    channel = new Backbone.Radio.Channel('test');
-    offStub = sinon.stub(channel, 'off');
-    stopListeningStub = sinon.stub(channel, 'stopListening');
-    stopReactingStub  = sinon.stub(channel, 'stopReacting');
-    stopRespondingStub  = sinon.stub(channel, 'stopResponding');
+    this.channel = new Backbone.Radio.Channel('foobar');
 
-    returned = channel.reset();
-  });
+    this.offStub            = this.sinon.stub(this.channel, 'off');
+    this.stopListeningStub  = this.sinon.stub(this.channel, 'stopListening');
+    this.stopReactingStub   = this.sinon.stub(this.channel, 'stopReacting');
+    this.stopRespondingStub = this.sinon.stub(this.channel, 'stopResponding');
 
-  afterEach(function() {
-    offStub.restore();
-    stopListeningStub.restore();
-    stopReactingStub.restore();
-    stopRespondingStub.restore();
-    channel.reset();
+    this.returned = this.channel.reset();
   });
 
   it('should call the reset functions of Backbone.Events', function() {
-    expect(offStub).to.have.been.calledOnce;
-    expect(stopListeningStub).to.have.been.calledOnce;
+    expect(this.offStub).to.have.been.calledOnce;
+    expect(this.stopListeningStub).to.have.been.calledOnce;
   });
 
   it('should call the reset functions of Backbone.Radio.Commands', function() {
-    expect(stopReactingStub).to.have.been.calledOnce;
+    expect(this.stopReactingStub).to.have.been.calledOnce;
   });
 
   it('should call the reset functions of Backbone.Radio.Requests', function() {
-    expect(stopRespondingStub).to.have.been.calledOnce;
+    expect(this.stopRespondingStub).to.have.been.calledOnce;
   });
 
   it('should return the Channel', function() {
-    expect(returned).to.equal(channel);
+    expect(this.returned).to.equal(this.channel);
   });
 });
 
 describe('When passing an event hash to `connectEvents`', function() {
-  var channel, eventOne = 'one', eventTwo = 'two',
-  cbOne, cbTwo, internalEvents, eventsHash;
-
   beforeEach(function() {
-    cbOne = function() {};
-    cbTwo = function() {};
-    channel = Backbone.Radio.channel('test');
+    this.channel = Backbone.Radio.channel('foobar');
 
-    eventsHash = {};
-    eventsHash[eventTwo] = cbOne;
-    eventsHash[eventOne] = cbTwo;
+    this.eventFoo = 'foo';
+    this.eventBar = 'bar';
+    this.cbFoo = function() {};
+    this.cbBar = function() {};
+    this.eventsHash = {};
+    this.eventsHash[this.eventFoo] = this.cbFoo;
+    this.eventsHash[this.eventBar] = this.cbBar;
 
-    channel.connectEvents(eventsHash);
-
-    internalEvents = channel._events;
-  });
-
-  afterEach(function() {
-    channel.reset();
+    this.channel.connectEvents(this.eventsHash);
+    this.internalEvents = this.channel._events;
   });
 
   it('should attach the listeners to the Channel', function() {
-    expect(internalEvents).to.have.keys(eventTwo, eventOne);
+    expect(this.internalEvents).to.have.keys(this.eventFoo, this.eventBar);
   });
 });
 
 describe('When passing a commands hash to `connectCommands`', function() {
-  var channel, commandOne = 'one', commandTwo = 'two',
-  cbOne, cbTwo, internalCommands, commandsHash, returned;
-
   beforeEach(function() {
-    cbOne = function() {};
-    cbTwo = function() {};
-    channel = Backbone.Radio.channel('test');
+    this.channel = Backbone.Radio.channel('foobar');
 
-    commandsHash = {};
-    commandsHash[commandTwo] = cbOne;
-    commandsHash[commandOne] = cbTwo;
+    this.commandFoo = 'foo';
+    this.commandBar = 'bar';
+    this.cbFoo = function() {};
+    this.cbBar = function() {};
+    this.commandsHash = {};
+    this.commandsHash[this.commandFoo] = this.cbFoo;
+    this.commandsHash[this.commandBar] = this.cbBar;
 
-    channel.connectCommands(commandsHash);
-
-    internalCommands = channel._commands;
-  });
-
-  afterEach(function() {
-    channel.reset();
+    this.channel.connectCommands(this.commandsHash);
+    this.internalCommands = this.channel._commands;
   });
 
   it('should attach the listeners to the Channel', function() {
-    expect(internalCommands).to.have.keys(commandTwo, commandOne);
+    expect(this.internalCommands).to.have.keys(this.commandFoo, this.commandBar);
   });
 });
 
 describe('When passing a requests hash to `connectRequests`', function() {
-  var channel, requestOne = 'one', requestTwo = 'two',
-  cbOne, cbTwo, internalRequests, requestsHash, returned;
-
   beforeEach(function() {
-    cbOne = function() {};
-    cbTwo = function() {};
-    channel = Backbone.Radio.channel('test');
+    this.channel = Backbone.Radio.channel('foobar');
 
-    requestsHash = {};
-    requestsHash[requestTwo] = cbOne;
-    requestsHash[requestOne] = cbTwo;
+    this.requestFoo = 'foo';
+    this.requestBar = 'bar';
+    this.cbFoo = function() {};
+    this.cbBar = function() {};
+    this.requestsHash = {};
+    this.requestsHash[this.requestFoo] = this.cbFoo;
+    this.requestsHash[this.requestBar] = this.cbBar;
 
-    channel.connectRequests(requestsHash);
-
-    internalRequests = channel._requests;
-  });
-
-  afterEach(function() {
-    channel.reset();
+    this.channel.connectRequests(this.requestsHash);
+    this.internalRequests = this.channel._requests;
   });
 
   it('should attach the listeners to the Channel', function() {
-    expect(internalRequests).to.have.keys(requestTwo, requestOne);
+    expect(this.internalRequests).to.have.keys(this.requestFoo, this.requestBar);
   });
 });

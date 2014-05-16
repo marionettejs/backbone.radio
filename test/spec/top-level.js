@@ -1,138 +1,107 @@
 describe('When executing Commands methods from the top-level API', function() {
-  var channel, channelName = 'global', actionName = 'some:action',
-  reactStub, reactOnceStub, stopReactingStub, commandStub;
-
   beforeEach(function() {
-    channel = Backbone.Radio.channel(channelName);
+    this.channelName = 'foobar';
+    this.actionName = 'foo:request';
+    this.channel = Backbone.Radio.channel(this.channelName);
 
-    reactStub = sinon.stub(channel, 'react');
-    reactOnceStub = sinon.stub(channel, 'reactOnce');
-    stopReactingStub = sinon.stub(channel, 'stopReacting');
-    commandStub = sinon.stub(channel, 'command');
+    this.reactStub        = this.sinon.stub(this.channel, 'react');
+    this.reactOnceStub    = this.sinon.stub(this.channel, 'reactOnce');
+    this.stopReactingStub = this.sinon.stub(this.channel, 'stopReacting');
+    this.commandStub      = this.sinon.stub(this.channel, 'command');
 
-    Backbone.Radio.react(channelName, actionName, true, '1234');
-    Backbone.Radio.reactOnce(channelName, actionName, false, '4321');
-    Backbone.Radio.stopReacting(channelName, actionName, 'three', 'four');
-    Backbone.Radio.command(channelName, actionName, 'ok', 'notOk');
-  });
-
-  afterEach(function() {
-    reactStub.restore();
-    reactOnceStub.restore();
-    stopReactingStub.restore();
-    commandStub.restore();
-    channel.reset();
+    Backbone.Radio.react(this.channelName, this.actionName, 'foo1', 'bar1');
+    Backbone.Radio.reactOnce(this.channelName, this.actionName, 'foo2', 'bar2');
+    Backbone.Radio.stopReacting(this.channelName, this.actionName, 'foo3', 'bar3');
+    Backbone.Radio.command(this.channelName, this.actionName, 'foo4', 'bar4');
   });
 
   it('should execute each method on the proper channel.', function() {
-    expect(reactStub).to.have.been.calledOnce;
-    expect(reactOnceStub).to.have.been.calledOnce;
-    expect(stopReactingStub).to.have.been.calledOnce;
-    expect(commandStub).to.have.been.calledOnce;
+    expect(this.reactStub).to.have.been.calledOnce;
+    expect(this.reactOnceStub).to.have.been.calledOnce;
+    expect(this.stopReactingStub).to.have.been.calledOnce;
+    expect(this.commandStub).to.have.been.calledOnce;
   });
 
   it('should pass along the arguments.', function() {
-    expect(reactStub).to.have.always.been.calledWithExactly(true, '1234');
-    expect(reactOnceStub).to.have.always.been.calledWithExactly(false, '4321');
-    expect(stopReactingStub).to.have.always.been.calledWithExactly('three', 'four');
-    expect(commandStub).to.have.always.been.calledWithExactly('ok', 'notOk');
+    expect(this.reactStub).to.have.always.been.calledWithExactly('foo1', 'bar1');
+    expect(this.reactOnceStub).to.have.always.been.calledWithExactly('foo2', 'bar2');
+    expect(this.stopReactingStub).to.have.always.been.calledWithExactly('foo3', 'bar3');
+    expect(this.commandStub).to.have.always.been.calledWithExactly('foo4', 'bar4');
   });
 });
 
 describe('When executing Requests methods from the top-level API', function() {
-  var channel, channelName = 'global', requestName = 'some:request',
-  respondStub, respondOnceStub, stopRespondingStub, requestStub;
-
   beforeEach(function() {
-    channel = Backbone.Radio.channel(channelName);
+    this.channelName = 'foobar';
+    this.requestName = 'foo:request';
+    this.channel = Backbone.Radio.channel(this.channelName);
 
-    respondStub = sinon.stub(channel, 'respond');
-    respondOnceStub = sinon.stub(channel, 'respondOnce');
-    stopRespondingStub = sinon.stub(channel, 'stopResponding');
-    requestStub = sinon.stub(channel, 'request');
+    this.respondStub        = this.sinon.stub(this.channel, 'respond');
+    this.respondOnceStub    = this.sinon.stub(this.channel, 'respondOnce');
+    this.stopRespondingStub = this.sinon.stub(this.channel, 'stopResponding');
+    this.requestStub        = this.sinon.stub(this.channel, 'request');
 
-    Backbone.Radio.respond(channelName, requestName, true, '1234');
-    Backbone.Radio.respondOnce(channelName, requestName, false, '4321');
-    Backbone.Radio.stopResponding(channelName, requestName, 'three', 'four');
-    Backbone.Radio.request(channelName, requestName, 'ok', 'notOk');
-  });
-
-  afterEach(function() {
-    respondStub.restore();
-    respondOnceStub.restore();
-    stopRespondingStub.restore();
-    requestStub.restore();
-    channel.reset();
+    Backbone.Radio.respond(this.channelName, this.requestName, 'foo1', 'bar1');
+    Backbone.Radio.respondOnce(this.channelName, this.requestName, 'foo2', 'bar2');
+    Backbone.Radio.stopResponding(this.channelName, this.requestName, 'foo3', 'bar3');
+    Backbone.Radio.request(this.channelName, this.requestName, 'foo4', 'bar4');
   });
 
   it('should execute each method on the proper channel.', function() {
-    expect(respondStub).to.have.been.calledOnce;
-    expect(respondOnceStub).to.have.been.calledOnce;
-    expect(stopRespondingStub).to.have.been.calledOnce;
-    expect(requestStub).to.have.been.calledOnce;
+    expect(this.respondStub).to.have.been.calledOnce;
+    expect(this.respondOnceStub).to.have.been.calledOnce;
+    expect(this.stopRespondingStub).to.have.been.calledOnce;
+    expect(this.requestStub).to.have.been.calledOnce;
   });
 
   it('should pass along the arguments.', function() {
-    expect(respondStub).to.have.always.been.calledWithExactly(true, '1234');
-    expect(respondOnceStub).to.have.always.been.calledWithExactly(false, '4321');
-    expect(stopRespondingStub).to.have.always.been.calledWithExactly('three', 'four');
-    expect(requestStub).to.have.always.been.calledWithExactly('ok', 'notOk');
+    expect(this.respondStub).to.have.always.been.calledWithExactly('foo1', 'bar1');
+    expect(this.respondOnceStub).to.have.always.been.calledWithExactly('foo2', 'bar2');
+    expect(this.stopRespondingStub).to.have.always.been.calledWithExactly('foo3', 'bar3');
+    expect(this.requestStub).to.have.always.been.calledWithExactly('foo4', 'bar4');
   });
 });
 
 describe('When executing Events methods from the top-level API', function() {
-  var channel, channelName = 'global', eventName = 'some:event',
-  listenToStub, listenToOnceStub, stopListeningStub, triggerStub,
-  onStub, onceStub, offStub;
-
   beforeEach(function() {
-    channel = Backbone.Radio.channel(channelName);
+    this.channelName = 'foobar';
+    this.eventName = 'foo:event';
+    this.channel = Backbone.Radio.channel(this.channelName);
 
-    listenToStub = sinon.stub(channel, 'listenTo');
-    listenToOnceStub = sinon.stub(channel, 'listenToOnce');
-    stopListeningStub = sinon.stub(channel, 'stopListening');
-    triggerStub = sinon.stub(channel, 'trigger');
-    onStub = sinon.stub(channel, 'on');
-    onceStub = sinon.stub(channel, 'once');
-    offStub = sinon.stub(channel, 'off');
+    this.listenToStub      = this.sinon.stub(this.channel, 'listenTo');
+    this.listenToOnceStub  = this.sinon.stub(this.channel, 'listenToOnce');
+    this.stopListeningStub = this.sinon.stub(this.channel, 'stopListening');
+    this.triggerStub       = this.sinon.stub(this.channel, 'trigger');
+    this.onStub            = this.sinon.stub(this.channel, 'on');
+    this.onceStub          = this.sinon.stub(this.channel, 'once');
+    this.offStub           = this.sinon.stub(this.channel, 'off');
 
-    Backbone.Radio.listenTo(channelName, eventName, true, '1234');
-    Backbone.Radio.listenToOnce(channelName, eventName, false, '4321');
-    Backbone.Radio.stopListening(channelName, eventName, 'three', 'four');
-    Backbone.Radio.trigger(channelName, eventName, 'ok', 'notOk');
-    Backbone.Radio.on(channelName, eventName, 'test', 'testpls');
-    Backbone.Radio.once(channelName, eventName, 'food', 'isGood');
-    Backbone.Radio.off(channelName, eventName, 'sleep', 'isNice');
-  });
-
-  afterEach(function() {
-    listenToStub.restore();
-    listenToOnceStub.restore();
-    stopListeningStub.restore();
-    triggerStub.restore();
-    onStub.restore();
-    onceStub.restore();
-    offStub.restore();
-    channel.reset();
+    Backbone.Radio.listenTo(this.channelName, this.eventName, 'foo1', 'bar1');
+    Backbone.Radio.listenToOnce(this.channelName, this.eventName, 'foo2', 'bar2');
+    Backbone.Radio.stopListening(this.channelName, this.eventName, 'foo3', 'bar3');
+    Backbone.Radio.trigger(this.channelName, this.eventName, 'foo4', 'bar4');
+    Backbone.Radio.on(this.channelName, this.eventName, 'foo5', 'bar5');
+    Backbone.Radio.once(this.channelName, this.eventName, 'foo6', 'bar6');
+    Backbone.Radio.off(this.channelName, this.eventName, 'foo7', 'bar7');
   });
 
   it('should execute each method on the proper channel.', function() {
-    expect(listenToStub).to.have.been.calledOnce;
-    expect(listenToOnceStub).to.have.been.calledOnce;
-    expect(stopListeningStub).to.have.been.calledOnce;
-    expect(triggerStub).to.have.been.calledOnce;
-    expect(onStub).to.have.been.calledOnce;
-    expect(onceStub).to.have.been.calledOnce;
-    expect(offStub).to.have.been.calledOnce;
+    expect(this.listenToStub).to.have.been.calledOnce;
+    expect(this.listenToOnceStub).to.have.been.calledOnce;
+    expect(this.stopListeningStub).to.have.been.calledOnce;
+    expect(this.triggerStub).to.have.been.calledOnce;
+    expect(this.onStub).to.have.been.calledOnce;
+    expect(this.onceStub).to.have.been.calledOnce;
+    expect(this.offStub).to.have.been.calledOnce;
   });
 
   it('should pass along the arguments.', function() {
-    expect(listenToStub).to.have.always.been.calledWithExactly(true, '1234');
-    expect(listenToOnceStub).to.have.always.been.calledWithExactly(false, '4321');
-    expect(stopListeningStub).to.have.always.been.calledWithExactly('three', 'four');
-    expect(triggerStub).to.have.always.been.calledWithExactly('ok', 'notOk');
-    expect(onStub).to.have.always.been.calledWithExactly('test', 'testpls');
-    expect(onceStub).to.have.always.been.calledWithExactly('food', 'isGood');
-    expect(offStub).to.have.always.been.calledWithExactly('sleep', 'isNice');
+    expect(this.listenToStub).to.have.always.been.calledWithExactly('foo1', 'bar1');
+    expect(this.listenToOnceStub).to.have.always.been.calledWithExactly('foo2', 'bar2');
+    expect(this.stopListeningStub).to.have.always.been.calledWithExactly('foo3', 'bar3');
+    expect(this.triggerStub).to.have.always.been.calledWithExactly('foo4', 'bar4');
+    expect(this.onStub).to.have.always.been.calledWithExactly('foo5', 'bar5');
+    expect(this.onceStub).to.have.always.been.calledWithExactly('foo6', 'bar6');
+    expect(this.offStub).to.have.always.been.calledWithExactly('foo7', 'bar7');
   });
 });

@@ -1,60 +1,51 @@
 describe('When making a request that has no handler', function() {
-  var obj = {}, returned;
-
   beforeEach(function() {
-    _.extend(obj, Backbone.Radio.Requests);
-    returned = obj.request('null');
+    this.obj = _.extend({}, Backbone.Radio.Requests);
+    this.returned = this.obj.request('foobar');
   });
 
   it('should not return anything.', function() {
-    expect(returned).to.be.undefined;
+    expect(this.returned).to.be.undefined;
   });
 });
 
 describe('When making a request that has a handler', function() {
-  var obj = {}, returned, callback, callbackSpy, actionName = 'test';
-
   beforeEach(function() {
-    callback = function() {
-      return 'request complete';
-    };
-    callbackSpy = sinon.spy(callback);
+    this.actionName = 'foo';
+    this.passedArgument = 'foobar';
+    this.obj = _.extend({}, Backbone.Radio.Requests);
 
-    _.extend(obj, Backbone.Radio.Requests);
-    obj.respond(actionName, callbackSpy);
+    this.callback = function() { return 'request complete'; };
+    this.callbackSpy = this.sinon.spy(this.callback);
 
-    returned = obj.request(actionName, true, 'asdf');
-  });
-
-  afterEach(function() {
-    callbackSpy.reset();
-    obj.stopResponding();
+    this.obj.respond(this.actionName, this.callbackSpy);
+    this.returned = this.obj.request(this.actionName, true, this.passedArgument);
   });
 
   it('should execute the handler.', function() {
-    expect(callbackSpy).to.have.been.calledOnce;
+    expect(this.callbackSpy).to.have.been.calledOnce;
   });
 
   it('should pass along the arguments to the handler.', function() {
-    expect(callbackSpy).to.have.always.been.calledWithExactly(true, 'asdf');
+    expect(this.callbackSpy).to.have.always.been.calledWithExactly(true, this.passedArgument);
   });
 
   it('should return the value of the handler.', function() {
-    expect(returned).to.equal('request complete');
+    expect(this.returned).to.equal('request complete');
   });
 });
 
 describe('When making a request that has a flat value as a handler', function() {
-  var obj = {}, returned, actionName = 'test';
-
   beforeEach(function() {
-    _.extend(obj, Backbone.Radio.Requests);
-    obj.respond(actionName, 'hello');
+    this.actionName = 'foo';
+    this.response = 'foobar';
+    this.obj = _.extend({}, Backbone.Radio.Requests);
 
-    returned = obj.request(actionName);
+    this.obj.respond(this.actionName, this.response);
+    this.returned = this.obj.request(this.actionName);
   });
 
   it('should return that value.', function() {
-    expect(returned).to.equal('hello');
+    expect(this.returned).to.equal(this.response);
   });
 });

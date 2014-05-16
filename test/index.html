@@ -21,6 +21,16 @@
   <script src='../bower_components/sinonjs/sinon.js'></script>
   <script>
     var expect = chai.expect;
+
+    beforeEach(function() {
+      this.sinon = sinon.sandbox.create();
+    });
+
+    afterEach(function() {
+      Backbone.Radio.DEBUG = false;
+      _.invoke(Backbone.Radio._channels, 'reset');
+      this.sinon.restore();
+    });
   </script>
 
   <!-- Load any dependencies (bower components) -->
