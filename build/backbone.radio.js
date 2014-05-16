@@ -37,6 +37,8 @@
   _.extend(Radio, {
     _channels: {},
   
+    DEBUG: false,
+  
     channel: function(channelName) {
       if (!channelName) {
         throw new Error('You must provide a name for the channel.');
@@ -67,6 +69,10 @@
   var methods = {
     execute: function(container, returnValue, name) {
       if (!this[container] || !this[container][name]) {
+        if (Backbone.Radio.DEBUG) {
+          var channelText = this.channelName ? ' on the ' + this.channelName + ' channel' : '';
+          console.warn('An unhandled event was fired' + channelText + ': "' + name + '"');
+        }
         return;
       }
       var args = Array.prototype.slice.call(arguments, 3);

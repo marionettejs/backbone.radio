@@ -8,6 +8,8 @@
 _.extend(Radio, {
   _channels: {},
 
+  DEBUG: false,
+
   channel: function(channelName) {
     if (!channelName) {
       throw new Error('You must provide a name for the channel.');
