@@ -5,7 +5,7 @@ describe('Upon creation, a Channel', function() {
 
   beforeEach(function() {
     channel = new Backbone.Radio.Channel(name);
-    channelName = channel.channelName;
+    channelName = channel._channelName;
 
     channelKeys = _.keys(channel);
 

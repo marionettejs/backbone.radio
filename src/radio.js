@@ -14,18 +14,15 @@ _.extend(Radio, {
     if (!channelName) {
       throw new Error('You must provide a name for the channel.');
     }
-
     return Radio._getChannel( channelName );
   },
 
   _getChannel: function(channelName) {
     var channel = Radio._channels[channelName];
-
     if(!channel) {
       channel = new Radio.Channel(channelName);
       Radio._channels[channelName] = channel;
     }
-
     return channel;
   }
 });

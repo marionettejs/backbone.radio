@@ -16,6 +16,7 @@
     "console": true,
     "$": true,
     "Radio": true,
+    "_log": true,
     "Factory": true,
     "methods": true,
     "require": true,

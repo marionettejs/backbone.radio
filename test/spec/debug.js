@@ -17,7 +17,7 @@ describe('When in DEBUG mode and firing a command on a channel without a handler
   });
 
   it('should throw a console warning, including the channel', function() {
-    var warning = 'An unhandled event was fired on the ' + channelName + ' channel: "' + commandName + '"'
+    var warning = 'An unhandled event was fired on the ' + channelName + ' channel: "' + commandName + '"';
     expect(consoleSpy).to.have.been.calledOnce;
     expect(consoleSpy).to.have.been.calledWithExactly(warning);
   });
@@ -63,7 +63,7 @@ describe('When in DEBUG mode and firing a request on a channel without a handler
   });
 
   it('should throw a console warning, including the channel', function() {
-    var warning = 'An unhandled event was fired on the ' + channelName + ' channel: "' + requestName + '"'
+    var warning = 'An unhandled event was fired on the ' + channelName + ' channel: "' + requestName + '"';
     expect(consoleSpy).to.have.been.calledOnce;
     expect(consoleSpy).to.have.been.calledWithExactly(warning);
   });
@@ -106,7 +106,7 @@ describe('When in DEBUG mode and firing a command on an object without a handler
   });
 
   it('should throw a console warning', function() {
-    var warning = 'An unhandled event was fired: "' + commandName + '"'
+    var warning = 'An unhandled event was fired: "' + commandName + '"';
     expect(consoleSpy).to.have.been.calledOnce;
     expect(consoleSpy).to.have.been.calledWithExactly(warning);
   });
@@ -146,7 +146,7 @@ describe('When in DEBUG mode and firing a request on an object without a handler
   });
 
   it('should throw a console warning', function() {
-    var warning = 'An unhandled event was fired: "' + requestName + '"'
+    var warning = 'An unhandled event was fired: "' + requestName + '"';
     expect(consoleSpy).to.have.been.calledOnce;
     expect(consoleSpy).to.have.been.calledWithExactly(warning);
   });
