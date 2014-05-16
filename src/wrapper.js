@@ -27,8 +27,6 @@
   };
 
   // @include radio.js
-  // @include methods.js
-  // @include factory.js
   // @include commands.js
   // @include requests.js
   // @include channel.js

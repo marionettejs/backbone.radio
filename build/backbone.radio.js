@@ -59,88 +59,6 @@
     }
   });
   
-  /* 
-   * methods
-   * -------
-   * The shared API for messaging systems
-   *
-   */
-   
-  var methods = {
-    execute: function(container, returnValue, name) {
-      if (!this[container] || !this[container][name]) {
-        if (Backbone.Radio.DEBUG) {
-          var channelText = this.channelName ? ' on the ' + this.channelName + ' channel' : '';
-          console.warn('An unhandled event was fired' + channelText + ': "' + name + '"');
-        }
-        return;
-      }
-      var args = Array.prototype.slice.call(arguments, 3);
-      var handler = this[container][name];
-      var cb = handler.callback;
-      var context = handler.context;
-      var response = cb.apply(context, args);
-      return returnValue ? response : undefined;
-    },
-  
-    handle: function(container, name, callback, context) {
-      if (!this[container]) {
-        this[container] = {};
-      }
-  
-      context = context || this;
-  
-      callback = _.isFunction(callback) ? callback : _.constant(callback);
-  
-      this[container][name] = {
-        callback: callback,
-        context: context
-      };
-  
-      return this;
-    },
-  
-    handleOnce: function(container, execute, stopHandling, name, callback, context) {
-      var self = this;
-      callback = _.isFunction(callback) ? callback : _.constant(callback);
-      var once = _.once(function() {
-        self[stopHandling](name);
-        return callback.apply(this, arguments);
-      });
-      return this[execute](name, once, context);
-    },
-  
-    stopHandling: function(container, name) {
-      if (!name) {
-        delete this[container];
-      } else {
-        delete this[container][name];
-      }
-    }
-  };
-  
-  /*
-   * Factory
-   * -------
-   * Generates a new messaging system by wrapping the
-   * generic methods with semantic names.
-   *
-   */
-  
-  var Factory = function(name, options) {
-    var system = {};
-    var container = '_'+name;
-    var methodsMap = options.methodsMap;
-    var returnValue = options.returnValue;
-  
-    system[methodsMap.execute] = _.partial(methods.execute, container, returnValue);
-    system[methodsMap.handle] = _.partial(methods.handle, container);
-    system[methodsMap.handleOnce] = _.partial(methods.handleOnce, container, methodsMap.handle, methodsMap.stopHandling);
-    system[methodsMap.stopHandling] = _.partial(methods.stopHandling, container);
-  
-    return system;
-  };
-  
   /*
    * Backbone.Radio.Commands
    * -----------------------
@@ -148,17 +66,54 @@
    *
    */
   
-  var commandsMap = {
-    execute: 'command',
-    handle: 'react',
-    handleOnce: 'reactOnce',
-    stopHandling: 'stopReacting'
-  };
+  Radio.Commands = {
+    command: function(name) {
+      if (!this._commands || !this._commands[name]) {
+        if (Backbone.Radio.DEBUG) {
+          var channelText = this.channelName ? ' on the ' + this.channelName + ' channel' : '';
+          console.warn('An unhandled event was fired' + channelText + ': "' + name + '"');
+        }
+        return;
+      }
+      var args = Array.prototype.slice.call(arguments, 1);
+      var handler = this._commands[name];
+      var cb = handler.callback;
+      var context = handler.context;
+      cb.apply(context, args);
+    },
   
-  Radio.Commands = new Factory('commands', {
-    methodsMap: commandsMap,
-    returnValue: false
-  });
+    react: function(name, callback, context) {
+      if (!this._commands) {
+        this._commands = {};
+      }
+  
+      context = context || this;
+  
+      this._commands[name] = {
+        callback: callback,
+        context: context
+      };
+  
+      return this;
+    },
+  
+    reactOnce: function(name, callback, context) {
+      var self = this;
+      var once = _.once(function() {
+        self.stopReacting(name);
+        return callback.apply(this, arguments);
+      });
+      return this.command(name, once, context);
+    },
+  
+    stopReacting: function(name) {
+      if (!name) {
+        delete this._commands;
+      } else {
+        delete this._commands[name];
+      }
+    }
+  };
   
   /*
    * Backbone.Radio.Requests
@@ -166,18 +121,58 @@
    * A messaging system for requesting data.
    *
    */
+   
+  Radio.Requests = {
+    request: function(name) {
+      if (!this._requests || !this._requests[name]) {
+        if (Backbone.Radio.DEBUG) {
+          var channelText = this.channelName ? ' on the ' + this.channelName + ' channel' : '';
+          console.warn('An unhandled event was fired' + channelText + ': "' + name + '"');
+        }
+        return;
+      }
+      var args = Array.prototype.slice.call(arguments, 1);
+      var handler = this._requests[name];
+      var cb = handler.callback;
+      var context = handler.context;
+      return cb.apply(context, args);
+    },
   
-   var requestsMap = {
-    execute: 'request',
-    handle: 'respond',
-    handleOnce: 'respondOnce',
-    stopHandling: 'stopResponding'
+    respond: function(name, callback, context) {
+      if (!this._requests) {
+        this._requests = {};
+      }
+  
+      context = context || this;
+  
+      callback = _.isFunction(callback) ? callback : _.constant(callback);
+  
+      this._requests[name] = {
+        callback: callback,
+        context: context
+      };
+  
+      return this;
+    },
+  
+    respondOnce: function(name, callback, context) {
+      var self = this;
+      callback = _.isFunction(callback) ? callback : _.constant(callback);
+      var once = _.once(function() {
+        self.stopResponding(name);
+        return callback.apply(this, arguments);
+      });
+      return this.request(name, once, context);
+    },
+  
+    stopResponding: function(name) {
+      if (!name) {
+        delete this._requests;
+      } else {
+        delete this._requests[name];
+      }
+    }
   };
-  
-  Radio.Requests = new Factory('requests', {
-    methodsMap: requestsMap,
-    returnValue: true
-  });
   
   /*
    * Backbone.Radio.Channel
