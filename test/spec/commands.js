@@ -1,51 +1,47 @@
-describe('When commanding an action that has no handler', function() {
+describe('Commands:', function() {
   beforeEach(function() {
-    this.obj = _.extend({}, Backbone.Radio.Commands);
-    this.returned = this.obj.command('handlerDoesNotExist');
+    this.Commands = _.clone(Backbone.Radio.Commands);
   });
 
-  it('should not return anything.', function() {
-    expect(this.returned).to.be.undefined;
-  });
-});
+  describe('when commanding an action that has no handler', function() {
+    beforeEach(function() {
+      this.returned = this.Commands.command('handlerDoesNotExist');
+    });
 
-describe('When commanding an action that has a handler', function() {
-  beforeEach(function() {
-    this.actionName = 'foo';
-    this.passedArgument = 'bar';
-    this.obj = _.extend({}, Backbone.Radio.Commands);
-
-    this.callbackSpy = this.sinon.spy();
-
-    this.obj.react(this.actionName, this.callbackSpy);
-    this.returned = this.obj.command(this.actionName, true, this.passedArgument);
+    it('should not return anything.', function() {
+      expect(this.returned).to.be.undefined;
+    });
   });
 
-  it('should execute the handler.', function() {
-    expect(this.callbackSpy).to.have.been.calledOnce;
+  describe('when commanding an action that has a handler', function() {
+    beforeEach(function() {
+      this.actionName = 'foo';
+      this.argumentOne = 'foo';
+      this.argumentTwo = 'bar';
+
+      this.callbackStub = this.sinon.stub();
+
+      this.Commands.react(this.actionName, this.callbackStub);
+      this.returned = this.Commands.command(this.actionName, this.argumentOne, this.argumentTwo);
+    });
+
+    it('should pass along the arguments to the handler.', function() {
+      expect(this.callbackStub).to.have.been.calledOnce.and.calledWithExactly(this.argumentOne, this.argumentTwo);
+    });
+
+    it('should not return anything.', function() {
+      expect(this.returned).to.be.undefined;
+    });
   });
 
-  it('should pass along the arguments to the handler.', function() {
-    expect(this.callbackSpy).to.have.always.been.calledWithExactly(true, this.passedArgument);
-  });
+  describe('when unregistering a handler from an object with no commands handlers', function() {
+    beforeEach(function() {
+      this.actionName = 'foo';
+      this.stopReacting = _.partial(this.Commands.stopReacting, this.actionName);
+    });
 
-  it('should not return anything.', function() {
-    expect(this.returned).to.be.undefined;
-  });
-});
-
-describe('When unregistering a handler from an object with no commands handlers', function() {
-  beforeEach(function() {
-    this.actionName = 'foo';
-    this.obj = _.extend({}, Backbone.Radio.Commands);
-
-    this.stopReactingSpy = sinon.spy(this.obj, 'stopReacting');
-  });
-
-  it('should not throw an Error.', function() {
-    var suite = this;
-    expect(function() {
-      suite.obj.stopReacting(suite.actionName);
-    }).to.not.throw(Error);
+    it('should not throw an Error.', function() {
+      expect(this.stopReacting).to.not.throw(Error);
+    });
   });
 });
