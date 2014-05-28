@@ -4,10 +4,14 @@
  * A messaging system for requesting data.
  *
  */
- 
+
+function makeCallback(callback) {
+  return _.isFunction(callback) ? callback : _.constant(callback);
+}
+
 Radio.Requests = {
   request: function(name) {
-    var args = Array.prototype.slice.call(arguments, 1);
+    var args = slice.call(arguments, 1);
     var isChannel = this._channelName ? true : false;
 
     // Check if we should log the request, and if so, do it
@@ -24,23 +28,15 @@ Radio.Requests = {
       return;
     }
     var handler = this._requests[name];
-    var cb = handler.callback;
-    var context = handler.context;
-    return cb.apply(context, args);
+    return handler.callback.apply(handler.context, args);
   },
 
   respond: function(name, callback, context) {
-    if (!this._requests) {
-      this._requests = {};
-    }
-
-    context = context || this;
-
-    callback = _.isFunction(callback) ? callback : _.constant(callback);
+    this._requests || (this._requests = {});
 
     this._requests[name] = {
-      callback: callback,
-      context: context
+      callback: makeCallback(callback),
+      context: context || this
     };
 
     return this;
@@ -48,10 +44,9 @@ Radio.Requests = {
 
   respondOnce: function(name, callback, context) {
     var self = this;
-    callback = _.isFunction(callback) ? callback : _.constant(callback);
     var once = _.once(function() {
       self.stopResponding(name);
-      return callback.apply(this, arguments);
+      return makeCallback(callback).apply(this, arguments);
     });
     return this.request(name, once, context);
   },

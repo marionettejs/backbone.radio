@@ -7,8 +7,8 @@
 
 Radio.Commands = {
   command: function(name) {
-    var args = Array.prototype.slice.call(arguments, 1);
-    var isChannel = this._channelName ? true : false;
+    var args = slice.call(arguments, 1);
+    var isChannel = !!this._channelName;
 
     // Check if we should log the request, and if so, do it
     if (isChannel && this._tunedIn) {
@@ -25,21 +25,15 @@ Radio.Commands = {
     }
 
     var handler = this._commands[name];
-    var cb = handler.callback;
-    var context = handler.context;
-    cb.apply(context, args);
+    handler.callback.apply(handler.context, args);
   },
 
   react: function(name, callback, context) {
-    if (!this._commands) {
-      this._commands = {};
-    }
-
-    context = context || this;
+    this._commands || (this._commands = {});
 
     this._commands[name] = {
       callback: callback,
-      context: context
+      context: context || this
     };
 
     return this;
