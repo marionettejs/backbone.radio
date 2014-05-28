@@ -1,121 +1,82 @@
-describe('When tuned into a channel and emitting an event', function() {
+describe('Tune-in', function() {
   beforeEach(function() {
-    this.channelName = 'foobar';
-    this.eventName = 'foo:event';
+    this.channelName = 'foo';
+    this.eventName = 'bar';
     this.channel = Backbone.Radio.channel(this.channelName);
-
-    this.consoleSpy = this.sinon.stub(console, 'log');
-
+    this.consoleStub = this.sinon.stub(console, 'log');
     Backbone.Radio.tuneIn(this.channelName);
-    this.channel.trigger(this.eventName, 'foo', 'bar');
   });
 
   afterEach(function() {
     Backbone.Radio.tuneOut(this.channelName);
   });
 
-  it('should log that activity, with the arguments', function() {
-    var warning = '[' + this.channelName + '] "' + this.eventName + '"';
-    var args = ['foo', 'bar'];
-    expect(this.consoleSpy).to.have.been.calledOnce;
-    expect(this.consoleSpy).to.have.been.calledWithExactly(warning, args);
-  });
-});
+  describe('when tuned into a channel and emitting an event', function() {
+    beforeEach(function() {
+      this.warning = '[' + this.channelName + '] "' + this.eventName + '"';
+      this.args = ['foo', 'bar'];
+      this.channel.trigger(this.eventName, 'foo', 'bar');
+    });
 
-describe('When tuning in, then out, and emitting an event', function() {
-  beforeEach(function() {
-    this.channelName = 'foobar';
-    this.eventName = 'foo:event';
-    this.consoleSpy = this.sinon.stub(console, 'log');
-    this.channel = Backbone.Radio.channel(this.channelName);
-
-    Backbone.Radio.tuneIn(this.channelName);
-    Backbone.Radio.tuneOut(this.channelName);
-    this.channel.trigger(this.eventName);
+    it('should log that activity, with the arguments', function() {
+      expect(this.consoleStub).to.have.been.calledOnce.and.calledWithExactly(this.warning, this.args);
+    });
   });
 
-  it('should not log that activity', function() {
-    expect(this.consoleSpy).to.not.have.been.called;
-  });
-});
+  describe('when tuning in, then out, and emitting an event', function() {
+    beforeEach(function() {
+      Backbone.Radio.tuneOut(this.channelName);
+      this.channel.trigger(this.eventName);
+    });
 
-describe('When tuned into a channel and making a request', function() {
-  beforeEach(function() {
-    this.channelName = 'foobar';
-    this.eventName = 'foo:request';
-    this.channel = Backbone.Radio.channel(this.channelName);
-
-    this.consoleSpy = this.sinon.stub(console, 'log');
-
-    Backbone.Radio.tuneIn(this.channelName);
-    this.channel.request(this.requestName, 'foo', 'bar');
+    it('should not log that activity', function() {
+      expect(this.consoleStub).to.not.have.been.called;
+    });
   });
 
-  afterEach(function() {
-    Backbone.Radio.tuneOut(this.channelName);
+  describe('when tuned into a channel and making a request', function() {
+    beforeEach(function() {
+      this.warning = '[' + this.channelName + '] "' + this.eventName + '"';
+      this.args = ['foo', 'bar'];
+      this.channel.request(this.eventName, 'foo', 'bar');
+    });
+
+    it('should log that activity', function() {
+      expect(this.consoleStub).to.have.been.calledOnce.and.calledWithExactly(this.warning, this.args);
+    });
   });
 
-  it('should log that activity', function() {
-    var warning = '[' + this.channelName + '] "' + this.requestName + '"';
-    var args = ['foo', 'bar'];
-    expect(this.consoleSpy).to.have.been.calledOnce;
-    expect(this.consoleSpy).to.have.been.calledWithExactly(warning, args);
-  });
-});
+  describe('when tuning in, then out, and making a request', function() {
+    beforeEach(function() {
+      Backbone.Radio.tuneOut(this.channelName);
+      this.channel.request(this.eventName);
+    });
 
-describe('When tuning in, then out, and making a request', function() {
-  beforeEach(function() {
-    this.channelName = 'foobar';
-    this.eventName = 'foo:request';
-    this.consoleSpy = this.sinon.stub(console, 'log');
-    this.channel = Backbone.Radio.channel(this.channelName);
-
-    Backbone.Radio.tuneIn(this.channelName);
-    Backbone.Radio.tuneOut(this.channelName);
-    this.channel.request(this.requestName);
+    it('should not log that activity', function() {
+      expect(this.consoleStub).to.not.have.been.called;
+    });
   });
 
-  it('should not log that activity', function() {
-    expect(this.consoleSpy).to.not.have.been.called;
-  });
-});
+  describe('when tuned into a channel and ordering a command', function() {
+    beforeEach(function() {
+      this.channel.command(this.eventName, 'foo', 'bar');
+      this.warning = '[' + this.channelName + '] "' + this.eventName + '"';
+      this.args = ['foo', 'bar'];
+    });
 
-describe('When tuned into a channel and ordering a command', function() {
-  beforeEach(function() {
-    this.channelName = 'foobar';
-    this.eventName = 'foo:command';
-    this.consoleSpy = this.sinon.stub(console, 'log');
-    this.channel = Backbone.Radio.channel(this.channelName);
-
-    Backbone.Radio.tuneIn(this.channelName);
-    this.channel.command(this.commandName, 'foo', 'bar');
+    it('should log that activity', function() {
+      expect(this.consoleStub).to.have.been.calledOnce.and.calledWithExactly(this.warning, this.args);
+    });
   });
 
-  afterEach(function() {
-    Backbone.Radio.tuneOut(this.channelName);
-  });
+  describe('when tuning in, then out, and ordering a command', function() {
+    beforeEach(function() {
+      Backbone.Radio.tuneOut(this.channelName);
+      this.channel.command(this.eventName);
+    });
 
-  it('should log that activity', function() {
-    var warning = '[' + this.channelName + '] "' + this.commandName + '"';
-    var args = ['foo', 'bar'];
-    expect(this.consoleSpy).to.have.been.calledOnce;
-    expect(this.consoleSpy).to.have.been.calledWithExactly(warning, args);
-  });
-});
-
-describe('When tuning in, then out, and ordering a command', function() {
-  beforeEach(function() {
-    this.channelName = 'foobar';
-    this.eventName = 'foo:command';
-    this.consoleSpy = this.sinon.stub(console, 'log');
-    this.channel = Backbone.Radio.channel(this.channelName);
-
-    Backbone.Radio.tuneIn(this.channelName);
-    Backbone.Radio.tuneOut(this.channelName);
-    this.channel.command(this.commandName);
-  });
-
-  it('should not log that activity', function() {
-    expect(this.consoleSpy).to.not.have.been.called;
+    it('should not log that activity', function() {
+      expect(this.consoleStub).to.not.have.been.called;
+    });
   });
 });
