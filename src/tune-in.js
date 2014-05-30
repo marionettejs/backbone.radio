@@ -6,22 +6,22 @@
  */
 
 // Log information about the channel and event
-var _log = function(channelName, eventName) {
-  var args = Array.prototype.slice.call(arguments, 2);
-  console.log('[' + channelName + '] "'+eventName+'"', args);
-};
+function _log(channelName, eventName) {
+  var args = slice.call(arguments, 2);
+  console.log('[' + channelName + '] "' + eventName + '"', args);
+}
 
 var _logs = {};
 
 // This is to produce an identical function in both tuneIn and tuneOut,
 // so that Backbone.Events unregisters it.
-var _partial = function(channelName) {
+function _partial(channelName) {
   return _logs[channelName] || (_logs[channelName] = _.partial(_log, channelName));
-};
+}
 
 _.extend(Radio, {
 
-  // Logs all events on this channel to the console. It sets an 
+  // Logs all events on this channel to the console. It sets an
   // internal value on the channel telling it we're listening,
   // then sets a listener on the Backbone.Events
   tuneIn: function(channelName) {

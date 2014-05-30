@@ -26,6 +26,8 @@
     return this;
   };
 
+  var slice = Array.prototype.slice;
+
   // @include radio.js
   // @include tune-in.js
   // @include commands.js

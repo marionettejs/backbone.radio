@@ -2,7 +2,7 @@
  * Backbone.Radio.Channel
  * ----------------------
  * A Channel is an object that extends from Backbone.Events,
- * Radio.Commands, and Radio.Requests. 
+ * Radio.Commands, and Radio.Requests.
  *
  */
 
@@ -24,10 +24,9 @@ _.extend(Radio.Channel.prototype, {
 });
 
 function _connect(methodName, hash, context) {
-  if ( !hash ) { return; }
-  context = context || this;
+  if (!hash) { return; }
   _.each(hash, function(fn, eventName) {
-    this[methodName](eventName, _.bind(fn, context));
+    this[methodName](eventName, _.bind(fn, context || this));
   }, this);
 }
 
@@ -38,6 +37,5 @@ var map = {
 };
 
 _.each(map, function(methodName, systemName) {
-  var connectName = 'connect'+ systemName;
-  Radio.Channel.prototype[connectName] = _.partial(_connect, methodName);
+  Radio.Channel.prototype['connect' + systemName] = _.partial(_connect, methodName);
 });
