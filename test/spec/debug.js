@@ -10,7 +10,7 @@ describe('When in DEBUG mode and firing a command on a channel without a handler
     this.channel.command(this.commandName);
   });
 
-  it('should throw a console warning, including the channel', function() {
+  it('should log a console warning, including the channel', function() {
     var warning = 'An unhandled event was fired on the ' + this.channelName + ' channel: "' + this.commandName + '"';
     expect(this.consoleSpy).to.have.been.calledOnce;
     expect(this.consoleSpy).to.have.been.calledWithExactly(warning);
@@ -28,7 +28,7 @@ describe('When not in DEBUG mode and firing a command on a channel without a han
     this.channel.command(this.commandName);
   });
 
-  it('should not throw a console warning', function() {
+  it('should not log a console warning', function() {
     expect(this.consoleSpy).to.not.have.been.called;
   });
 });
@@ -45,7 +45,7 @@ describe('When in DEBUG mode and firing a request on a channel without a handler
     this.channel.request(this.requestName);
   });
 
-  it('should throw a console warning, including the channel', function() {
+  it('should log a console warning, including the channel', function() {
     var warning = 'An unhandled event was fired on the ' + this.channelName + ' channel: "' + this.requestName + '"';
     expect(this.consoleSpy).to.have.been.calledOnce;
     expect(this.consoleSpy).to.have.been.calledWithExactly(warning);
@@ -63,7 +63,7 @@ describe('When not in DEBUG mode and firing a request on a channel without a han
     this.channel.request(this.requestName);
   });
 
-  it('should not throw a console warning', function() {
+  it('should not log a console warning', function() {
     expect(this.consoleSpy).to.not.have.been.called;
   });
 });
@@ -79,7 +79,7 @@ describe('When in DEBUG mode and firing a command on an object without a handler
     this.obj.command(this.commandName);
   });
 
-  it('should throw a console warning', function() {
+  it('should log a console warning', function() {
     var warning = 'An unhandled event was fired: "' + this.commandName + '"';
     expect(this.consoleSpy).to.have.been.calledOnce;
     expect(this.consoleSpy).to.have.been.calledWithExactly(warning);
@@ -96,7 +96,7 @@ describe('When not in DEBUG mode and firing a command on an object without a han
     this.obj.command(this.commandName);
   });
 
-  it('should not throw a console warning', function() {
+  it('should not log a console warning', function() {
     expect(this.consoleSpy).to.not.have.been.called;
   });
 });
@@ -112,7 +112,7 @@ describe('When in DEBUG mode and firing a request on an object without a handler
     this.obj.request(this.requestName);
   });
 
-  it('should throw a console warning', function() {
+  it('should log a console warning', function() {
     var warning = 'An unhandled event was fired: "' + this.requestName + '"';
     expect(this.consoleSpy).to.have.been.calledOnce;
     expect(this.consoleSpy).to.have.been.calledWithExactly(warning);
@@ -129,7 +129,7 @@ describe('When not in DEBUG mode and firing a command on an object without a han
     this.obj.request(this.requestName);
   });
 
-  it('should not throw a console warning', function() {
+  it('should not log a console warning', function() {
     expect(this.consoleSpy).to.not.have.been.called;
   });
 });
