@@ -33,3 +33,19 @@ describe('When commanding an action that has a handler', function() {
     expect(this.returned).to.be.undefined;
   });
 });
+
+describe('When unregistering a handler from an object with no commands handlers', function() {
+  beforeEach(function() {
+    this.actionName = 'foo';
+    this.obj = _.extend({}, Backbone.Radio.Commands);
+
+    this.stopReactingSpy = sinon.spy(this.obj, 'stopReacting');
+  });
+
+  it('should not throw an Error.', function() {
+    var suite = this;
+    expect(function() {
+      suite.obj.stopReacting(suite.actionName);
+    }).to.not.throw(Error);
+  });
+});

@@ -52,6 +52,7 @@ Radio.Requests = {
   },
 
   stopResponding: function(name) {
+    if (!this._requests) { return; }
     if (!name) {
       delete this._requests;
     } else {

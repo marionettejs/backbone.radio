@@ -49,6 +49,7 @@ Radio.Commands = {
   },
 
   stopReacting: function(name) {
+    if (!this._commands) { return; }
     if (!name) {
       delete this._commands;
     } else {
