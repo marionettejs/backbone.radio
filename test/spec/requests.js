@@ -49,3 +49,19 @@ describe('When making a request that has a flat value as a handler', function() 
     expect(this.returned).to.equal(this.response);
   });
 });
+
+describe('When unregistering a handler from an object with no requests handlers', function() {
+  beforeEach(function() {
+    this.requestName = 'foo';
+    this.obj = _.extend({}, Backbone.Radio.Requests);
+
+    this.stopRespondingSpy = sinon.spy(this.obj, 'stopResponding');
+  });
+
+  it('should not throw an Error.', function() {
+    var suite = this;
+    expect(function() {
+      suite.obj.stopResponding(suite.requestName);
+    }).to.not.throw(Error);
+  });
+});
