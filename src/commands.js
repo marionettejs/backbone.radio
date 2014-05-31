@@ -49,11 +49,17 @@ Radio.Commands = {
   },
 
   stopReacting: function(name) {
-    if (!this._commands) { return; }
+    var store = this._commands;
     if (!name) {
       delete this._commands;
-    } else {
-      delete this._commands[name];
+    }
+    else if (store && store[name]) {
+      delete store[name];
+    }
+    else if (Radio.DEBUG) {
+      var channelName = this._channelName;
+      var channelText = channelName ? ' on the ' + channelName + ' channel.' : '';
+      console.warn('Attempted to remove the unregistered command "' + name + '"' + channelText);
     }
   }
 };

@@ -38,6 +38,30 @@ describe('DEBUG mode:', function() {
       this.warning = 'An unhandled event was fired: "' + this.eventName + '"';
       expect(this.consoleStub).to.have.been.calledOnce.and.calledWithExactly(this.warning);
     });
+
+    it('should log a console warning when unregistering a command that was never registered on a channel', function() {
+      this.channel.stopReacting(this.eventName);
+      var warning = 'Attempted to remove the unregistered command "' + this.eventName + '" on the foo channel.';
+      expect(this.consoleStub).to.have.been.calledOnce.and.calledWithExactly(warning);
+    });
+
+    it('should log a console warning when unregistering a request that was never registered on a channel', function() {
+      this.channel.stopResponding(this.eventName);
+      var warning = 'Attempted to remove the unregistered request "' + this.eventName + '" on the foo channel.';
+      expect(this.consoleStub).to.have.been.calledOnce.and.calledWithExactly(warning);
+    });
+
+    it('should log a console warning when unregistering a command that was never registered on an object', function() {
+      this.Commands.stopReacting(this.eventName);
+      var warning = 'Attempted to remove the unregistered command "' + this.eventName + '"';
+      expect(this.consoleStub).to.have.been.calledOnce.and.calledWithExactly(warning);
+    });
+
+    it('should log a console warning when unregistering a request that was never registered on an object', function() {
+      this.Requests.stopResponding(this.eventName);
+      var warning = 'Attempted to remove the unregistered request "' + this.eventName + '"';
+      expect(this.consoleStub).to.have.been.calledOnce.and.calledWithExactly(warning);
+    });
   });
 
   describe('when turned off', function() {
@@ -58,6 +82,26 @@ describe('DEBUG mode:', function() {
 
     it('should not log a console warning when firing a request on an object without a handler', function() {
       this.Requests.request(this.eventName);
+      expect(this.consoleStub).to.not.have.been.called;
+    });
+
+    it('should not log a console warning when unregistering a command that was never registered on a channel', function() {
+      this.channel.stopReacting(this.eventName);
+      expect(this.consoleStub).to.not.have.been.called;
+    });
+
+    it('should not log a console warning when unregistering a request that was never registered on a channel', function() {
+      this.channel.stopResponding(this.eventName);
+      expect(this.consoleStub).to.not.have.been.called;
+    });
+
+    it('should not log a console warning when unregistering a command that was never registered on an object', function() {
+      this.Commands.stopReacting(this.eventName);
+      expect(this.consoleStub).to.not.have.been.called;
+    });
+
+    it('should not log a console warning when unregistering a request that was never registered on an object', function() {
+      this.Requests.stopResponding(this.eventName);
       expect(this.consoleStub).to.not.have.been.called;
     });
   });
