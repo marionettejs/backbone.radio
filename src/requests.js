@@ -12,17 +12,17 @@ function makeCallback(callback) {
 Radio.Requests = {
   request: function(name) {
     var args = slice.call(arguments, 1);
-    var isChannel = this._channelName ? true : false;
+    var channelName = this._channelName;
 
     // Check if we should log the request, and if so, do it
-    if (isChannel && this._tunedIn) {
-      _log.apply(this, [this._channelName, name].concat(args));
+    if (channelName && this._tunedIn) {
+      _log.apply(this, [channelName, name].concat(args));
     }
 
     // If the request isn't handled, log it in DEBUG mode and exit
     if (!this._requests || !this._requests[name]) {
       if (Radio.DEBUG) {
-        var channelText = isChannel ? ' on the ' + this._channelName + ' channel' : '';
+        var channelText = channelName ? ' on the ' + channelName + ' channel' : '';
         console.warn('An unhandled event was fired' + channelText + ': "' + name + '"');
       }
       return;
