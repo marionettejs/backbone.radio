@@ -1,67 +1,63 @@
-describe('When making a request that has no handler', function() {
-  beforeEach(function() {
-    this.obj = _.extend({}, Backbone.Radio.Requests);
-    this.returned = this.obj.request('foobar');
-  });
-
-  it('should not return anything.', function() {
-    expect(this.returned).to.be.undefined;
-  });
-});
-
-describe('When making a request that has a handler', function() {
+describe('Requests', function() {
   beforeEach(function() {
     this.actionName = 'foo';
-    this.passedArgument = 'foobar';
-    this.obj = _.extend({}, Backbone.Radio.Requests);
-
-    this.callback = function() { return 'request complete'; };
-    this.callbackSpy = this.sinon.spy(this.callback);
-
-    this.obj.respond(this.actionName, this.callbackSpy);
-    this.returned = this.obj.request(this.actionName, true, this.passedArgument);
+    this.Requests = _.clone(Backbone.Radio.Requests);
   });
 
-  it('should execute the handler.', function() {
-    expect(this.callbackSpy).to.have.been.calledOnce;
+  describe('when making a request that has no handler', function() {
+    beforeEach(function() {
+      this.returned = this.Requests.request('foobar');
+    });
+
+    it('should not return anything.', function() {
+      expect(this.returned).to.be.undefined;
+    });
   });
 
-  it('should pass along the arguments to the handler.', function() {
-    expect(this.callbackSpy).to.have.always.been.calledWithExactly(true, this.passedArgument);
+  describe('when making a request that has a handler', function() {
+    beforeEach(function() {
+      this.argumentOne = 'foo';
+      this.argumentTwo = 'bar';
+
+      this.callbackReturned = 'request complete';
+      this.callbackStub = this.sinon.stub().returns(this.callbackReturned);
+
+      this.Requests.respond(this.actionName, this.callbackStub);
+      this.returned = this.Requests.request(this.actionName, this.argumentOne, this.argumentTwo);
+    });
+
+    it('should pass along the arguments to the handler.', function() {
+      expect(this.callbackStub).to.have.been.calledOnce.and.calledWithExactly(this.argumentOne, this.argumentTwo);
+    });
+
+    it('should return the value of the handler.', function() {
+      expect(this.returned).to.equal(this.callbackReturned);
+    });
   });
 
-  it('should return the value of the handler.', function() {
-    expect(this.returned).to.equal('request complete');
-  });
-});
+  describe('when making a request that has a flat value as a handler', function() {
+    beforeEach(function() {
+      this.response = 'foobar';
+      this.Requests.respond(this.actionName, this.response);
+      this.returned = this.Requests.request(this.actionName);
+    });
 
-describe('When making a request that has a flat value as a handler', function() {
-  beforeEach(function() {
-    this.actionName = 'foo';
-    this.response = 'foobar';
-    this.obj = _.extend({}, Backbone.Radio.Requests);
-
-    this.obj.respond(this.actionName, this.response);
-    this.returned = this.obj.request(this.actionName);
+    it('should return that value.', function() {
+      expect(this.returned).to.equal(this.response);
+    });
   });
 
-  it('should return that value.', function() {
-    expect(this.returned).to.equal(this.response);
-  });
-});
+  describe('when unregistering a handler from an object with no requests handlers', function() {
+    beforeEach(function() {
+      var suite = this;
+      this.Requests.stopResponding(this.requestName);
+      this.stopResponding = function() {
+        suite.Requests.stopResponding(suite.requestName);
+      };
+    });
 
-describe('When unregistering a handler from an object with no requests handlers', function() {
-  beforeEach(function() {
-    this.requestName = 'foo';
-    this.obj = _.extend({}, Backbone.Radio.Requests);
-
-    this.stopRespondingSpy = sinon.spy(this.obj, 'stopResponding');
-  });
-
-  it('should not throw an Error.', function() {
-    var suite = this;
-    expect(function() {
-      suite.obj.stopResponding(suite.requestName);
-    }).to.not.throw(Error);
+    it('should not throw an Error.', function() {
+      expect(this.stopResponding).not.to.throw(Error);
+    });
   });
 });

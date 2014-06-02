@@ -1,5 +1,4 @@
 describe('When Radio is attached to your application', function() {
-
   it('should attach itself to Backbone.Radio', function() {
     expect(Backbone.Radio).to.exist;
   });
@@ -27,5 +26,4 @@ describe('When Radio is attached to your application', function() {
   it('should have the Requests Class attached to it', function() {
     expect(Backbone.Radio.Requests).to.exist;
   });
-
 });
