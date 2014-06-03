@@ -15,10 +15,25 @@ describe('Top-level API:', function() {
     });
 
     it('should execute each method on the proper channel with the arguments.', function() {
-      expect(this.channelStub.react).to.have.been.calledOnce.and.calledWithExactly('foo1', 'bar1');
-      expect(this.channelStub.reactOnce).to.have.been.calledOnce.and.calledWithExactly('foo2', 'bar2');
-      expect(this.channelStub.stopReacting).to.have.been.calledOnce.and.calledWithExactly('foo3', 'bar3');
-      expect(this.channelStub.command).to.have.been.calledOnce.and.calledWithExactly('foo4', 'bar4');
+      expect(this.channelStub.react)
+        .to.have.been.calledOnce
+        .and.to.have.been.calledOn(this.channel)
+        .and.calledWithExactly('foo1', 'bar1');
+
+      expect(this.channelStub.reactOnce)
+        .to.have.been.calledOnce
+        .and.to.have.been.calledOn(this.channel)
+        .and.calledWithExactly('foo2', 'bar2');
+
+      expect(this.channelStub.stopReacting)
+        .to.have.been.calledOnce
+        .and.to.have.been.calledOn(this.channel)
+        .and.calledWithExactly('foo3', 'bar3');
+
+      expect(this.channelStub.command)
+        .to.have.been.calledOnce
+        .and.to.have.been.calledOn(this.channel)
+        .and.calledWithExactly('foo4', 'bar4');
     });
   });
 
@@ -31,10 +46,25 @@ describe('Top-level API:', function() {
     });
 
     it('should execute each method on the proper channel with the arguments.', function() {
-      expect(this.channelStub.respond).to.have.been.calledOnce.and.calledWithExactly('foo1', 'bar1');
-      expect(this.channelStub.respondOnce).to.have.been.calledOnce.and.calledWithExactly('foo2', 'bar2');
-      expect(this.channelStub.stopResponding).to.have.been.calledOnce.and.calledWithExactly('foo3', 'bar3');
-      expect(this.channelStub.request).to.have.been.calledOnce.and.calledWithExactly('foo4', 'bar4');
+      expect(this.channelStub.respond)
+        .to.have.been.calledOnce
+        .and.to.have.been.calledOn(this.channel)
+        .and.calledWithExactly('foo1', 'bar1');
+
+      expect(this.channelStub.respondOnce)
+        .to.have.been.calledOnce
+        .and.to.have.been.calledOn(this.channel)
+        .and.calledWithExactly('foo2', 'bar2');
+
+      expect(this.channelStub.stopResponding)
+        .to.have.been.calledOnce
+        .and.to.have.been.calledOn(this.channel)
+        .and.calledWithExactly('foo3', 'bar3');
+        
+      expect(this.channelStub.request)
+        .to.have.been.calledOnce
+        .and.to.have.been.calledOn(this.channel)
+        .and.calledWithExactly('foo4', 'bar4');
     });
   });
 
@@ -50,13 +80,40 @@ describe('Top-level API:', function() {
     });
 
     it('should execute each method on the proper channel with the arguments.', function() {
-      expect(this.channelStub.listenTo).to.have.been.calledOnce.and.calledWithExactly('foo1', 'bar1');
-      expect(this.channelStub.listenToOnce).to.have.been.calledOnce.and.calledWithExactly('foo2', 'bar2');
-      expect(this.channelStub.stopListening).to.have.been.calledOnce.and.calledWithExactly('foo3', 'bar3');
-      expect(this.channelStub.trigger).to.have.been.calledOnce.and.calledWithExactly('foo4', 'bar4');
-      expect(this.channelStub.on).to.have.been.calledOnce.and.calledWithExactly('foo5', 'bar5');
-      expect(this.channelStub.once).to.have.been.calledOnce.and.calledWithExactly('foo6', 'bar6');
-      expect(this.channelStub.off).to.have.been.calledOnce.and.calledWithExactly('foo7', 'bar7');
+      expect(this.channelStub.listenTo)
+        .to.have.been.calledOnce
+        .and.to.have.been.calledOn(this.channel)
+        .and.calledWithExactly('foo1', 'bar1');
+
+      expect(this.channelStub.listenToOnce)
+        .to.have.been.calledOnce
+        .and.to.have.been.calledOn(this.channel)
+        .and.calledWithExactly('foo2', 'bar2');
+
+      expect(this.channelStub.stopListening)
+        .to.have.been.calledOnce
+        .and.to.have.been.calledOn(this.channel)
+        .and.calledWithExactly('foo3', 'bar3');
+
+      expect(this.channelStub.trigger)
+        .to.have.been.calledOnce
+        .and.to.have.been.calledOn(this.channel)
+        .and.calledWithExactly('foo4', 'bar4');
+
+      expect(this.channelStub.on)
+        .to.have.been.calledOnce
+        .and.to.have.been.calledOn(this.channel)
+        .and.calledWithExactly('foo5', 'bar5');
+
+      expect(this.channelStub.once)
+        .to.have.been.calledOnce
+        .and.to.have.been.calledOn(this.channel)
+        .and.calledWithExactly('foo6', 'bar6');
+
+      expect(this.channelStub.off)
+        .to.have.been.calledOnce
+        .and.to.have.been.calledOn(this.channel)
+        .and.calledWithExactly('foo7', 'bar7');
     });
   });
 });
