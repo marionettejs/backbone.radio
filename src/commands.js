@@ -45,7 +45,7 @@ Radio.Commands = {
       self.stopReacting(name);
       return callback.apply(this, arguments);
     });
-    return this.command(name, once, context);
+    return this.react(name, once, context);
   },
 
   stopReacting: function(name) {

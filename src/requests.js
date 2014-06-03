@@ -48,7 +48,7 @@ Radio.Requests = {
       self.stopResponding(name);
       return makeCallback(callback).apply(this, arguments);
     });
-    return this.request(name, once, context);
+    return this.respond(name, once, context);
   },
 
   stopResponding: function(name) {
