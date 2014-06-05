@@ -12,7 +12,7 @@
     Radio[methodName] = function(channelName) {
       args = slice.call(arguments, 2);
       channel = this.channel(channelName);
-      return channel[methodName].apply(this, args);
+      return channel[methodName].apply(channel, args);
     };
   });
 });
