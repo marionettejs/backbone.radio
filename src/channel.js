@@ -20,22 +20,25 @@ _.extend(Radio.Channel.prototype, {
     this.stopReacting();
     this.stopResponding();
     return this;
+  },
+
+  connectEvents: function(hash, context) {
+    this._connect('on', hash, context);
+  },
+
+  connectCommands: function(hash, context) {
+    this._connect('react', hash, context);
+  },
+
+  connectRequests: function(hash, context) {
+    this._connect('respond', hash, context);
+  },
+
+  _connect: function(methodName, hash, context) {
+    if (!hash) { return; }
+    _.each(hash, function(fn, eventName) {
+      this[methodName](eventName, _.bind(fn, context || this));
+    }, this);
   }
-});
 
-function _connect(methodName, hash, context) {
-  if (!hash) { return; }
-  _.each(hash, function(fn, eventName) {
-    this[methodName](eventName, _.bind(fn, context || this));
-  }, this);
-}
-
-var map = {
-  Events:   'on',
-  Commands: 'react',
-  Requests: 'respond'
-};
-
-_.each(map, function(methodName, systemName) {
-  Radio.Channel.prototype['connect' + systemName] = _.partial(_connect, methodName);
 });
