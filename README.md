@@ -247,8 +247,8 @@ myChannel.command('show:view');
 
 ##### `tuneIn( channelName )`
 
-Tuning into a Channel is another useful tool for debugging. It logs all triggers, commands, and requests made on the channel
-to the console, including the arguments passed.
+Tuning into a Channel is another useful tool for debugging. It passes all 
+triggers, commands, and requests made on the channel to [`Radio.log`](https://github.com/jmeas/backbone.radio/blob/tune-in/README.md#log-channelname-eventname--args-).
 
 ```js
 Backbone.Radio.tuneIn('calendar');
@@ -261,6 +261,18 @@ Once you're done tuning in you can call `tuneOut` to stop the logging.
 ```js
 Backbone.Radio.tuneOut('calendar');
 ```
+
+##### `log( channelName, eventName [, args...] )`
+
+When tuned into a Channel, this method will be called for all activity on
+a channel. The default implementation is to `console.warn` the following message:
+
+```js
+'[channelName] "eventName" args1 arg2 arg3...'
+```
+
+where args are all of the arguments passed with the message. It is exposed so that you
+may overwrite it with your own logging message if you wish.
 
 ### 'Top-level' API
 

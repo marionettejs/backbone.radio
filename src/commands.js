@@ -12,7 +12,7 @@ Radio.Commands = {
 
     // Check if we should log the request, and if so, do it
     if (channelName && this._tunedIn) {
-      _log.apply(this, [channelName, name].concat(args));
+      Radio.log.apply(this, [channelName, name].concat(args));
     }
 
     // If the command isn't handled, log it in DEBUG mode and exit

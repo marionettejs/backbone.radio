@@ -79,4 +79,18 @@ describe('Tune-in:', function() {
       expect(this.consoleStub).to.not.have.been.called;
     });
   });
+
+  describe('When providing a custom logging function and tuning it', function() {
+    beforeEach(function() {
+      this.logStub = this.sinon.stub(Backbone.Radio, 'log');
+      this.channel.command(this.eventName, 'foo', 'bar');
+    });
+
+    it('should log your custom message', function() {
+      expect(this.logStub)
+        .to.have.been.calledOnce
+        .and.calledOn(this.channel)
+        .and.calledWithExactly(this.channelName, this.eventName, 'foo', 'bar');
+    });
+  });
 });
