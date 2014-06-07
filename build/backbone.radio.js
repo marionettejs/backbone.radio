@@ -1,4 +1,4 @@
-// Backbone.Radio v0.1.0
+// Backbone.Radio v0.2.0
 (function(root, factory) {
   if (typeof define === 'function' && define.amd) {
     define(['backbone', 'underscore'], function(Backbone, _) {
@@ -20,12 +20,14 @@
 
   var Radio = Backbone.Radio = {};
 
-  Radio.VERSION = '0.1.0';
+  Radio.VERSION = '0.2.0';
 
   Radio.noConflict = function () {
     Backbone.Radio = previousRadio;
     return this;
   };
+
+  var slice = Array.prototype.slice;
 
   /*
    * Backbone.Radio
@@ -43,12 +45,12 @@
       if (!channelName) {
         throw new Error('You must provide a name for the channel.');
       }
-      return Radio._getChannel( channelName );
+      return Radio._getChannel(channelName);
     },
   
     _getChannel: function(channelName) {
       var channel = Radio._channels[channelName];
-      if(!channel) {
+      if (!channel) {
         channel = new Radio.Channel(channelName);
         Radio._channels[channelName] = channel;
       }
@@ -63,23 +65,23 @@
    *
    */
   
-  // Log information about the channel and event
-  var _log = function(channelName, eventName) {
-    var args = Array.prototype.slice.call(arguments, 2);
-    console.log('[' + channelName + '] "'+eventName+'"', args);
-  };
-  
   var _logs = {};
   
   // This is to produce an identical function in both tuneIn and tuneOut,
   // so that Backbone.Events unregisters it.
-  var _partial = function(channelName) {
-    return _logs[channelName] || (_logs[channelName] = _.partial(_log, channelName));
-  };
+  function _partial(channelName) {
+    return _logs[channelName] || (_logs[channelName] = _.partial(Radio.log, channelName));
+  }
   
   _.extend(Radio, {
   
-    // Logs all events on this channel to the console. It sets an 
+    // Log information about the channel and event
+    log: function(channelName, eventName) {
+      var args = slice.call(arguments, 2);
+      console.log('[' + channelName + '] "' + eventName + '"', args);
+    },
+  
+    // Logs all events on this channel to the console. It sets an
     // internal value on the channel telling it we're listening,
     // then sets a listener on the Backbone.Events
     tuneIn: function(channelName) {
@@ -106,39 +108,33 @@
   
   Radio.Commands = {
     command: function(name) {
-      var args = Array.prototype.slice.call(arguments, 1);
-      var isChannel = this._channelName ? true : false;
+      var args = slice.call(arguments, 1);
+      var channelName = this._channelName;
   
       // Check if we should log the request, and if so, do it
-      if (isChannel && this._tunedIn) {
-        _log.apply(this, [this._channelName, name].concat(args));
+      if (channelName && this._tunedIn) {
+        Radio.log.apply(this, [channelName, name].concat(args));
       }
   
       // If the command isn't handled, log it in DEBUG mode and exit
       if (!this._commands || !this._commands[name]) {
         if (Radio.DEBUG) {
-          var channelText = isChannel ? ' on the ' + this._channelName + ' channel' : '';
+          var channelText = channelName ? ' on the ' + channelName + ' channel' : '';
           console.warn('An unhandled event was fired' + channelText + ': "' + name + '"');
         }
         return;
       }
   
       var handler = this._commands[name];
-      var cb = handler.callback;
-      var context = handler.context;
-      cb.apply(context, args);
+      handler.callback.apply(handler.context, args);
     },
   
     react: function(name, callback, context) {
-      if (!this._commands) {
-        this._commands = {};
-      }
-  
-      context = context || this;
+      this._commands || (this._commands = {});
   
       this._commands[name] = {
         callback: callback,
-        context: context
+        context: context || this
       };
   
       return this;
@@ -150,10 +146,11 @@
         self.stopReacting(name);
         return callback.apply(this, arguments);
       });
-      return this.command(name, once, context);
+      return this.react(name, once, context);
     },
   
     stopReacting: function(name) {
+      if (!this._commands) { return; }
       if (!name) {
         delete this._commands;
       } else {
@@ -168,43 +165,39 @@
    * A messaging system for requesting data.
    *
    */
-   
+  
+  function makeCallback(callback) {
+    return _.isFunction(callback) ? callback : _.constant(callback);
+  }
+  
   Radio.Requests = {
     request: function(name) {
-      var args = Array.prototype.slice.call(arguments, 1);
-      var isChannel = this._channelName ? true : false;
+      var args = slice.call(arguments, 1);
+      var channelName = this._channelName;
   
       // Check if we should log the request, and if so, do it
-      if (isChannel && this._tunedIn) {
-        _log.apply(this, [this._channelName, name].concat(args));
+      if (channelName && this._tunedIn) {
+        Radio.log.apply(this, [channelName, name].concat(args));
       }
   
       // If the request isn't handled, log it in DEBUG mode and exit
       if (!this._requests || !this._requests[name]) {
         if (Radio.DEBUG) {
-          var channelText = isChannel ? ' on the ' + this._channelName + ' channel' : '';
+          var channelText = channelName ? ' on the ' + channelName + ' channel' : '';
           console.warn('An unhandled event was fired' + channelText + ': "' + name + '"');
         }
         return;
       }
       var handler = this._requests[name];
-      var cb = handler.callback;
-      var context = handler.context;
-      return cb.apply(context, args);
+      return handler.callback.apply(handler.context, args);
     },
   
     respond: function(name, callback, context) {
-      if (!this._requests) {
-        this._requests = {};
-      }
-  
-      context = context || this;
-  
-      callback = _.isFunction(callback) ? callback : _.constant(callback);
+      this._requests || (this._requests = {});
   
       this._requests[name] = {
-        callback: callback,
-        context: context
+        callback: makeCallback(callback),
+        context: context || this
       };
   
       return this;
@@ -212,15 +205,15 @@
   
     respondOnce: function(name, callback, context) {
       var self = this;
-      callback = _.isFunction(callback) ? callback : _.constant(callback);
       var once = _.once(function() {
         self.stopResponding(name);
-        return callback.apply(this, arguments);
+        return makeCallback(callback).apply(this, arguments);
       });
-      return this.request(name, once, context);
+      return this.respond(name, once, context);
     },
   
     stopResponding: function(name) {
+      if (!this._requests) { return; }
       if (!name) {
         delete this._requests;
       } else {
@@ -233,7 +226,7 @@
    * Backbone.Radio.Channel
    * ----------------------
    * A Channel is an object that extends from Backbone.Events,
-   * Radio.Commands, and Radio.Requests. 
+   * Radio.Commands, and Radio.Requests.
    *
    */
   
@@ -251,26 +244,27 @@
       this.stopReacting();
       this.stopResponding();
       return this;
+    },
+  
+    connectEvents: function(hash, context) {
+      this._connect('on', hash, context);
+    },
+  
+    connectCommands: function(hash, context) {
+      this._connect('react', hash, context);
+    },
+  
+    connectRequests: function(hash, context) {
+      this._connect('respond', hash, context);
+    },
+  
+    _connect: function(methodName, hash, context) {
+      if (!hash) { return; }
+      _.each(hash, function(fn, eventName) {
+        this[methodName](eventName, _.bind(fn, context || this));
+      }, this);
     }
-  });
   
-  function _connect(methodName, hash, context) {
-    if ( !hash ) { return; }
-    context = context || this;
-    _.each(hash, function(fn, eventName) {
-      this[methodName](eventName, _.bind(fn, context));
-    }, this);
-  }
-  
-  var map = {
-    Events:   'on',
-    Commands: 'react',
-    Requests: 'respond'
-  };
-  
-  _.each(map, function(methodName, systemName) {
-    var connectName = 'connect'+ systemName;
-    Radio.Channel.prototype[connectName] = _.partial(_connect, methodName);
   });
   
   /*
@@ -285,9 +279,9 @@
    _.each(systems, function(system) {
     _.each(system, function(method, methodName) {
       Radio[methodName] = function(channelName) {
-        args = Array.prototype.slice.call(arguments, 2);
+        args = slice.call(arguments, 2);
         channel = this.channel(channelName);
-        return channel[methodName].apply(this, args);
+        return channel[methodName].apply(channel, args);
       };
     });
   });
