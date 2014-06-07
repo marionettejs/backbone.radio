@@ -47,7 +47,7 @@ describe('Channel:', function () {
       this.offStub            = this.sinon.stub(this.channel, 'off');
       this.stopListeningStub  = this.sinon.stub(this.channel, 'stopListening');
       this.stopReactingStub   = this.sinon.stub(this.channel, 'stopReacting');
-      this.stopRespondingStub = this.sinon.stub(this.channel, 'stopResponding');
+      this.stopReplyingStub = this.sinon.stub(this.channel, 'stopReplying');
 
       this.returned = this.channel.reset();
     });
@@ -62,7 +62,7 @@ describe('Channel:', function () {
     });
 
     it('should call the reset functions of Backbone.Radio.Requests', function() {
-      expect(this.stopRespondingStub).to.have.been.calledOnce;
+      expect(this.stopReplyingStub).to.have.been.calledOnce;
     });
 
     it('should return the Channel', function() {

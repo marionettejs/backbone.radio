@@ -91,14 +91,14 @@ you can't have multiple 'listeners' to the triggerer.
 Let's look at a basic example.
 
 ```js
-// Set up an object to respond to a request. In this case, whether or not its visible.
-myView.respond('visible', this.isVisible);
+// Set up an object to reply to a request. In this case, whether or not its visible.
+myView.reply('visible', this.isVisible);
 
 // Get whether it's visible or not.
 var isViewVisible = myView.request('visible');
 ```
 
-The handler in `respond` can either return a flat value, like `true` or `false`, or a function to be executed. Either way, the value is sent back to
+The handler in `reply` can either return a flat value, like `true` or `false`, or a function to be executed. Either way, the value is sent back to
 the requester.
 
 ### Channels
@@ -124,7 +124,7 @@ globalChannel.react('some:action', function() {
   console.log('I was told to execute some action');
 });
 
-globalChannel.respond('some:request', function() {
+globalChannel.reply('some:request', function() {
   return 'food is good';
 });
 ```
@@ -179,18 +179,18 @@ If `commandName` is passed then that reaction is removed from the object. Otherw
 
 Make a request for `requestName`. Optionally pass arguments to send along to the callback.
 
-##### `respond( requestName, callback [, context] )`
+##### `reply( requestName, callback [, context] )`
 
 Register a handler for `requestName` on this object. `callback` will be executed whenever the request is made. Optionally
 pass a `context` for the callback, defaulting to `this`.
 
-##### `respondOnce( requestName, callback [, context] )`
+##### `replyOnce( requestName, callback [, context] )`
 
 Register a handler for `requestName` that will only be called a single time.
 
-##### `stopResponding( [requestName] )`
+##### `stopReplying( [requestName] )`
 
-If `requestName` is passed then this method will remove that response. Otherwise, all responses are removed from the object.
+If `requestName` is passed then this method will remove that reply. Otherwise, all replies are removed from the object.
 
 ### Channel
 
@@ -219,7 +219,7 @@ A convenience method for connecting a hash of Commands reactions to the channel.
 
 ##### `connectRequests( requestsHash )`
 
-A convenience method for connecting a hash of Requests responses to the channel.
+A convenience method for connecting a hash of Requests replies to the channel.
 
 ### Radio
 
