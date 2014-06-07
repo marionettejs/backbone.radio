@@ -46,7 +46,7 @@ describe('DEBUG mode:', function() {
     });
 
     it('should log a console warning when unregistering a request that was never registered on a channel', function() {
-      this.channel.stopResponding(this.eventName);
+      this.channel.stopReplying(this.eventName);
       var warning = 'Attempted to remove the unregistered request "' + this.eventName + '" on the foo channel.';
       expect(this.consoleStub).to.have.been.calledOnce.and.calledWithExactly(warning);
     });
@@ -58,7 +58,7 @@ describe('DEBUG mode:', function() {
     });
 
     it('should log a console warning when unregistering a request that was never registered on an object', function() {
-      this.Requests.stopResponding(this.eventName);
+      this.Requests.stopReplying(this.eventName);
       var warning = 'Attempted to remove the unregistered request "' + this.eventName + '"';
       expect(this.consoleStub).to.have.been.calledOnce.and.calledWithExactly(warning);
     });
@@ -91,7 +91,7 @@ describe('DEBUG mode:', function() {
     });
 
     it('should not log a console warning when unregistering a request that was never registered on a channel', function() {
-      this.channel.stopResponding(this.eventName);
+      this.channel.stopReplying(this.eventName);
       expect(this.consoleStub).to.not.have.been.called;
     });
 
@@ -101,7 +101,7 @@ describe('DEBUG mode:', function() {
     });
 
     it('should not log a console warning when unregistering a request that was never registered on an object', function() {
-      this.Requests.stopResponding(this.eventName);
+      this.Requests.stopReplying(this.eventName);
       expect(this.consoleStub).to.not.have.been.called;
     });
   });

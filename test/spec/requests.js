@@ -25,7 +25,7 @@ describe('Requests:', function() {
       this.callbackReturned = 'request complete';
       this.callbackStub = this.sinon.stub().returns(this.callbackReturned);
 
-      this.Requests.respond(this.actionName, this.callbackStub);
+      this.Requests.reply(this.actionName, this.callbackStub);
       this.Requests.request(this.actionName, this.argumentOne, this.argumentTwo);
     });
 
@@ -48,7 +48,7 @@ describe('Requests:', function() {
       this.callbackReturned = 'request complete';
       this.callbackStub = this.sinon.stub().returns(this.callbackReturned);
 
-      this.Requests.respond(this.actionName, this.callbackStub);
+      this.Requests.reply(this.actionName, this.callbackStub);
       this.Requests.request(this.actionName, this.argumentOne, this.argumentTwo);
       this.Requests.request(this.actionName, this.argumentOne);
       this.Requests.request(this.actionName, this.argumentTwo);
@@ -70,7 +70,7 @@ describe('Requests:', function() {
       this.callbackReturned = 'request complete';
       this.callbackStub = this.sinon.stub().returns(this.callbackReturned);
 
-      this.Requests.respondOnce(this.actionName, this.callbackStub);
+      this.Requests.replyOnce(this.actionName, this.callbackStub);
       this.Requests.request(this.actionName, this.argumentOne);
       this.Requests.request(this.actionName, this.argumentTwo);
       this.Requests.request(this.actionName, this.argumentTwo, this.argumentOne);
@@ -92,7 +92,7 @@ describe('Requests:', function() {
   describe('when making a request that has a flat value as a handler', function() {
     beforeEach(function() {
       this.response = 'foobar';
-      this.Requests.respond(this.actionName, this.response);
+      this.Requests.reply(this.actionName, this.response);
       this.Requests.request(this.actionName);
     });
 
@@ -105,12 +105,12 @@ describe('Requests:', function() {
 
   describe('when unregistering a handler from an object with no requests handlers', function() {
     beforeEach(function() {
-      this.Requests.stopResponding(this.requestName);
-      this.stopResponding = _.partial(this.Requests.stopResponding, this.requestName);
+      this.Requests.stopReplying(this.requestName);
+      this.stopReplying = _.partial(this.Requests.stopReplying, this.requestName);
     });
 
     it('should not throw an Error.', function() {
-      expect(this.stopResponding).to.not.throw(Error);
+      expect(this.stopReplying).to.not.throw(Error);
     });
   });
 });

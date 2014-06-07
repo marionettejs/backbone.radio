@@ -18,7 +18,7 @@ _.extend(Radio.Channel.prototype, {
     this.off();
     this.stopListening();
     this.stopReacting();
-    this.stopResponding();
+    this.stopReplying();
     return this;
   },
 
@@ -31,7 +31,7 @@ _.extend(Radio.Channel.prototype, {
   },
 
   connectRequests: function(hash, context) {
-    this._connect('respond', hash, context);
+    this._connect('reply', hash, context);
   },
 
   _connect: function(methodName, hash, context) {

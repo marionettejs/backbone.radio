@@ -31,7 +31,7 @@ Radio.Requests = {
     return handler.callback.apply(handler.context, args);
   },
 
-  respond: function(name, callback, context) {
+  reply: function(name, callback, context) {
     this._requests || (this._requests = {});
 
     this._requests[name] = {
@@ -42,16 +42,16 @@ Radio.Requests = {
     return this;
   },
 
-  respondOnce: function(name, callback, context) {
+  replyOnce: function(name, callback, context) {
     var self = this;
     var once = _.once(function() {
-      self.stopResponding(name);
+      self.stopReplying(name);
       return makeCallback(callback).apply(this, arguments);
     });
-    return this.respond(name, once, context);
+    return this.reply(name, once, context);
   },
 
-  stopResponding: function(name) {
+  stopReplying: function(name) {
     var store = this._requests;
     if (!name) {
       delete this._requests;

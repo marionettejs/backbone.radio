@@ -39,24 +39,24 @@ describe('Top-level API:', function() {
 
   describe('when executing Requests methods', function() {
     beforeEach(function() {
-      Backbone.Radio.respond(this.channelName, this.eventName, 'foo1', 'bar1');
-      Backbone.Radio.respondOnce(this.channelName, this.eventName, 'foo2', 'bar2');
-      Backbone.Radio.stopResponding(this.channelName, this.eventName, 'foo3', 'bar3');
+      Backbone.Radio.reply(this.channelName, this.eventName, 'foo1', 'bar1');
+      Backbone.Radio.replyOnce(this.channelName, this.eventName, 'foo2', 'bar2');
+      Backbone.Radio.stopReplying(this.channelName, this.eventName, 'foo3', 'bar3');
       Backbone.Radio.request(this.channelName, this.eventName, 'foo4', 'bar4');
     });
 
     it('should execute each method on the proper channel with the arguments.', function() {
-      expect(this.channelStub.respond)
+      expect(this.channelStub.reply)
         .to.have.been.calledOnce
         .and.to.have.been.calledOn(this.channel)
         .and.calledWithExactly('foo1', 'bar1');
 
-      expect(this.channelStub.respondOnce)
+      expect(this.channelStub.replyOnce)
         .to.have.been.calledOnce
         .and.to.have.been.calledOn(this.channel)
         .and.calledWithExactly('foo2', 'bar2');
 
-      expect(this.channelStub.stopResponding)
+      expect(this.channelStub.stopReplying)
         .to.have.been.calledOnce
         .and.to.have.been.calledOn(this.channel)
         .and.calledWithExactly('foo3', 'bar3');
