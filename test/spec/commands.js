@@ -2,6 +2,9 @@ describe('Commands:', function() {
   beforeEach(function() {
     this.Commands = _.clone(Backbone.Radio.Commands);
     this.commandSpy = this.sinon.spy(this.Commands, 'command');
+    this.reactSpy = this.sinon.spy(this.Commands, 'react');
+    this.reactOnceSpy = this.sinon.spy(this.Commands, 'reactOnce');
+    this.stopReactingSpy = this.sinon.spy(this.Commands, 'stopReacting');
   });
 
   describe('when commanding an action that has no handler', function() {
@@ -9,10 +12,10 @@ describe('Commands:', function() {
       this.Commands.command('handlerDoesNotExist');
     });
 
-    it('should not return anything.', function() {
+    it('should return the Commands object itself.', function() {
       expect(this.commandSpy)
         .to.have.been.calledOnce
-        .and.to.have.always.returned(undefined);
+        .and.to.have.always.returned(this.Commands);
     });
   });
 
@@ -34,8 +37,14 @@ describe('Commands:', function() {
         .and.calledWithExactly(this.argumentOne, this.argumentTwo);
     });
 
-    it('should not return anything.', function() {
-      expect(this.commandSpy).to.have.always.returned(undefined);
+    it('should return the instance of Commands from `command`.', function() {
+      expect(this.commandSpy).to.have.always.returned(this.Commands);
+    });
+
+    it('should always return the instance of Commands from `react`', function() {
+      expect(this.reactSpy)
+        .to.have.been.calledOnce
+        .and.to.have.always.returned(this.Commands);
     });
   });
 
@@ -53,10 +62,16 @@ describe('Commands:', function() {
       this.Commands.command(this.actionName);
     });
 
-    it('should never return anything.', function() {
+    it('should always return Commands from `command`.', function() {
       expect(this.commandSpy)
         .to.have.been.calledThrice
-        .and.to.have.always.returned(undefined);
+        .and.to.have.always.returned(this.Commands);
+    });
+
+    it('should always return the instance of Commands from `react`', function() {
+      expect(this.reactSpy)
+        .to.have.been.calledOnce
+        .and.to.have.always.returned(this.Commands);
     });
   });
 
@@ -80,10 +95,16 @@ describe('Commands:', function() {
         .and.calledWithExactly(this.argumentOne, this.argumentTwo);
     });
 
-    it('should never return anything.', function() {
+    it('should always return the instance of Commands from `command`.', function() {
       expect(this.commandSpy)
         .to.have.been.calledThrice
-        .and.to.have.always.returned(undefined);
+        .and.to.have.always.returned(this.Commands);
+    });
+
+    it('should always return the instance of Commands from `reactOnce`', function() {
+      expect(this.reactOnceSpy)
+        .to.have.been.calledOnce
+        .and.to.have.always.returned(this.Commands);
     });
   });
 
@@ -95,6 +116,38 @@ describe('Commands:', function() {
 
     it('should not throw an Error.', function() {
       expect(this.stopReacting).to.not.throw(Error);
+    });
+  });
+
+  describe('when calling stopReacting from a Commands instance', function() {
+    beforeEach(function() {
+      this.commandOne = 'foo';
+      this.commandTwo = 'bar';
+      this.commandOneStub = this.sinon.stub();
+      this.commandTwoStub = this.sinon.stub();
+      this.Commands.react(this.commandOne, this.commandOneStub);
+      this.Commands.react(this.commandTwo, this.commandTwoStub);
+      this.Commands.stopReacting();
+    });
+
+    it('should remove all of the handlers', function() {
+      expect(this.Commands._commands).to.be.undefined;
+    });
+
+    it('should return the instance of Commands from stopReacting', function() {
+      expect(this.stopReactingSpy).to.have.always.returned(this.Commands);
+    });
+
+    describe('and subsequently calling the handler', function() {
+      beforeEach(function() {
+        this.Commands.command(this.commandOne);
+        this.Commands.command(this.commandTwo);
+      });
+
+      it('should not execute them', function() {
+        expect(this.commandOneStub).to.have.not.beenCalled;
+        expect(this.commandTwoStub).to.have.not.beenCalled;
+      });
     });
   });
 });

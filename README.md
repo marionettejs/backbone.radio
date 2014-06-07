@@ -158,49 +158,64 @@ control over which objects are able to talk to one another.
 
 ##### `command( commandName [, args...] )`
 
-Order a command to be completed. Optionally pass arguments to send along to the callback.
+Order a command to be completed. Optionally pass arguments to send along to the callback. Like Backbone.Event's `trigger` method,
+this method returns the instance of Commands.
 
 ##### `react( commandName, callback [, context] )`
 
 Register a handler for `commandName` on this object. `callback` will be executed whenever the command is run. Optionally
 pass a `context` for the callback, defaulting to `this`.
 
+Returns the instance of Commands.
+
 ##### `reactOnce( commandName, callback [, context] )`
 
 Register a handler for `commandName` that only executes a single time.
+
+Returns the instance of Commands.
 
 ##### `stopReacting( [commandName] )`
 
 If `commandName` is passed then that reaction is removed from the object. Otherwise, all reactions are removed.
 
+Returns the instance of Commands.
+
 ### Requests
 
 ##### `request( requestName [, args...] )`
 
-Make a request for `requestName`. Optionally pass arguments to send along to the callback.
+Make a request for `requestName`. Optionally pass arguments to send along to the callback. Returns the reply, if one
+exists. If there is no request then `undefined` will be returned.
 
 ##### `reply( requestName, callback [, context] )`
 
 Register a handler for `requestName` on this object. `callback` will be executed whenever the request is made. Optionally
 pass a `context` for the callback, defaulting to `this`.
 
+Returns the instance of Requests.
+
 ##### `replyOnce( requestName, callback [, context] )`
 
 Register a handler for `requestName` that will only be called a single time.
+
+Returns the instance of Requests.
 
 ##### `stopReplying( [requestName] )`
 
 If `requestName` is passed then this method will remove that reply. Otherwise, all replies are removed from the object.
 
+Returns the instance of Requests.
+
 ### Channel
 
 ##### `reset`
 
-Destroy all handlers from Backbone.Events, Radio.Commands, and Radio.Requests from the channel.
+Destroy all handlers from Backbone.Events, Radio.Commands, and Radio.Requests from the channel. Returns the channel.
 
 ##### `connectEvents( eventsHash )`
 
-A convenience method for connecting a hash of events to the channel.
+A convenience method for connecting a hash of events to the channel. Returns the
+channel.
 
 ```js
 // Set up a hash of events
@@ -215,11 +230,11 @@ myChannel.connectEvents(eventsHash);
 
 ##### `connectCommands( commandsHash )`
 
-A convenience method for connecting a hash of Commands reactions to the channel.
+A convenience method for connecting a hash of Commands reactions to the channel. Returns the channel.
 
 ##### `connectRequests( requestsHash )`
 
-A convenience method for connecting a hash of Requests replies to the channel.
+A convenience method for connecting a hash of Requests replies to the channel. Returns the channel.
 
 ### Radio
 
@@ -251,7 +266,9 @@ myChannel.stopReplying('startTime');
 ##### `tuneIn( channelName )`
 
 Tuning into a Channel is another useful tool for debugging. It passes all 
-triggers, commands, and requests made on the channel to [`Radio.log`](https://github.com/jmeas/backbone.radio/blob/tune-in/README.md#log-channelname-eventname--args-).
+triggers, commands, and requests made on the channel to
+[`Radio.log`](https://github.com/jmeas/backbone.radio/blob/tune-in/README.md#log-channelname-eventname--args-).
+Returns `Backbone.Radio`.
 
 ```js
 Backbone.Radio.tuneIn('calendar');
@@ -259,7 +276,7 @@ Backbone.Radio.tuneIn('calendar');
 
 ##### `tuneOut( channelName )`
 
-Once you're done tuning in you can call `tuneOut` to stop the logging.
+Once you're done tuning in you can call `tuneOut` to stop the logging. Returns `Backbone.Radio`.
 
 ```js
 Backbone.Radio.tuneOut('calendar');

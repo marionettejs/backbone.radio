@@ -28,6 +28,7 @@ _.extend(Radio, {
     var channel = Radio.channel(channelName);
     channel._tunedIn = true;
     channel.on('all', _partial(channelName));
+    return this;
   },
 
   // Stop logging all of the activities on this channel to the console
@@ -36,5 +37,6 @@ _.extend(Radio, {
     channel._tunedIn = false;
     channel.off('all', _partial(channelName));
     delete _logs[channelName];
+    return this;
   }
 });

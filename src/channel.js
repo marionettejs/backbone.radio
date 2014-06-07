@@ -23,15 +23,15 @@ _.extend(Radio.Channel.prototype, {
   },
 
   connectEvents: function(hash, context) {
-    this._connect('on', hash, context);
+    return this._connect('on', hash, context);
   },
 
   connectCommands: function(hash, context) {
-    this._connect('react', hash, context);
+    return this._connect('react', hash, context);
   },
 
   connectRequests: function(hash, context) {
-    this._connect('reply', hash, context);
+    return this._connect('reply', hash, context);
   },
 
   _connect: function(methodName, hash, context) {
@@ -39,6 +39,7 @@ _.extend(Radio.Channel.prototype, {
     _.each(hash, function(fn, eventName) {
       this[methodName](eventName, _.bind(fn, context || this));
     }, this);
+    return this;
   }
 
 });

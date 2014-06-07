@@ -47,9 +47,10 @@ describe('Channel:', function () {
       this.offStub            = this.sinon.stub(this.channel, 'off');
       this.stopListeningStub  = this.sinon.stub(this.channel, 'stopListening');
       this.stopReactingStub   = this.sinon.stub(this.channel, 'stopReacting');
-      this.stopReplyingStub = this.sinon.stub(this.channel, 'stopReplying');
+      this.stopReplyingStub   = this.sinon.stub(this.channel, 'stopReplying');
+      this.resetSpy           = this.sinon.spy(this.channel, 'reset');
 
-      this.returned = this.channel.reset();
+      this.channel.reset();
     });
 
     it('should call the reset functions of Backbone.Events', function() {
@@ -66,7 +67,7 @@ describe('Channel:', function () {
     });
 
     it('should return the Channel', function() {
-      expect(this.returned).to.equal(this.channel);
+      expect(this.resetSpy).to.have.always.returned(this.channel);
     });
   });
 
@@ -77,6 +78,9 @@ describe('Channel:', function () {
         bar: this.sinon.stub()
       };
       this.keys = Object.keys(this.hash);
+      this.connectEventsSpy = this.sinon.spy(this.channel, 'connectEvents');
+      this.connectCommandsSpy = this.sinon.spy(this.channel, 'connectCommands');
+      this.connectRequestsSpy = this.sinon.spy(this.channel, 'connectRequests');
     });
 
     it('should attach the listeners to the Channel when passing an event hash to `connectEvents`', function() {
@@ -92,6 +96,16 @@ describe('Channel:', function () {
     it('should attach the listeners to the Channel when passing a requests hash to `connectRequests`', function() {
       this.channel.connectRequests(this.hash);
       expect(this.channel._requests).to.have.keys(this.keys);
+    });
+
+    it('should return the channel for all three methods', function() {
+      this.channel.connectEvents(this.hash);
+      this.channel.connectCommands(this.hash);
+      this.channel.connectRequests(this.hash);
+
+      expect(this.connectEventsSpy).to.have.always.returned(this.channel);
+      expect(this.connectCommandsSpy).to.have.always.returned(this.channel);
+      expect(this.connectRequestsSpy).to.have.always.returned(this.channel);
     });
   });
 });
