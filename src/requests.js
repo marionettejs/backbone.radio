@@ -52,11 +52,17 @@ Radio.Requests = {
   },
 
   stopResponding: function(name) {
-    if (!this._requests) { return; }
+    var store = this._requests;
     if (!name) {
       delete this._requests;
-    } else {
-      delete this._requests[name];
+    }
+    else if (store && store[name]) {
+      delete store[name];
+    }
+    else if (Radio.DEBUG) {
+      var channelName = this._channelName;
+      var channelText = channelName ? ' on the ' + channelName + ' channel.' : '';
+      console.warn('Attempted to remove the unregistered request "' + name + '"' + channelText);
     }
   }
 };
