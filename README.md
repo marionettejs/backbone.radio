@@ -234,7 +234,7 @@ var globalChannel = Backbone.Radio.channel('hello');
 ##### `DEBUG`
 
 This is a property, not a method. Setting it to `true` will cause console warnings to be issued
-whenever you make a `request` or `command` that goes unhandled. This is useful in development when you want to
+whenever you interact with a `request` or `command` that isn't registered. This is useful in development when you want to
 ensure that you've got your event names in order.
 
 ```js
@@ -243,6 +243,9 @@ Backbone.Radio.DEBUG = true;
 
 // This will log a warning to the console if it goes unhandled
 myChannel.command('show:view');
+
+// Likewise, this will too, helping to prevent memory leaks
+myChannel.stopReplying('startTime');
 ```
 
 ##### `tuneIn( channelName )`
