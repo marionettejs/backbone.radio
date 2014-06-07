@@ -21,11 +21,13 @@ Radio.Commands = {
         var channelText = channelName ? ' on the ' + channelName + ' channel' : '';
         console.warn('An unhandled event was fired' + channelText + ': "' + name + '"');
       }
-      return;
+    }
+    else {
+      var handler = this._commands[name];
+      handler.callback.apply(handler.context, args);
     }
 
-    var handler = this._commands[name];
-    handler.callback.apply(handler.context, args);
+    return this;
   },
 
   react: function(name, callback, context) {
@@ -61,5 +63,6 @@ Radio.Commands = {
       var channelText = channelName ? ' on the ' + channelName + ' channel.' : '';
       console.warn('Attempted to remove the unregistered command "' + name + '"' + channelText);
     }
+    return this;
   }
 };

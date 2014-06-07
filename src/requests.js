@@ -64,5 +64,6 @@ Radio.Requests = {
       var channelText = channelName ? ' on the ' + channelName + ' channel.' : '';
       console.warn('Attempted to remove the unregistered request "' + name + '"' + channelText);
     }
+    return this;
   }
 };

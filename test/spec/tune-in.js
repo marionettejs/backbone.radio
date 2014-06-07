@@ -1,4 +1,23 @@
 describe('Tune-in:', function() {
+  describe('both methods, tuneIn and tuneOut,', function() {
+    beforeEach(function() {
+      this.channelName = 'foo';
+      this.tuneInSpy = this.sinon.spy(Backbone.Radio, 'tuneIn');
+      this.tuneOutSpy = this.sinon.spy(Backbone.Radio, 'tuneOut');
+      Backbone.Radio.tuneIn(this.channelName);
+      Backbone.Radio.tuneOut(this.channelName);
+    });
+
+    it('should return the Radio object', function() {
+      expect(this.tuneInSpy)
+        .to.have.been.calledOnce
+        .and.to.have.always.returned(Backbone.Radio);
+      expect(this.tuneOutSpy)
+        .to.have.been.calledOnce
+        .and.to.have.always.returned(Backbone.Radio);
+    });
+  });
+
   beforeEach(function() {
     this.channelName = 'foo';
     this.eventName = 'bar';
