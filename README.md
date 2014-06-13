@@ -2,10 +2,12 @@
 
 [![Travis Build Status](https://api.travis-ci.org/jmeas/backbone.radio.png)](https://travis-ci.org/jmeas/backbone.radio)
 
+Use Backbone.Radio to build large, maintainable, and decoupled applications.
+
 Backbone.Radio is a sophisticated pub-sub messaging system built from Backbone.Events. It adds
 semantics to your communications through the addition of two new messaging patterns, Commands
 and Requests. The three systems are bound together into Channels, which provide explicit namespacing
-to your communications. Backbone.Radio will further your goal of building decoupled, large-scale applications.
+to your communications.
 
 ## Getting Started
 
