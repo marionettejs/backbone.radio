@@ -71,17 +71,23 @@ module.exports = function(grunt) {
       }
     },
 
-    mocha: {
-      options: {
-        run: true
-      },
-      main: {
-        src: ['test/index.html']
+    mochaTest: {
+      spec: {
+        options: {
+          require: 'test/setup/node.js',
+          reporter: 'dot',
+          clearRequireCache: true,
+          mocha: require('mocha')
+        },
+        src: [
+          'test/setup/helpers.js',
+          'test/spec/*.js'
+        ]
       }
     }
   });
 
-  grunt.registerTask('test', 'Test the library', ['preprocess:test', 'jshint', 'mocha']);
+  grunt.registerTask('test', 'Test the library', ['preprocess:test', 'jshint', 'mochaTest']);
 
   grunt.registerTask('build', 'Build the library', ['test', 'preprocess:radio', 'template', 'concat', 'uglify']);
 
