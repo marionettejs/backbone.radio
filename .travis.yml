@@ -4,3 +4,5 @@ before_script:
   - bower install
 node_js:
   - "0.10"
+after_success:
+  - npm run-script coverage
