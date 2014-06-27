@@ -1,6 +1,6 @@
 # Backbone.Radio
 
-[![Travis Build Status](https://api.travis-ci.org/jmeas/backbone.radio.png)](https://travis-ci.org/jmeas/backbone.radio)
+[![Travis Build Status](https://api.travis-ci.org/jmeas/backbone.radio.svg)](https://travis-ci.org/jmeas/backbone.radio)
 [![Coverage Status](https://img.shields.io/coveralls/jmeas/backbone.radio.svg)](https://coveralls.io/r/jmeas/backbone.radio)
 
 Use Backbone.Radio to build large, maintainable, and decoupled applications.
