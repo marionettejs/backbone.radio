@@ -5,10 +5,18 @@
 
 Use Backbone.Radio to build large, maintainable, and decoupled applications.
 
-Backbone.Radio is a sophisticated pub-sub messaging system built from Backbone.Events. It adds
-semantics to your communications through the addition of two new messaging patterns, Commands
-and Requests. The three systems are bound together into Channels, which provide explicit namespacing
-to your communications.
+Backbone.Radio is a collection of messaging patterns for Backbone applications. It uses Backbone.Events as a
+pub-sub message bus, then adds semantics to your communications through the addition of two new messaging
+patterns, Commands and Requests. The three systems are bound together as Channels, which provide explicit
+namespacing to your communications.
+
+## Installation
+
+Clone this repository or install via [Bower](http://bower.io/).
+
+```js
+bower install backbone.radio
+```
 
 ## Getting Started
 
