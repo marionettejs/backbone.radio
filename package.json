@@ -30,7 +30,7 @@
     "web": "http://jmeas.com"
   },
   "bugs": {
-    "web": "https://github.com/jmeas/backbone.radio/issues"
+    "url": "https://github.com/jmeas/backbone.radio/issues"
   },
   "repository": {
     "type": "git",
