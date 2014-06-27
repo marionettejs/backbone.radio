@@ -84,10 +84,51 @@ module.exports = function(grunt) {
           'test/spec/*.js'
         ]
       }
-    }
+    },
+
+    env: {
+      coverage: {
+        APP_DIR_FOR_CODE_COVERAGE: '../../coverage/.tmp/'
+      }
+    },
+
+    instrument: {
+      files: '.tmp/backbone.radio.js',
+      options: {
+        lazy: true,
+        basePath: 'coverage'
+      }
+    },
+
+    storeCoverage: {
+      options: {
+        dir: 'coverage'
+      }
+    },
+
+    makeReport: {
+      src: 'coverage/**/*.json',
+      options: {
+        type: 'lcov',
+        dir: 'coverage',
+        print: 'detail'
+      }
+    },
+
+    coveralls: {
+      options: {
+        src: 'coverage/lcov.info',
+        force: false
+      },
+      default: {
+        src: 'coverage/lcov.info'
+      }
+    },
   });
 
   grunt.registerTask('test', 'Test the library', ['preprocess:test', 'jshint', 'mochaTest']);
+
+  grunt.registerTask('coverage', 'Generate coverage report for the library', ['preprocess:test', 'env:coverage', 'instrument', 'mochaTest', 'storeCoverage', 'makeReport', 'coveralls']);
 
   grunt.registerTask('build', 'Build the library', ['test', 'preprocess:radio', 'template', 'concat', 'uglify']);
 

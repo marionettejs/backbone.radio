@@ -1,6 +1,7 @@
 # Backbone.Radio
 
 [![Travis Build Status](https://api.travis-ci.org/jmeas/backbone.radio.png)](https://travis-ci.org/jmeas/backbone.radio)
+[![Coverage Status](https://img.shields.io/coveralls/jmeas/backbone.radio.svg)](https://coveralls.io/r/jmeas/backbone.radio)
 
 Use Backbone.Radio to build large, maintainable, and decoupled applications.
 
@@ -267,7 +268,7 @@ myChannel.stopReplying('startTime');
 
 ##### `tuneIn( channelName )`
 
-Tuning into a Channel is another useful tool for debugging. It passes all 
+Tuning into a Channel is another useful tool for debugging. It passes all
 triggers, commands, and requests made on the channel to
 [`Radio.log`](https://github.com/jmeas/backbone.radio/blob/tune-in/README.md#log-channelname-eventname--args-).
 Returns `Backbone.Radio`.
