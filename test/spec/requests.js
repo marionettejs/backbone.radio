@@ -27,23 +27,57 @@ describe('Requests:', function() {
 
       this.callbackReturned = 'request complete';
       this.callbackStub = this.sinon.stub().returns(this.callbackReturned);
-
-      this.Requests.reply(this.actionName, this.callbackStub);
-      this.Requests.request(this.actionName, this.argumentOne, this.argumentTwo);
     });
 
-    it('should pass along the arguments to the handler.', function() {
+    describe('and no context', function() {
+      beforeEach(function() {
+        this.Requests.reply(this.actionName, this.callbackStub);
+        this.Requests.request(this.actionName, this.argumentOne, this.argumentTwo);
+      });
+
+      it('should pass along the arguments to the handler.', function() {
       expect(this.callbackStub)
         .to.have.been.calledOnce
         .and.calledWithExactly(this.argumentOne, this.argumentTwo);
+      });
+
+      it('should return the value of the handler from `request`.', function() {
+        expect(this.requestSpy).to.have.always.returned(this.callbackReturned);
+      });
+
+      it('should return Requests from `reply`', function() {
+        expect(this.replySpy).to.have.always.returned(this.Requests);
+      });
+
+      it('should be called with the Requests object as the context', function() {
+        expect(this.callbackStub).to.have.always.been.calledOn(this.Requests);
+      });
     });
 
-    it('should return the value of the handler from `request`.', function() {
-      expect(this.requestSpy).to.have.always.returned(this.callbackReturned);
-    });
+    describe('and a context', function() {
+      beforeEach(function() {
+        this.context = {};
+        this.Requests.reply(this.actionName, this.callbackStub, this.context);
+        this.Requests.request(this.actionName, this.argumentOne, this.argumentTwo);
+      });
 
-    it('should return Requests from `reply`', function() {
-      expect(this.replySpy).to.have.always.returned(this.Requests);
+      it('should pass along the arguments to the handler.', function() {
+        expect(this.callbackStub)
+          .to.have.been.calledOnce
+          .and.calledWithExactly(this.argumentOne, this.argumentTwo);
+      });
+
+      it('should return the value of the handler from `request`.', function() {
+        expect(this.requestSpy).to.have.always.returned(this.callbackReturned);
+      });
+
+      it('should return Requests from `reply`', function() {
+        expect(this.replySpy).to.have.always.returned(this.Requests);
+      });
+
+      it('should be called with the correct context', function() {
+        expect(this.callbackStub).to.have.always.been.calledOn(this.context);
+      });
     });
   });
 
@@ -101,6 +135,38 @@ describe('Requests:', function() {
 
     it('should return Requests from `replyOnce`', function() {
       expect(this.replyOnceSpy).to.have.always.returned(this.Requests);
+    });
+  });
+
+  describe('when making a request that has a `once` handler & a context', function() {
+    beforeEach(function() {
+      this.argumentOne = 'foo';
+      this.argumentTwo = 'bar';
+      this.context = {};
+
+      this.callbackReturned = 'request complete';
+      this.callbackStub = this.sinon.stub().returns(this.callbackReturned);
+
+      this.Requests.replyOnce(this.actionName, this.callbackStub, this.context);
+      this.Requests.request(this.actionName, this.argumentOne, this.argumentTwo);
+    });
+
+    it('should pass along the arguments to the handler.', function() {
+      expect(this.callbackStub)
+        .to.have.been.calledOnce
+        .and.calledWithExactly(this.argumentOne, this.argumentTwo);
+    });
+
+    it('should return the value of the handler from `request`.', function() {
+      expect(this.requestSpy).to.have.always.returned(this.callbackReturned);
+    });
+
+    it('should return Requests from `reply`', function() {
+      expect(this.replySpy).to.have.always.returned(this.Requests);
+    });
+
+    it('should be called with the correct context', function() {
+      expect(this.callbackStub).to.have.always.been.calledOn(this.context);
     });
   });
 

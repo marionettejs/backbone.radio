@@ -26,25 +26,61 @@ describe('Commands:', function() {
       this.argumentTwo = 'bar';
 
       this.callbackStub = this.sinon.stub();
-
-      this.Commands.react(this.actionName, this.callbackStub);
-      this.Commands.command(this.actionName, this.argumentOne, this.argumentTwo);
     });
 
-    it('should pass along the arguments to the handler.', function() {
-      expect(this.callbackStub)
-        .to.have.been.calledOnce
-        .and.calledWithExactly(this.argumentOne, this.argumentTwo);
+    describe('and no context', function() {
+      beforeEach(function() {
+        this.Commands.react(this.actionName, this.callbackStub);
+        this.Commands.command(this.actionName, this.argumentOne, this.argumentTwo);
+      });
+
+      it('should pass along the arguments to the handler.', function() {
+        expect(this.callbackStub)
+          .to.have.been.calledOnce
+          .and.calledWithExactly(this.argumentOne, this.argumentTwo);
+      });
+
+      it('should return the instance of Commands from `command`.', function() {
+        expect(this.commandSpy).to.have.always.returned(this.Commands);
+      });
+
+      it('should always return the instance of Commands from `react`', function() {
+        expect(this.reactSpy)
+          .to.have.been.calledOnce
+          .and.to.have.always.returned(this.Commands);
+      });
+
+      it('should call be called with Commands as the context', function() {
+        expect(this.callbackStub).to.have.always.been.calledOn(this.Commands);
+      });
     });
 
-    it('should return the instance of Commands from `command`.', function() {
-      expect(this.commandSpy).to.have.always.returned(this.Commands);
-    });
+    describe('and a context', function() {
+      beforeEach(function() {
+        this.context = {};
+        this.Commands.react(this.actionName, this.callbackStub, this.context);
+        this.Commands.command(this.actionName, this.argumentOne, this.argumentTwo);
+      });
 
-    it('should always return the instance of Commands from `react`', function() {
-      expect(this.reactSpy)
-        .to.have.been.calledOnce
-        .and.to.have.always.returned(this.Commands);
+      it('should pass along the arguments to the handler.', function() {
+        expect(this.callbackStub)
+          .to.have.been.calledOnce
+          .and.calledWithExactly(this.argumentOne, this.argumentTwo);
+      });
+
+      it('should return the instance of Commands from `command`.', function() {
+        expect(this.commandSpy).to.have.always.returned(this.Commands);
+      });
+
+      it('should always return the instance of Commands from `react`', function() {
+        expect(this.reactSpy)
+          .to.have.been.calledOnce
+          .and.to.have.always.returned(this.Commands);
+      });
+
+      it('should be called with the correct context', function() {
+        expect(this.callbackStub).to.have.always.been.calledOn(this.context);
+      });
     });
   });
 
@@ -105,6 +141,36 @@ describe('Commands:', function() {
       expect(this.reactOnceSpy)
         .to.have.been.calledOnce
         .and.to.have.always.returned(this.Commands);
+    });
+  });
+
+  describe('when commanding an action with a `once` handler with the context set', function() {
+    beforeEach(function() {
+      this.actionName = 'foo';
+      this.argumentOne = 'foo';
+      this.argumentTwo = 'bar';
+      this.context = {};
+
+      this.callbackStub = this.sinon.stub();
+
+      this.Commands.reactOnce(this.actionName, this.callbackStub, this.context);
+      this.Commands.command(this.actionName, this.argumentOne, this.argumentTwo);
+    });
+
+    it('should call the handler just once, passing the arguments.', function() {
+      expect(this.callbackStub)
+        .to.have.been.calledOnce
+        .and.calledWithExactly(this.argumentOne, this.argumentTwo);
+    });
+
+    it('should always return the instance of Commands from `reactOnce`', function() {
+      expect(this.reactOnceSpy)
+        .to.have.been.calledOnce
+        .and.to.have.always.returned(this.Commands);
+    });
+
+    it('should always be called with the right context', function() {
+      expect(this.callbackStub).and.to.have.always.been.calledOn(this.context);
     });
   });
 
