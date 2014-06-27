@@ -1,4 +1,4 @@
-// Backbone.Radio v0.2.0
+// Backbone.Radio v0.4.0
 (function(root, factory) {
   if (typeof define === 'function' && define.amd) {
     define(['backbone', 'underscore'], function(Backbone, _) {
@@ -20,7 +20,7 @@
 
   var Radio = Backbone.Radio = {};
 
-  Radio.VERSION = '0.2.0';
+  Radio.VERSION = '0.4.0';
 
   Radio.noConflict = function () {
     Backbone.Radio = previousRadio;
@@ -88,6 +88,7 @@
       var channel = Radio.channel(channelName);
       channel._tunedIn = true;
       channel.on('all', _partial(channelName));
+      return this;
     },
   
     // Stop logging all of the activities on this channel to the console
@@ -96,6 +97,7 @@
       channel._tunedIn = false;
       channel.off('all', _partial(channelName));
       delete _logs[channelName];
+      return this;
     }
   });
   
@@ -122,11 +124,13 @@
           var channelText = channelName ? ' on the ' + channelName + ' channel' : '';
           console.warn('An unhandled event was fired' + channelText + ': "' + name + '"');
         }
-        return;
+      }
+      else {
+        var handler = this._commands[name];
+        handler.callback.apply(handler.context, args);
       }
   
-      var handler = this._commands[name];
-      handler.callback.apply(handler.context, args);
+      return this;
     },
   
     react: function(name, callback, context) {
@@ -150,12 +154,19 @@
     },
   
     stopReacting: function(name) {
-      if (!this._commands) { return; }
+      var store = this._commands;
       if (!name) {
         delete this._commands;
-      } else {
-        delete this._commands[name];
       }
+      else if (store && store[name]) {
+        delete store[name];
+      }
+      else if (Radio.DEBUG) {
+        var channelName = this._channelName;
+        var channelText = channelName ? ' on the ' + channelName + ' channel.' : '';
+        console.warn('Attempted to remove the unregistered command "' + name + '"' + channelText);
+      }
+      return this;
     }
   };
   
@@ -192,7 +203,7 @@
       return handler.callback.apply(handler.context, args);
     },
   
-    respond: function(name, callback, context) {
+    reply: function(name, callback, context) {
       this._requests || (this._requests = {});
   
       this._requests[name] = {
@@ -203,22 +214,29 @@
       return this;
     },
   
-    respondOnce: function(name, callback, context) {
+    replyOnce: function(name, callback, context) {
       var self = this;
       var once = _.once(function() {
-        self.stopResponding(name);
+        self.stopReplying(name);
         return makeCallback(callback).apply(this, arguments);
       });
-      return this.respond(name, once, context);
+      return this.reply(name, once, context);
     },
   
-    stopResponding: function(name) {
-      if (!this._requests) { return; }
+    stopReplying: function(name) {
+      var store = this._requests;
       if (!name) {
         delete this._requests;
-      } else {
-        delete this._requests[name];
       }
+      else if (store && store[name]) {
+        delete store[name];
+      }
+      else if (Radio.DEBUG) {
+        var channelName = this._channelName;
+        var channelText = channelName ? ' on the ' + channelName + ' channel.' : '';
+        console.warn('Attempted to remove the unregistered request "' + name + '"' + channelText);
+      }
+      return this;
     }
   };
   
@@ -242,20 +260,20 @@
       this.off();
       this.stopListening();
       this.stopReacting();
-      this.stopResponding();
+      this.stopReplying();
       return this;
     },
   
     connectEvents: function(hash, context) {
-      this._connect('on', hash, context);
+      return this._connect('on', hash, context);
     },
   
     connectCommands: function(hash, context) {
-      this._connect('react', hash, context);
+      return this._connect('react', hash, context);
     },
   
     connectRequests: function(hash, context) {
-      this._connect('respond', hash, context);
+      return this._connect('reply', hash, context);
     },
   
     _connect: function(methodName, hash, context) {
@@ -263,6 +281,7 @@
       _.each(hash, function(fn, eventName) {
         this[methodName](eventName, _.bind(fn, context || this));
       }, this);
+      return this;
     }
   
   });
