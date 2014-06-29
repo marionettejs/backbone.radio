@@ -337,3 +337,7 @@ Backbone.Radio.trigger('global', 'some:event');
 ```
 
 All of the methods for all three messaging systems are available from the top-level API.
+
+===
+
+&copy; 2014 James Smith - Distributed under [MIT License](LICENSE)
