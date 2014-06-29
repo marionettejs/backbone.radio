@@ -36,7 +36,9 @@ someModel.trigger('change');
 
 Let's look at a diagram for Backbone.Events:
 
-![Backbone.Events diagram](https://i.cloudup.com/M3inUilhIf-3000x3000.png)
+<p align='center'>
+  <img src='https://i.cloudup.com/M3inUilhIf-3000x3000.png' alt='Backbone.Events diagram'>
+</p>
 
 It goes without saying that Backbone.Events is incredibly useful when you mix it into instances of Classes. But what
 if you had a standalone Object with an instance of Backbone.Events on it? If you were to do this, you will find yourself
@@ -91,7 +93,9 @@ no information is returned from the executed callback. This is also unlike Event
 
 The following diagram illustrates the Commands pattern:
 
-![Backbone.Commands diagram](https://i.cloudup.com/XWGBQlkwTn-3000x3000.png)
+<p align='center'>
+  <img src='https://i.cloudup.com/XWGBQlkwTn-3000x3000.png' alt='Backbone.Commands diagram'>
+</p>
 
 You might ask yourself, 'Now why in the world would I fire the command when I can
 just call the method directly?' The answer is that you wouldn't. I only meant for the above example to be used as a means to familiarize yourself
@@ -125,7 +129,9 @@ the requester.
 
 Here's a diagram of the Requests pattern:
 
-![Backbone.Requests diagram](https://i.cloudup.com/2NtOFRO9DH-3000x3000.png)
+<p align='center'>
+  <img src='https://i.cloudup.com/2NtOFRO9DH-3000x3000.png' alt='Backbone.Requests diagram'>
+</p>
 
 ### Channels
 
