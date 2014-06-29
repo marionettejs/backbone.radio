@@ -168,7 +168,7 @@ globalChannel.trigger('some:event');
 
 globalChannel.command('some:command');
 
-globalCh.request('some:request');
+globalChannel.request('some:request');
 ```
 
 You can have as many channels as you'd like
