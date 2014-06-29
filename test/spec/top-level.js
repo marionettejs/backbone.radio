@@ -60,7 +60,7 @@ describe('Top-level API:', function() {
         .to.have.been.calledOnce
         .and.to.have.been.calledOn(this.channel)
         .and.calledWithExactly('firstArg3', 'secondArg3');
-        
+
       expect(this.channelStub.request)
         .to.have.been.calledOnce
         .and.to.have.been.calledOn(this.channel)
