@@ -29,7 +29,14 @@ Model's change event.
 ```js
 // Listen in on a model's change events
 this.listenTo(someModel, 'change', myCallback);
+
+// Later on, the model triggers a change event when it has been changed
+someModel.trigger('change');
 ```
+
+Let's look at a diagram for Backbone.Events:
+
+![Backbone.Events diagram](https://i.cloudup.com/M3inUilhIf-3000x3000.png)
 
 It goes without saying that Backbone.Events is incredibly useful when you mix it into instances of Classes. But what
 if you had a standalone Object with an instance of Backbone.Events on it? If you were to do this, you will find yourself
@@ -82,8 +89,12 @@ Commands have a few other things that make it distinct from Backbone.Events. Fir
 Backbone.Events where there can be many listeners for each trigger. Instead, Commands is a one-to-one relationship. Another difference is that
 no information is returned from the executed callback. This is also unlike Events, where information can travel from the triggerer to its listeners.
 
-Anyway, the example I showed above is a bit contrived. You might ask yourself, 'Now why in the world would I fire the command when I can
-just call the method directly?' The answer is that you wouldn't. I only meant for that example to be used as a means to familiarize yourself
+The following diagram illustrates the Commands pattern:
+
+![Backbone.Commands diagram](https://i.cloudup.com/XWGBQlkwTn-3000x3000.png)
+
+You might ask yourself, 'Now why in the world would I fire the command when I can
+just call the method directly?' The answer is that you wouldn't. I only meant for the above example to be used as a means to familiarize yourself
 with the way Commands works. The real utility of Commands comes when it is used in an independent message bus. But more on that later – let's
 first look at Requests.
 
@@ -111,6 +122,10 @@ var isViewVisible = myView.request('visible');
 
 The handler in `reply` can either return a flat value, like `true` or `false`, or a function to be executed. Either way, the value is sent back to
 the requester.
+
+Here's a diagram of the Requests pattern:
+
+![Backbone.Requests diagram](https://i.cloudup.com/2NtOFRO9DH-3000x3000.png)
 
 ### Channels
 
