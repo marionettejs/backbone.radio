@@ -1,6 +1,6 @@
 describe('Requests:', function() {
   beforeEach(function() {
-    this.actionName = 'foo';
+    this.actionName = 'actionName';
     this.Requests = _.clone(Backbone.Radio.Requests);
     this.requestSpy = this.sinon.spy(this.Requests, 'request');
     this.replySpy = this.sinon.spy(this.Requests, 'reply');
@@ -10,7 +10,7 @@ describe('Requests:', function() {
 
   describe('when making a request that has no handler', function() {
     beforeEach(function() {
-      this.Requests.request('foobar');
+      this.Requests.request('unhandledEvent');
     });
 
     it('should not return anything.', function() {
@@ -22,8 +22,8 @@ describe('Requests:', function() {
 
   describe('when making a request that has a handler', function() {
     beforeEach(function() {
-      this.argumentOne = 'foo';
-      this.argumentTwo = 'bar';
+      this.argumentOne = 'argOne';
+      this.argumentTwo = 'argTwo';
 
       this.callbackReturned = 'request complete';
       this.callbackStub = this.sinon.stub().returns(this.callbackReturned);
@@ -83,8 +83,8 @@ describe('Requests:', function() {
 
   describe('when making a request multiple times that has a handler', function() {
     beforeEach(function() {
-      this.argumentOne = 'foo';
-      this.argumentTwo = 'bar';
+      this.argumentOne = 'argOne';
+      this.argumentTwo = 'argTwo';
 
       this.callbackReturned = 'request complete';
       this.callbackStub = this.sinon.stub().returns(this.callbackReturned);
@@ -109,8 +109,8 @@ describe('Requests:', function() {
 
   describe('when making a request multiple times that has a `once` handler', function() {
     beforeEach(function() {
-      this.argumentOne = 'foo';
-      this.argumentTwo = 'bar';
+      this.argumentOne = 'argOne';
+      this.argumentTwo = 'argTwo';
 
       this.callbackReturned = 'request complete';
       this.callbackStub = this.sinon.stub().returns(this.callbackReturned);
@@ -140,8 +140,8 @@ describe('Requests:', function() {
 
   describe('when making a request that has a `once` handler & a context', function() {
     beforeEach(function() {
-      this.argumentOne = 'foo';
-      this.argumentTwo = 'bar';
+      this.argumentOne = 'argOne';
+      this.argumentTwo = 'argTwo';
       this.context = {};
 
       this.callbackReturned = 'request complete';
@@ -172,7 +172,7 @@ describe('Requests:', function() {
 
   describe('when making a request that has a flat value as a handler', function() {
     beforeEach(function() {
-      this.response = 'foobar';
+      this.response = 'a response';
       this.Requests.reply(this.actionName, this.response);
       this.Requests.request(this.actionName);
     });
@@ -197,8 +197,8 @@ describe('Requests:', function() {
 
   describe('when calling stopReplying from a Requests instance', function() {
     beforeEach(function() {
-      this.requestOne = 'foo';
-      this.requestTwo = 'bar';
+      this.requestOne = 'requestOne';
+      this.requestTwo = 'requestTwo';
       this.requestOneStub = this.sinon.stub();
       this.requestTwoStub = this.sinon.stub();
       this.Requests.reply(this.requestOne, this.requestOneStub);

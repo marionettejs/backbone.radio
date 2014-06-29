@@ -21,9 +21,9 @@ describe('Commands:', function() {
 
   describe('when commanding an action that has a handler', function() {
     beforeEach(function() {
-      this.actionName = 'foo';
-      this.argumentOne = 'foo';
-      this.argumentTwo = 'bar';
+      this.actionName = 'actionOne';
+      this.argumentOne = 'argOne';
+      this.argumentTwo = 'argTwo';
 
       this.callbackStub = this.sinon.stub();
     });
@@ -86,9 +86,9 @@ describe('Commands:', function() {
 
   describe('when commanding an action multiple times that has a handler', function() {
     beforeEach(function() {
-      this.actionName = 'foo';
-      this.argumentOne = 'foo';
-      this.argumentTwo = 'bar';
+      this.actionName = 'actionOne';
+      this.argumentOne = 'argOne';
+      this.argumentTwo = 'argTwo';
 
       this.callbackStub = this.sinon.stub();
 
@@ -113,9 +113,9 @@ describe('Commands:', function() {
 
   describe('when commanding an action multiple times that has a `once` handler', function() {
     beforeEach(function() {
-      this.actionName = 'foo';
-      this.argumentOne = 'foo';
-      this.argumentTwo = 'bar';
+      this.actionName = 'actionOne';
+      this.argumentOne = 'argOne';
+      this.argumentTwo = 'argTwo';
 
       this.callbackStub = this.sinon.stub();
 
@@ -146,9 +146,9 @@ describe('Commands:', function() {
 
   describe('when commanding an action with a `once` handler with the context set', function() {
     beforeEach(function() {
-      this.actionName = 'foo';
-      this.argumentOne = 'foo';
-      this.argumentTwo = 'bar';
+      this.actionName = 'actionOne';
+      this.argumentOne = 'argOne';
+      this.argumentTwo = 'argTwo';
       this.context = {};
 
       this.callbackStub = this.sinon.stub();
@@ -176,7 +176,7 @@ describe('Commands:', function() {
 
   describe('when unregistering a handler from an object with no commands handlers', function() {
     beforeEach(function() {
-      this.actionName = 'foo';
+      this.actionName = 'actionOne';
       this.stopReacting = _.partial(this.Commands.stopReacting, this.actionName);
     });
 
@@ -187,8 +187,8 @@ describe('Commands:', function() {
 
   describe('when calling stopReacting from a Commands instance', function() {
     beforeEach(function() {
-      this.commandOne = 'foo';
-      this.commandTwo = 'bar';
+      this.commandOne = 'commandOne';
+      this.commandTwo = 'commandTwo';
       this.commandOneStub = this.sinon.stub();
       this.commandTwoStub = this.sinon.stub();
       this.Commands.react(this.commandOne, this.commandOneStub);
