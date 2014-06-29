@@ -12,10 +12,11 @@ namespacing to your communications.
 
 ## Installation
 
-Clone this repository or install via [Bower](http://bower.io/).
+Clone this repository or install via [Bower](http://bower.io/) or [npm](https://www.npmjs.org/).
 
-```js
+```
 bower install backbone.radio
+npm install backbone.radio
 ```
 
 ## Getting Started
