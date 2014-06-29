@@ -278,8 +278,9 @@
   
     _connect: function(methodName, hash, context) {
       if (!hash) { return; }
+  
       _.each(hash, function(fn, eventName) {
-        this[methodName](eventName, _.bind(fn, context || this));
+        this[methodName](eventName, fn, context || this);
       }, this);
       return this;
     }
