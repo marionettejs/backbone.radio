@@ -15,17 +15,6 @@
 }(this, function(Backbone, _) {
   'use strict';
 
-  var previousRadio = Backbone.Radio;
-
-  var Radio = Backbone.Radio = {};
-
-  Radio.VERSION = '<%= version %>';
-
-  Radio.noConflict = function () {
-    Backbone.Radio = previousRadio;
-    return this;
-  };
-
   var slice = Array.prototype.slice;
 
   // @include radio.js
