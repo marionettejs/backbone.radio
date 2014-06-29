@@ -1,7 +1,7 @@
 describe('DEBUG mode:', function() {
   beforeEach(function() {
-    this.channelName = 'foo';
-    this.eventName = 'bar';
+    this.channelName = 'myChannel';
+    this.eventName = 'some:event';
 
     this.channel = Backbone.Radio.channel(this.channelName);
     this.Commands = _.clone(Backbone.Radio.Commands);
@@ -41,13 +41,13 @@ describe('DEBUG mode:', function() {
 
     it('should log a console warning when unregistering a command that was never registered on a channel', function() {
       this.channel.stopReacting(this.eventName);
-      var warning = 'Attempted to remove the unregistered command "' + this.eventName + '" on the foo channel.';
+      var warning = 'Attempted to remove the unregistered command "' + this.eventName + '" on the myChannel channel.';
       expect(this.consoleStub).to.have.been.calledOnce.and.calledWithExactly(warning);
     });
 
     it('should log a console warning when unregistering a request that was never registered on a channel', function() {
       this.channel.stopReplying(this.eventName);
-      var warning = 'Attempted to remove the unregistered request "' + this.eventName + '" on the foo channel.';
+      var warning = 'Attempted to remove the unregistered request "' + this.eventName + '" on the myChannel channel.';
       expect(this.consoleStub).to.have.been.calledOnce.and.calledWithExactly(warning);
     });
 

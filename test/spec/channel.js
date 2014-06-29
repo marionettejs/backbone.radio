@@ -1,6 +1,6 @@
 describe('Channel:', function () {
   beforeEach(function () {
-    this.channelName = 'foobar';
+    this.channelName = 'myChannel';
     this.channel = Backbone.Radio.channel(this.channelName);
   });
 
@@ -74,8 +74,8 @@ describe('Channel:', function () {
   describe('convenience methods', function() {
     beforeEach(function() {
       this.hash = {
-        foo: this.sinon.stub(),
-        bar: this.sinon.stub()
+        eventOne: this.sinon.stub(),
+        eventTwo: this.sinon.stub()
       };
       this.keys = Object.keys(this.hash);
       this.connectEventsSpy = this.sinon.spy(this.channel, 'connectEvents');
