@@ -17,7 +17,7 @@ _.extend(Radio.Channel.prototype, {
   reset: function() {
     this.off();
     this.stopListening();
-    this.stopReacting();
+    this.stopComplying();
     this.stopReplying();
     return this;
   },
@@ -27,7 +27,7 @@ _.extend(Radio.Channel.prototype, {
   },
 
   connectCommands: function(hash, context) {
-    return this._connect('react', hash, context);
+    return this._connect('comply', hash, context);
   },
 
   connectRequests: function(hash, context) {

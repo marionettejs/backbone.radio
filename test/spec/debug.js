@@ -40,7 +40,7 @@ describe('DEBUG mode:', function() {
     });
 
     it('should log a console warning when unregistering a command that was never registered on a channel', function() {
-      this.channel.stopReacting(this.eventName);
+      this.channel.stopComplying(this.eventName);
       var warning = 'Attempted to remove the unregistered command "' + this.eventName + '" on the myChannel channel.';
       expect(this.consoleStub).to.have.been.calledOnce.and.calledWithExactly(warning);
     });
@@ -52,7 +52,7 @@ describe('DEBUG mode:', function() {
     });
 
     it('should log a console warning when unregistering a command that was never registered on an object', function() {
-      this.Commands.stopReacting(this.eventName);
+      this.Commands.stopComplying(this.eventName);
       var warning = 'Attempted to remove the unregistered command "' + this.eventName + '"';
       expect(this.consoleStub).to.have.been.calledOnce.and.calledWithExactly(warning);
     });
@@ -86,7 +86,7 @@ describe('DEBUG mode:', function() {
     });
 
     it('should not log a console warning when unregistering a command that was never registered on a channel', function() {
-      this.channel.stopReacting(this.eventName);
+      this.channel.stopComplying(this.eventName);
       expect(this.consoleStub).to.not.have.been.called;
     });
 
@@ -96,7 +96,7 @@ describe('DEBUG mode:', function() {
     });
 
     it('should not log a console warning when unregistering a command that was never registered on an object', function() {
-      this.Commands.stopReacting(this.eventName);
+      this.Commands.stopComplying(this.eventName);
       expect(this.consoleStub).to.not.have.been.called;
     });
 

@@ -30,7 +30,7 @@ Radio.Commands = {
     return this;
   },
 
-  react: function(name, callback, context) {
+  comply: function(name, callback, context) {
     this._commands || (this._commands = {});
 
     this._commands[name] = {
@@ -41,16 +41,16 @@ Radio.Commands = {
     return this;
   },
 
-  reactOnce: function(name, callback, context) {
+  complyOnce: function(name, callback, context) {
     var self = this;
     var once = _.once(function() {
-      self.stopReacting(name);
+      self.stopComplying(name);
       return callback.apply(this, arguments);
     });
-    return this.react(name, once, context);
+    return this.comply(name, once, context);
   },
 
-  stopReacting: function(name) {
+  stopComplying: function(name) {
     var store = this._commands;
     if (!name) {
       delete this._commands;
