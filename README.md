@@ -80,8 +80,8 @@ You fire a Command when you do have a goal in mind. And to be even more specific
 particular task.
 
 ```js
-// Set up a view to react to a command
-myView.react('render', myView.render);
+// Set up a view to comply with a command
+myView.comply('render', myView.render);
 
 // Causes the view to render
 myView.command('render');
@@ -152,7 +152,7 @@ globalChannel.on('some:event', function() {
   console.log('An event has happened!');
 });
 
-globalChannel.react('some:action', function() {
+globalChannel.comply('some:action', function() {
   console.log('I was told to execute some action');
 });
 
@@ -193,22 +193,22 @@ control over which objects are able to talk to one another.
 Order a command to be completed. Optionally pass arguments to send along to the callback. Like Backbone.Event's `trigger` method,
 this method returns the instance of Commands.
 
-##### `react( commandName, callback [, context] )`
+##### `comply( commandName, callback [, context] )`
 
 Register a handler for `commandName` on this object. `callback` will be executed whenever the command is run. Optionally
 pass a `context` for the callback, defaulting to `this`.
 
 Returns the instance of Commands.
 
-##### `reactOnce( commandName, callback [, context] )`
+##### `complyOnce( commandName, callback [, context] )`
 
 Register a handler for `commandName` that only executes a single time.
 
 Returns the instance of Commands.
 
-##### `stopReacting( [commandName] )`
+##### `stopComplying( [commandName] )`
 
-If `commandName` is passed then that reaction is removed from the object. Otherwise, all reactions are removed.
+If `commandName` is passed then that handler is removed from the object. Otherwise, all handlers are removed.
 
 Returns the instance of Commands.
 
@@ -262,7 +262,7 @@ myChannel.connectEvents(eventsHash);
 
 ##### `connectCommands( commandsHash )`
 
-A convenience method for connecting a hash of Commands reactions to the channel. Returns the channel.
+A convenience method for connecting a hash of Commands handles to the channel. Returns the channel.
 
 ##### `connectRequests( requestsHash )`
 

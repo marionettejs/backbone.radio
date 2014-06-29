@@ -8,24 +8,24 @@ describe('Top-level API:', function() {
 
   describe('when executing Commands methods', function() {
     beforeEach(function() {
-      Backbone.Radio.react(this.channelName, this.eventName, 'firstArg1', 'secondArg1');
-      Backbone.Radio.reactOnce(this.channelName, this.eventName, 'firstArg2', 'secondArg2');
-      Backbone.Radio.stopReacting(this.channelName, this.eventName, 'firstArg3', 'secondArg3');
+      Backbone.Radio.comply(this.channelName, this.eventName, 'firstArg1', 'secondArg1');
+      Backbone.Radio.complyOnce(this.channelName, this.eventName, 'firstArg2', 'secondArg2');
+      Backbone.Radio.stopComplying(this.channelName, this.eventName, 'firstArg3', 'secondArg3');
       Backbone.Radio.command(this.channelName, this.eventName, 'firstArg4', 'secondArg4');
     });
 
     it('should execute each method on the proper channel with the arguments.', function() {
-      expect(this.channelStub.react)
+      expect(this.channelStub.comply)
         .to.have.been.calledOnce
         .and.to.have.been.calledOn(this.channel)
         .and.calledWithExactly('firstArg1', 'secondArg1');
 
-      expect(this.channelStub.reactOnce)
+      expect(this.channelStub.complyOnce)
         .to.have.been.calledOnce
         .and.to.have.been.calledOn(this.channel)
         .and.calledWithExactly('firstArg2', 'secondArg2');
 
-      expect(this.channelStub.stopReacting)
+      expect(this.channelStub.stopComplying)
         .to.have.been.calledOnce
         .and.to.have.been.calledOn(this.channel)
         .and.calledWithExactly('firstArg3', 'secondArg3');

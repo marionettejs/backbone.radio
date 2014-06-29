@@ -2,9 +2,9 @@ describe('Commands:', function() {
   beforeEach(function() {
     this.Commands = _.clone(Backbone.Radio.Commands);
     this.commandSpy = this.sinon.spy(this.Commands, 'command');
-    this.reactSpy = this.sinon.spy(this.Commands, 'react');
-    this.reactOnceSpy = this.sinon.spy(this.Commands, 'reactOnce');
-    this.stopReactingSpy = this.sinon.spy(this.Commands, 'stopReacting');
+    this.complySpy = this.sinon.spy(this.Commands, 'comply');
+    this.complyOnceSpy = this.sinon.spy(this.Commands, 'complyOnce');
+    this.stopComplyingSpy = this.sinon.spy(this.Commands, 'stopComplying');
   });
 
   describe('when commanding an action that has no handler', function() {
@@ -30,7 +30,7 @@ describe('Commands:', function() {
 
     describe('and no context', function() {
       beforeEach(function() {
-        this.Commands.react(this.actionName, this.callbackStub);
+        this.Commands.comply(this.actionName, this.callbackStub);
         this.Commands.command(this.actionName, this.argumentOne, this.argumentTwo);
       });
 
@@ -44,8 +44,8 @@ describe('Commands:', function() {
         expect(this.commandSpy).to.have.always.returned(this.Commands);
       });
 
-      it('should always return the instance of Commands from `react`', function() {
-        expect(this.reactSpy)
+      it('should always return the instance of Commands from `comply`', function() {
+        expect(this.complySpy)
           .to.have.been.calledOnce
           .and.to.have.always.returned(this.Commands);
       });
@@ -58,7 +58,7 @@ describe('Commands:', function() {
     describe('and a context', function() {
       beforeEach(function() {
         this.context = {};
-        this.Commands.react(this.actionName, this.callbackStub, this.context);
+        this.Commands.comply(this.actionName, this.callbackStub, this.context);
         this.Commands.command(this.actionName, this.argumentOne, this.argumentTwo);
       });
 
@@ -72,8 +72,8 @@ describe('Commands:', function() {
         expect(this.commandSpy).to.have.always.returned(this.Commands);
       });
 
-      it('should always return the instance of Commands from `react`', function() {
-        expect(this.reactSpy)
+      it('should always return the instance of Commands from `comply`', function() {
+        expect(this.complySpy)
           .to.have.been.calledOnce
           .and.to.have.always.returned(this.Commands);
       });
@@ -92,7 +92,7 @@ describe('Commands:', function() {
 
       this.callbackStub = this.sinon.stub();
 
-      this.Commands.react(this.actionName, this.callbackStub);
+      this.Commands.comply(this.actionName, this.callbackStub);
       this.Commands.command(this.actionName);
       this.Commands.command(this.actionName);
       this.Commands.command(this.actionName);
@@ -104,8 +104,8 @@ describe('Commands:', function() {
         .and.to.have.always.returned(this.Commands);
     });
 
-    it('should always return the instance of Commands from `react`', function() {
-      expect(this.reactSpy)
+    it('should always return the instance of Commands from `comply`', function() {
+      expect(this.complySpy)
         .to.have.been.calledOnce
         .and.to.have.always.returned(this.Commands);
     });
@@ -119,7 +119,7 @@ describe('Commands:', function() {
 
       this.callbackStub = this.sinon.stub();
 
-      this.Commands.reactOnce(this.actionName, this.callbackStub);
+      this.Commands.complyOnce(this.actionName, this.callbackStub);
       this.Commands.command(this.actionName, this.argumentOne, this.argumentTwo);
       this.Commands.command(this.actionName, this.argumentOne);
       this.Commands.command(this.actionName, this.argumentTwo);
@@ -137,8 +137,8 @@ describe('Commands:', function() {
         .and.to.have.always.returned(this.Commands);
     });
 
-    it('should always return the instance of Commands from `reactOnce`', function() {
-      expect(this.reactOnceSpy)
+    it('should always return the instance of Commands from `complyOnce`', function() {
+      expect(this.complyOnceSpy)
         .to.have.been.calledOnce
         .and.to.have.always.returned(this.Commands);
     });
@@ -153,7 +153,7 @@ describe('Commands:', function() {
 
       this.callbackStub = this.sinon.stub();
 
-      this.Commands.reactOnce(this.actionName, this.callbackStub, this.context);
+      this.Commands.complyOnce(this.actionName, this.callbackStub, this.context);
       this.Commands.command(this.actionName, this.argumentOne, this.argumentTwo);
     });
 
@@ -163,8 +163,8 @@ describe('Commands:', function() {
         .and.calledWithExactly(this.argumentOne, this.argumentTwo);
     });
 
-    it('should always return the instance of Commands from `reactOnce`', function() {
-      expect(this.reactOnceSpy)
+    it('should always return the instance of Commands from `complyOnce`', function() {
+      expect(this.complyOnceSpy)
         .to.have.been.calledOnce
         .and.to.have.always.returned(this.Commands);
     });
@@ -177,31 +177,31 @@ describe('Commands:', function() {
   describe('when unregistering a handler from an object with no commands handlers', function() {
     beforeEach(function() {
       this.actionName = 'actionOne';
-      this.stopReacting = _.partial(this.Commands.stopReacting, this.actionName);
+      this.stopComplying = _.partial(this.Commands.stopComplying, this.actionName);
     });
 
     it('should not throw an Error.', function() {
-      expect(this.stopReacting).to.not.throw(Error);
+      expect(this.stopComplying).to.not.throw(Error);
     });
   });
 
-  describe('when calling stopReacting from a Commands instance', function() {
+  describe('when calling stopComplying from a Commands instance', function() {
     beforeEach(function() {
       this.commandOne = 'commandOne';
       this.commandTwo = 'commandTwo';
       this.commandOneStub = this.sinon.stub();
       this.commandTwoStub = this.sinon.stub();
-      this.Commands.react(this.commandOne, this.commandOneStub);
-      this.Commands.react(this.commandTwo, this.commandTwoStub);
-      this.Commands.stopReacting();
+      this.Commands.comply(this.commandOne, this.commandOneStub);
+      this.Commands.comply(this.commandTwo, this.commandTwoStub);
+      this.Commands.stopComplying();
     });
 
     it('should remove all of the handlers', function() {
       expect(this.Commands._commands).to.be.undefined;
     });
 
-    it('should return the instance of Commands from stopReacting', function() {
-      expect(this.stopReactingSpy).to.have.always.returned(this.Commands);
+    it('should return the instance of Commands from stopComplying', function() {
+      expect(this.stopComplyingSpy).to.have.always.returned(this.Commands);
     });
 
     describe('and subsequently calling the handler', function() {
