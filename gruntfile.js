@@ -88,12 +88,12 @@ module.exports = function(grunt) {
 
     env: {
       coverage: {
-        APP_DIR_FOR_CODE_COVERAGE: '../../coverage/.tmp/'
+        APP_DIR_FOR_CODE_COVERAGE: '../../coverage/build/'
       }
     },
 
     instrument: {
-      files: '.tmp/backbone.radio.js',
+      files: 'build/backbone.radio.js',
       options: {
         lazy: true,
         basePath: 'coverage'
@@ -128,7 +128,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('test', 'Test the library', ['preprocess:test', 'jshint', 'mochaTest']);
 
-  grunt.registerTask('coverage', 'Generate coverage report for the library', ['preprocess:test', 'env:coverage', 'instrument', 'mochaTest', 'storeCoverage', 'makeReport', 'coveralls']);
+  grunt.registerTask('coverage', 'Generate coverage report for the library', ['build', 'env:coverage', 'instrument', 'mochaTest', 'storeCoverage', 'makeReport', 'coveralls']);
 
   grunt.registerTask('build', 'Build the library', ['test', 'preprocess:radio', 'template', 'concat', 'uglify']);
 
