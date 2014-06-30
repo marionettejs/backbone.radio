@@ -1,4 +1,4 @@
-// Backbone.Radio v0.4.0
+// Backbone.Radio v0.4.1
 (function(root, factory) {
   if (typeof define === 'function' && define.amd) {
     define(['backbone', 'underscore'], function(Backbone, _) {
@@ -16,19 +16,19 @@
 }(this, function(Backbone, _) {
   'use strict';
 
+  var slice = Array.prototype.slice;
+
   var previousRadio = Backbone.Radio;
-
+  
   var Radio = Backbone.Radio = {};
-
-  Radio.VERSION = '0.4.0';
-
+  
+  Radio.VERSION = '0.4.1';
+  
   Radio.noConflict = function () {
     Backbone.Radio = previousRadio;
     return this;
   };
-
-  var slice = Array.prototype.slice;
-
+  
   /*
    * Backbone.Radio
    * --------------
@@ -133,7 +133,7 @@
       return this;
     },
   
-    react: function(name, callback, context) {
+    comply: function(name, callback, context) {
       this._commands || (this._commands = {});
   
       this._commands[name] = {
@@ -144,16 +144,16 @@
       return this;
     },
   
-    reactOnce: function(name, callback, context) {
+    complyOnce: function(name, callback, context) {
       var self = this;
       var once = _.once(function() {
-        self.stopReacting(name);
+        self.stopComplying(name);
         return callback.apply(this, arguments);
       });
-      return this.react(name, once, context);
+      return this.comply(name, once, context);
     },
   
-    stopReacting: function(name) {
+    stopComplying: function(name) {
       var store = this._commands;
       if (!name) {
         delete this._commands;
@@ -259,7 +259,7 @@
     reset: function() {
       this.off();
       this.stopListening();
-      this.stopReacting();
+      this.stopComplying();
       this.stopReplying();
       return this;
     },
@@ -269,7 +269,7 @@
     },
   
     connectCommands: function(hash, context) {
-      return this._connect('react', hash, context);
+      return this._connect('comply', hash, context);
     },
   
     connectRequests: function(hash, context) {
