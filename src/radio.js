@@ -10,19 +10,17 @@ _.extend(Radio, {
 
   DEBUG: false,
 
+  _debugLog: function(warning, channelName, eventName) {
+    if (this.DEBUG) {
+      var channelText = channelName ? ' on the ' + channelName + ' channel' : '';
+      console.warn(warning + channelText + ': "' + eventName + '"');
+    }
+  },
+
   channel: function(channelName) {
     if (!channelName) {
       throw new Error('You must provide a name for the channel.');
     }
-    return Radio._getChannel(channelName);
-  },
-
-  _getChannel: function(channelName) {
-    var channel = Radio._channels[channelName];
-    if (!channel) {
-      channel = new Radio.Channel(channelName);
-      Radio._channels[channelName] = channel;
-    }
-    return channel;
+    return Radio._channels[channelName] || new Radio.Channel(channelName);
   }
 });

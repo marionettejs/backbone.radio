@@ -41,25 +41,25 @@ describe('DEBUG mode:', function() {
 
     it('should log a console warning when unregistering a command that was never registered on a channel', function() {
       this.channel.stopComplying(this.eventName);
-      var warning = 'Attempted to remove the unregistered command "' + this.eventName + '" on the myChannel channel.';
+      var warning = 'Attempted to remove the unregistered command on the ' + this.channelName + ' channel: "' + this.eventName + '"';
       expect(this.consoleStub).to.have.been.calledOnce.and.calledWithExactly(warning);
     });
 
     it('should log a console warning when unregistering a request that was never registered on a channel', function() {
       this.channel.stopReplying(this.eventName);
-      var warning = 'Attempted to remove the unregistered request "' + this.eventName + '" on the myChannel channel.';
+      var warning = 'Attempted to remove the unregistered request on the ' + this.channelName + ' channel: "' + this.eventName + '"';
       expect(this.consoleStub).to.have.been.calledOnce.and.calledWithExactly(warning);
     });
 
     it('should log a console warning when unregistering a command that was never registered on an object', function() {
       this.Commands.stopComplying(this.eventName);
-      var warning = 'Attempted to remove the unregistered command "' + this.eventName + '"';
+      var warning = 'Attempted to remove the unregistered command: "' + this.eventName + '"';
       expect(this.consoleStub).to.have.been.calledOnce.and.calledWithExactly(warning);
     });
 
     it('should log a console warning when unregistering a request that was never registered on an object', function() {
       this.Requests.stopReplying(this.eventName);
-      var warning = 'Attempted to remove the unregistered request "' + this.eventName + '"';
+      var warning = 'Attempted to remove the unregistered request: "' + this.eventName + '"';
       expect(this.consoleStub).to.have.been.calledOnce.and.calledWithExactly(warning);
     });
   });

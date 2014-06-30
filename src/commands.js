@@ -16,15 +16,11 @@ Radio.Commands = {
     }
 
     // If the command isn't handled, log it in DEBUG mode and exit
-    if (!this._commands || !this._commands[name]) {
-      if (Radio.DEBUG) {
-        var channelText = channelName ? ' on the ' + channelName + ' channel' : '';
-        console.warn('An unhandled event was fired' + channelText + ': "' + name + '"');
-      }
-    }
-    else {
+    if (this._commands && this._commands[name]) {
       var handler = this._commands[name];
       handler.callback.apply(handler.context, args);
+    } else {
+      Radio._debugLog('An unhandled event was fired', channelName, name);
     }
 
     return this;
@@ -43,26 +39,26 @@ Radio.Commands = {
 
   complyOnce: function(name, callback, context) {
     var self = this;
+
     var once = _.once(function() {
       self.stopComplying(name);
       return callback.apply(this, arguments);
     });
+
     return this.comply(name, once, context);
   },
 
   stopComplying: function(name) {
     var store = this._commands;
+
     if (!name) {
       delete this._commands;
-    }
-    else if (store && store[name]) {
+    } else if (store && store[name]) {
       delete store[name];
+    } else {
+      Radio._debugLog('Attempted to remove the unregistered command', this._channelName, name);
     }
-    else if (Radio.DEBUG) {
-      var channelName = this._channelName;
-      var channelText = channelName ? ' on the ' + channelName + ' channel.' : '';
-      console.warn('Attempted to remove the unregistered command "' + name + '"' + channelText);
-    }
+
     return this;
   }
 };
