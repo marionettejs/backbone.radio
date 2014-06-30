@@ -1,3 +1,7 @@
+### [0.5.0](https://github.com/jmeas/backbone.radio/releases/tag/v0.5.0)
+
+- Commands.react has been renamed to Commands.comply
+
 ### [0.4.1](https://github.com/jmeas/backbone.radio/releases/tag/v0.4.1)
 
 - The Channel convenience methods no longer bind the context, instead deferring that
