@@ -1,7 +1,7 @@
 {
   "name": "backbone.radio",
   "description": "The semantic messaging system for Backbone applications.",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "homepage": "https://github.com/jmeas/backbone.radio",
   "main": "build/backbone.radio.js",
   "keywords": [

@@ -1,4 +1,4 @@
-// Backbone.Radio v0.4.1
+// Backbone.Radio v0.5.1
 (function(root, factory) {
   if (typeof define === 'function' && define.amd) {
     define(['backbone', 'underscore'], function(Backbone, _) {
@@ -22,7 +22,7 @@
   
   var Radio = Backbone.Radio = {};
   
-  Radio.VERSION = '0.4.1';
+  Radio.VERSION = '0.5.1';
   
   Radio.noConflict = function () {
     Backbone.Radio = previousRadio;

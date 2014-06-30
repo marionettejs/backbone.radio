@@ -1,3 +1,7 @@
+### [0.5.1](https://github.com/jmeas/backbone.radio/releases/tag/v0.5.1)
+
+- Fixes Radio.VERSION in the built library
+
 ### [0.5.0](https://github.com/jmeas/backbone.radio/releases/tag/v0.5.0)
 
 - Commands.react has been renamed to Commands.comply
