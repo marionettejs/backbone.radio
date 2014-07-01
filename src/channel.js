@@ -9,6 +9,7 @@
 Radio.Channel = function(channelName) {
   this._channelName = channelName;
   _.extend(this, Backbone.Events, Radio.Commands, Radio.Requests);
+  Radio._channels[channelName] = this;
 };
 
 _.extend(Radio.Channel.prototype, {
@@ -40,7 +41,7 @@ _.extend(Radio.Channel.prototype, {
     _.each(hash, function(fn, eventName) {
       this[methodName](eventName, fn, context || this);
     }, this);
+
     return this;
   }
-
 });
