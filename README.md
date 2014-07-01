@@ -38,7 +38,7 @@ someModel.trigger('change');
 Let's look at a diagram for Backbone.Events:
 
 <p align='center'>
-  <img src='https://i.cloudup.com/M3inUilhIf-3000x3000.png' alt='Backbone.Events diagram'>
+  <img src='https://i.cloudup.com/u9oC3S1LxE.svg' alt='Backbone.Events diagram'>
 </p>
 
 It goes without saying that Backbone.Events is incredibly useful when you mix it into instances of Classes. But what
@@ -95,7 +95,7 @@ no information is returned from the executed callback. This is also unlike Event
 The following diagram illustrates the Commands pattern:
 
 <p align='center'>
-  <img src='https://i.cloudup.com/XWGBQlkwTn-3000x3000.png' alt='Backbone.Commands diagram'>
+  <img src='https://i.cloudup.com/7e9M5rKFOr.svg' alt='Backbone.Commands diagram'>
 </p>
 
 You might ask yourself, 'Now why in the world would I fire the command when I can
@@ -131,7 +131,7 @@ the requester.
 Here's a diagram of the Requests pattern:
 
 <p align='center'>
-  <img src='https://i.cloudup.com/2NtOFRO9DH-3000x3000.png' alt='Backbone.Requests diagram'>
+  <img src='https://i.cloudup.com/QW8TY0JBoX.svg' alt='Backbone.Requests diagram'>
 </p>
 
 ### Channels
