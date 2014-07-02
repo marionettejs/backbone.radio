@@ -42,8 +42,7 @@ Let's look at a diagram for Backbone.Events:
 </p>
 
 It goes without saying that Backbone.Events is incredibly useful when you mix it into instances of Classes. But what
-if you had a standalone Object with an instance of Backbone.Events on it? If you were to do this, you will find yourself
-with a powerful message bus.
+if you had a standalone Object with an instance of Backbone.Events on it? This gives you a powerful message bus to utilize.
 
 ```js
 // Create a message bus
@@ -111,7 +110,7 @@ Requests is the last piece of Backbone.Radio. You use it just like Events and Co
 _.extend(myObj, Backbone.Radio.Requests);
 ```
 
-Requests share more similarities to Commands than they do Events. They are semantic, by which I mean that an intent is conveyed when making a
+Requests share more similarities to Commands than they do Events. They are semantic, by which I mean that there is an intention when making a
 request. Of course, the intent here is that you are asking for information to be returned. Just like Commands, requests have a one-to-one system;
 you can't have multiple 'listeners' to the triggerer.
 
@@ -184,6 +183,12 @@ var settingsChannel = Backbone.Radio.channel('settings');
 
 The whole point of Channels is that they provide a way to explicitly namespace events in your application. It gives you greater
 control over which objects are able to talk to one another.
+
+If you're having difficulty remembering the API of Channels here's a useful pneumonic for you.
+
+Events is the API that you know; `on`, `off`, `stopListening` and so on. Commands, which starts with a C, only
+uses verbs that start with C: `command`, `comply`, `stopComplying`. And lastly, Requests, which starts with an R,
+only uses verbs that start with R: `request`, `reply`, and so on.
 
 ## API
 
@@ -281,7 +286,7 @@ var globalChannel = Backbone.Radio.channel('hello');
 
 ##### `DEBUG`
 
-This is a property, not a method. Setting it to `true` will cause console warnings to be issued
+This is a Boolean property. Setting it to `true` will cause console warnings to be issued
 whenever you interact with a `request` or `command` that isn't registered. This is useful in development when you want to
 ensure that you've got your event names in order.
 
@@ -318,7 +323,7 @@ Backbone.Radio.tuneOut('calendar');
 ##### `log( channelName, eventName [, args...] )`
 
 When tuned into a Channel, this method will be called for all activity on
-a channel. The default implementation is to `console.warn` the following message:
+a channel. The default implementation is to `console.log` the following message:
 
 ```js
 '[channelName] "eventName" args1 arg2 arg3...'
