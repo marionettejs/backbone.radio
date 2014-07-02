@@ -131,7 +131,7 @@ the requester.
 Here's a diagram of the Requests pattern:
 
 <p align='center'>
-  <img src='https://i.cloudup.com/QW8TY0JBoX.svg' alt='Backbone.Requests diagram'>
+  <img src='https://i.cloudup.com/tEVU_tuRIX.svg' alt='Backbone.Requests diagram'>
 </p>
 
 ### Channels
