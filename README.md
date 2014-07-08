@@ -184,7 +184,7 @@ var settingsChannel = Backbone.Radio.channel('settings');
 The whole point of Channels is that they provide a way to explicitly namespace events in your application. It gives you greater
 control over which objects are able to talk to one another.
 
-If you're having difficulty remembering the API of Channels here's a useful pneumonic for you.
+If you're having difficulty remembering the API of Channels here's a useful mnemonic for you.
 
 Events is the API that you know; `on`, `off`, `stopListening` and so on. Commands, which starts with a C, only
 uses verbs that start with C: `command`, `comply`, `stopComplying`. And lastly, Requests, which starts with an R,
