@@ -14,10 +14,6 @@ module.exports = function(grunt) {
       radio: {
         src: 'src/wrapper.js',
         dest: 'build/backbone.radio.js'
-      },
-      test: {
-        src: 'src/wrapper.js',
-        dest: '.tmp/backbone.radio.js'
       }
     },
 
@@ -126,7 +122,7 @@ module.exports = function(grunt) {
     },
   });
 
-  grunt.registerTask('test', 'Test the library', ['preprocess:test', 'jshint', 'mochaTest']);
+  grunt.registerTask('test', 'Test the library', ['jshint', 'mochaTest']);
 
   grunt.registerTask('coverage', 'Generate coverage report for the library', ['env:coverage', 'instrument', 'mochaTest', 'storeCoverage', 'makeReport', 'coveralls']);
 
