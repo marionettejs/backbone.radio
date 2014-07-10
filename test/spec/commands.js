@@ -17,6 +17,21 @@ describe('Commands:', function() {
         .to.have.been.calledOnce
         .and.to.have.always.returned(this.Commands);
     });
+
+    describe('but has a "default" handler', function() {
+      beforeEach(function() {
+        this.callback = stub();
+
+        this.Commands.comply('default', this.callback);
+        this.Commands.command('handlerDoesNotExist', 'argOne', 'argTwo');
+      });
+
+      it('should pass along the arguments to the "default" handler.', function() {
+        expect(this.callback)
+          .to.have.been.calledOnce
+          .and.calledWithExactly('handlerDoesNotExist', 'argOne', 'argTwo');
+      });
+    });
   });
 
   describe('when commanding an action that has a handler', function() {
@@ -54,14 +69,14 @@ describe('Commands:', function() {
     describe('and a context', function() {
       beforeEach(function() {
         this.context = {};
-        this.Commands.comply(this.actionName, this.callback, this.context);
-        this.Commands.command(this.actionName, this.argumentOne, this.argumentTwo);
+        this.Commands.comply('myCommand', this.callback, this.context);
+        this.Commands.command('myCommand', 'argOne', 'argTwo');
       });
 
       it('should pass along the arguments to the handler.', function() {
         expect(this.callback)
           .to.have.been.calledOnce
-          .and.calledWithExactly(this.argumentOne, this.argumentTwo);
+          .and.calledWithExactly('argOne', 'argTwo');
       });
 
       it('should return the instance of Commands from `command`.', function() {
@@ -101,6 +116,18 @@ describe('Commands:', function() {
         .to.have.been.calledOnce
         .and.to.have.always.returned(this.Commands);
     });
+
+    describe('and has a "default" handler', function() {
+      beforeEach(function() {
+        this.defaultCallback = stub();
+        this.Commands.comply('default', this.defaultCallback);
+        this.Commands.command('myCommand');
+      });
+
+      it('should not call the "default" handler', function() {
+        expect(this.defaultCallback).not.have.been.called;
+      });
+    });
   });
 
   describe('when commanding an action multiple times that has a `once` handler', function() {
@@ -108,27 +135,51 @@ describe('Commands:', function() {
       this.callback = stub();
 
       this.Commands.complyOnce('myCommand', this.callback);
-      this.Commands.command('myCommand', 'argOne', 'argTwo');
-      this.Commands.command('myCommand');
-      this.Commands.command('myCommand');
     });
 
-    it('should call the handler just once, passing the arguments.', function() {
-      expect(this.callback)
-        .to.have.been.calledOnce
-        .and.calledWithExactly('argOne', 'argTwo');
+    describe('and has no "default" handler', function() {
+      beforeEach(function() {
+        this.Commands.command('myCommand', 'argOne', 'argTwo');
+        this.Commands.command('myCommand', 'argOne');
+        this.Commands.command('myCommand', 'argTwo');
+      });
+
+      it('should call the handler just once, passing the arguments.', function() {
+        expect(this.callback)
+          .to.have.been.calledOnce
+          .and.calledWithExactly('argOne', 'argTwo');
+      });
+
+      it('should always return the instance of Commands from `command`.', function() {
+        expect(this.Commands.command)
+          .to.have.been.calledThrice
+          .and.to.have.always.returned(this.Commands);
+      });
+
+      it('should always return the instance of Commands from `complyOnce`', function() {
+        expect(this.Commands.complyOnce)
+          .to.have.been.calledOnce
+          .and.to.have.always.returned(this.Commands);
+      });
     });
 
-    it('should always return the instance of Commands from `command`.', function() {
-      expect(this.Commands.command)
-        .to.have.been.calledThrice
-        .and.to.have.always.returned(this.Commands);
-    });
+    describe('and has a "default" handler', function() {
+      beforeEach(function() {
+        this.defaultCallback = stub();
 
-    it('should always return the instance of Commands from `complyOnce`', function() {
-      expect(this.Commands.complyOnce)
-        .to.have.been.calledOnce
-        .and.to.have.always.returned(this.Commands);
+        this.Commands.comply('default', this.defaultCallback);
+        this.Commands.command('myCommand', 'argOne', 'argTwo');
+        this.Commands.command('myCommand', 'argOne');
+        this.Commands.command('myCommand', 'argTwo');
+      });
+
+      it('should call the "default" handler for subsequent calls', function() {
+        expect(this.defaultCallback)
+          .to.have.been.calledTwice
+          .and.calledAfter(this.callback)
+          .and.calledWithExactly('myCommand', 'argOne')
+          .and.calledWithExactly('myCommand', 'argTwo');
+      });
     });
   });
 
