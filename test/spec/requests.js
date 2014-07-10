@@ -17,6 +17,21 @@ describe('Requests:', function() {
         .to.have.been.calledOnce
         .and.to.have.always.returned(undefined);
     });
+
+    describe('but has a "default" handler', function() {
+      beforeEach(function() {
+        this.callback = stub();
+
+        this.Requests.reply('default', this.callback);
+        this.Requests.request('unhandledEvent', 'argOne', 'argTwo');
+      });
+
+      it('should pass along the arguments to the "default" handler.', function() {
+        expect(this.callback)
+          .to.have.been.calledOnce
+          .and.calledWithExactly('unhandledEvent', 'argOne', 'argTwo');
+      });
+    });
   });
 
   describe('when making a request that has a handler', function() {
@@ -96,6 +111,18 @@ describe('Requests:', function() {
     it('should return Requests from `reply`', function() {
       expect(this.Requests.reply).to.have.always.returned(this.Requests);
     });
+
+    describe('and has a "default" handler', function() {
+      beforeEach(function() {
+        this.defaultCallback = stub();
+        this.Requests.reply('default', this.defaultCallback);
+        this.Requests.request('myRequest', 'argTwo');
+      });
+
+      it('should not call the "default" handler', function() {
+        expect(this.defaultCallback).not.have.been.called;
+      });
+    });
   });
 
   describe('when making a request multiple times that has a `once` handler', function() {
@@ -103,25 +130,49 @@ describe('Requests:', function() {
       this.callback = stub().returns('myResponse');
 
       this.Requests.replyOnce('myRequest', this.callback);
-      this.Requests.request('myRequest', 'argOne', 'argTwo');
-      this.Requests.request('myRequest');
-      this.Requests.request('myRequest');
     });
 
-    it('should call the handler just once.', function() {
-      expect(this.callback)
-        .to.have.been.calledOnce
-        .and.to.have.been.calledWithExactly('argOne', 'argTwo');
+    describe('and has no "default" handler', function() {
+      beforeEach(function() {
+        this.Requests.request('myRequest', 'argOne');
+        this.Requests.request('myRequest', 'argTwo');
+        this.Requests.request('myRequest', 'argTwo', 'argOne');
+      });
+
+      it('should call the handler just once.', function() {
+        expect(this.callback)
+          .to.have.been.calledOnce
+          .and.to.have.been.calledWithExactly('argOne');
+      });
+
+      it('should return the value of the handler once for `request`.', function() {
+        expect(this.Requests.request.returnValues[0]).to.equal('myResponse');
+        expect(this.Requests.request.returnValues[1]).to.be.undefined;
+        expect(this.Requests.request.returnValues[2]).to.be.undefined;
+      });
+
+      it('should return Requests from `replyOnce`', function() {
+        expect(this.Requests.replyOnce).to.have.always.returned(this.Requests);
+      });
     });
 
-    it('should return the value of the handler once for `request`.', function() {
-      expect(this.Requests.request.returnValues[0]).to.equal('myResponse');
-      expect(this.Requests.request.returnValues[1]).to.be.undefined;
-      expect(this.Requests.request.returnValues[2]).to.be.undefined;
-    });
+    describe('and has a "default" handler', function() {
+      beforeEach(function() {
+        this.defaultCallback = stub();
 
-    it('should return Requests from `replyOnce`', function() {
-      expect(this.Requests.replyOnce).to.have.always.returned(this.Requests);
+        this.Requests.reply('default', this.defaultCallback);
+        this.Requests.request('myRequest', 'argOne', 'argTwo');
+        this.Requests.request('myRequest', 'argOne');
+        this.Requests.request('myRequest', 'argTwo');
+      });
+
+      it('should call the "default" handler for subsequent calls', function() {
+        expect(this.defaultCallback)
+          .to.have.been.calledTwice
+          .and.calledAfter(this.callback)
+          .and.calledWithExactly('myRequest', 'argOne')
+          .and.calledWithExactly('myRequest', 'argTwo');
+      });
     });
   });
 
