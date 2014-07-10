@@ -17,6 +17,23 @@ describe('Commands:', function() {
         .to.have.been.calledOnce
         .and.to.have.always.returned(this.Commands);
     });
+
+    describe('but has a "default" handler', function() {
+      beforeEach(function() {
+        this.callbackStub = this.sinon.stub();
+        this.argumentOne = 'argOne';
+        this.argumentTwo = 'argTwo';
+
+        this.Commands.comply('default', this.callbackStub);
+        this.Commands.command('handlerDoesNotExist', this.argumentOne, this.argumentTwo);
+      });
+
+      it('should pass along the arguments to the "default" handler.', function() {
+        expect(this.callbackStub)
+          .to.have.been.calledOnce
+          .and.calledWithExactly(this.argumentOne, this.argumentTwo);
+      });
+    });
   });
 
   describe('when commanding an action that has a handler', function() {
@@ -109,6 +126,18 @@ describe('Commands:', function() {
         .to.have.been.calledOnce
         .and.to.have.always.returned(this.Commands);
     });
+
+    describe('and has a "default" handler', function() {
+      beforeEach(function() {
+        this.defaultCallbackStub = this.sinon.stub();
+        this.Commands.comply('default', this.defaultCallbackStub);
+        this.Commands.command(this.actionName);
+      });
+
+      it('should not call the "default" handler', function() {
+        expect(this.defaultCallbackStub).not.have.been.called;
+      });
+    });
   });
 
   describe('when commanding an action multiple times that has a `once` handler', function() {
@@ -120,27 +149,51 @@ describe('Commands:', function() {
       this.callbackStub = this.sinon.stub();
 
       this.Commands.complyOnce(this.actionName, this.callbackStub);
-      this.Commands.command(this.actionName, this.argumentOne, this.argumentTwo);
-      this.Commands.command(this.actionName, this.argumentOne);
-      this.Commands.command(this.actionName, this.argumentTwo);
     });
 
-    it('should call the handler just once, passing the arguments.', function() {
-      expect(this.callbackStub)
-        .to.have.been.calledOnce
-        .and.calledWithExactly(this.argumentOne, this.argumentTwo);
+    describe('and has no "default" handler', function() {
+      beforeEach(function() {
+        this.Commands.command(this.actionName, this.argumentOne, this.argumentTwo);
+        this.Commands.command(this.actionName, this.argumentOne);
+        this.Commands.command(this.actionName, this.argumentTwo);
+      });
+
+      it('should call the handler just once, passing the arguments.', function() {
+        expect(this.callbackStub)
+          .to.have.been.calledOnce
+          .and.calledWithExactly(this.argumentOne, this.argumentTwo);
+      });
+
+      it('should always return the instance of Commands from `command`.', function() {
+        expect(this.commandSpy)
+          .to.have.been.calledThrice
+          .and.to.have.always.returned(this.Commands);
+      });
+
+      it('should always return the instance of Commands from `complyOnce`', function() {
+        expect(this.complyOnceSpy)
+          .to.have.been.calledOnce
+          .and.to.have.always.returned(this.Commands);
+      });
     });
 
-    it('should always return the instance of Commands from `command`.', function() {
-      expect(this.commandSpy)
-        .to.have.been.calledThrice
-        .and.to.have.always.returned(this.Commands);
-    });
+    describe('and has a "default" handler', function() {
+      beforeEach(function() {
+        this.defaultCallbackStub = this.sinon.stub();
 
-    it('should always return the instance of Commands from `complyOnce`', function() {
-      expect(this.complyOnceSpy)
-        .to.have.been.calledOnce
-        .and.to.have.always.returned(this.Commands);
+        this.Commands.comply('default', this.defaultCallbackStub);
+        this.Commands.command(this.actionName, this.argumentOne, this.argumentTwo);
+        this.Commands.command(this.actionName, this.argumentOne);
+        this.Commands.command(this.actionName, this.argumentTwo);
+      });
+
+      it('should call the "default" handler for subsequent calls', function() {
+        expect(this.defaultCallbackStub)
+          .to.have.been.calledTwice
+          .and.calledAfter(this.callbackStub)
+          .and.calledWithExactly(this.argumentOne)
+          .and.calledWithExactly(this.argumentTwo);
+      });
     });
   });
 

@@ -9,6 +9,7 @@ Radio.Commands = {
   command: function(name) {
     var args = slice.call(arguments, 1);
     var channelName = this._channelName;
+    var commands = this._commands;
 
     // Check if we should log the request, and if so, do it
     if (channelName && this._tunedIn) {
@@ -16,8 +17,8 @@ Radio.Commands = {
     }
 
     // If the command isn't handled, log it in DEBUG mode and exit
-    if (this._commands && this._commands[name]) {
-      var handler = this._commands[name];
+    if (commands && (commands[name] || commands['default'])) {
+      var handler = commands[name] || commands['default'];
       handler.callback.apply(handler.context, args);
     } else {
       Radio._debugLog('An unhandled event was fired', name, channelName);
