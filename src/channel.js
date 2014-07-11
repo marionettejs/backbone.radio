@@ -7,7 +7,7 @@
  */
 
 Radio.Channel = function(channelName) {
-  this._channelName = channelName;
+  this.channelName = channelName;
   _.extend(this, Backbone.Events, Radio.Commands, Radio.Requests);
   Radio._channels[channelName] = this;
 };
