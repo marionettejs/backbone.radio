@@ -7,7 +7,7 @@
  */
 
 Radio.Channel = function(channelName) {
-  this._channelName = channelName;
+  this.channelName = channelName;
   Radio._channels[channelName] = this;
 };
 

@@ -16,7 +16,7 @@ describe('Channel:', function () {
     });
 
     it('should have its name set', function() {
-      expect(this.channel).to.have.property('_channelName', this.channelName);
+      expect(this.channel).to.have.property('channelName', this.channelName);
     });
 
     it('should have all of the Backbone.Events methods', function() {

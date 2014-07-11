@@ -8,7 +8,7 @@
 Radio.Commands = {
   command: function(name) {
     var args = slice.call(arguments, 1);
-    var channelName = this._channelName;
+    var channelName = this.channelName;
 
     // Check if we should log the request, and if so, do it
     if (channelName && this._tunedIn) {
@@ -56,7 +56,7 @@ Radio.Commands = {
     } else if (store && store[name]) {
       delete store[name];
     } else {
-      Radio._debugLog('Attempted to remove the unregistered command', name, this._channelName);
+      Radio._debugLog('Attempted to remove the unregistered command', name, this.channelName);
     }
 
     return this;
