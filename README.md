@@ -268,7 +268,7 @@ myChannel.connectEvents(eventsHash);
 
 ##### `connectCommands( commandsHash )`
 
-A convenience method for connecting a hash of Commands handles to the channel. Returns the channel.
+A convenience method for connecting a hash of Commands handlers to the channel. Returns the channel.
 
 ##### `connectRequests( requestsHash )`
 

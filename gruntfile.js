@@ -124,11 +124,21 @@ module.exports = function(grunt) {
         src: 'coverage/lcov.info'
       }
     },
+
+    jsdoc: {
+      src: ['src/*.js'],
+      options: {
+        destination: 'doc',
+        configure: 'docs.json'
+      }
+    }
   });
 
   grunt.registerTask('test', 'Test the library', ['preprocess:test', 'jshint', 'mochaTest']);
 
   grunt.registerTask('coverage', 'Generate coverage report for the library', ['env:coverage', 'instrument', 'mochaTest', 'storeCoverage', 'makeReport', 'coveralls']);
+
+  grunt.registerTask('docs', 'Generate documentation for the library', ['jsdoc']);
 
   grunt.registerTask('build', 'Build the library', ['test', 'preprocess:radio', 'template', 'concat', 'uglify']);
 

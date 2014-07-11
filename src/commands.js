@@ -5,7 +5,19 @@
  *
  */
 
+/**
+ * A messaging system for sending orders
+ * @mixin
+ */
 Radio.Commands = {
+
+  /**
+   * Order a command to be completed. Optionally pass arguments to send along
+   * to the callback. Like Backbone.Event's `trigger` method.
+   * @param  {String} name
+   * @param  {} [args...]
+   * @return this
+   */
   command: function(name) {
     var args = slice.call(arguments, 1);
     var channelName = this._channelName;
@@ -26,6 +38,15 @@ Radio.Commands = {
     return this;
   },
 
+  /**
+   * Register a handler for `commandName` on this object. `callback` will be
+   * executed whenever the command is run. Optionally pass a `context` for the
+   * callback, defaulting to `this`.
+   * @param  {String}   name
+   * @param  {Function} callback
+   * @param  {Object}   context
+   * @return this
+   */
   comply: function(name, callback, context) {
     this._commands || (this._commands = {});
 
@@ -37,6 +58,13 @@ Radio.Commands = {
     return this;
   },
 
+  /**
+   * Register a handler for `commandName` that only executes a single time.
+   * @param  {String}   name
+   * @param  {Function} callback
+   * @param  {Object}   context
+   * @return this
+   */
   complyOnce: function(name, callback, context) {
     var self = this;
 
@@ -48,6 +76,12 @@ Radio.Commands = {
     return this.comply(name, once, context);
   },
 
+  /**
+   * If `commandName` is passed then that handler is removed from the object.
+   * Otherwise, all handlers are removed.
+   * @param  {String} name
+   * @return this
+   */
   stopComplying: function(name) {
     var store = this._commands;
 
