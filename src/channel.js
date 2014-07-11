@@ -8,11 +8,10 @@
 
 Radio.Channel = function(channelName) {
   this._channelName = channelName;
-  _.extend(this, Backbone.Events, Radio.Commands, Radio.Requests);
   Radio._channels[channelName] = this;
 };
 
-_.extend(Radio.Channel.prototype, {
+_.extend(Radio.Channel.prototype, Backbone.Events, Radio.Commands, Radio.Requests, {
 
   // Remove all handlers from the messaging systems of this channel
   reset: function() {
