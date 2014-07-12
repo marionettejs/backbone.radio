@@ -246,7 +246,11 @@ Returns the instance of Requests.
 
 ### Channel
 
-##### `reset`
+##### `channelName`
+
+The name of the channel.
+
+##### `reset()`
 
 Destroy all handlers from Backbone.Events, Radio.Commands, and Radio.Requests from the channel. Returns the channel.
 
