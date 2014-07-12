@@ -204,6 +204,17 @@ this method returns the instance of Commands.
 Register a handler for `commandName` on this object. `callback` will be executed whenever the command is run. Optionally
 pass a `context` for the callback, defaulting to `this`.
 
+To register a default handler for Commands use the `default` commandName. The unhandled `commandName` will be passed as the first argument.
+
+```js
+myChannel.comply('default', function(commandName) {
+  console.log('No handler was found for this command: ' + commandName);
+});
+
+// This will be handled by the default handler
+myChannel.command('someUnhandledCommand');
+```
+
 Returns the instance of Commands.
 
 ##### `complyOnce( commandName, callback [, context] )`
@@ -229,6 +240,17 @@ exists. If there is no request then `undefined` will be returned.
 
 Register a handler for `requestName` on this object. `callback` will be executed whenever the request is made. Optionally
 pass a `context` for the callback, defaulting to `this`.
+
+To register a default handler for Requests use the `default` requestName. The unhandled `requestName` will be passed as the first argument.
+
+```js
+myChannel.reply('default', function(requestName) {
+  console.log('No reply exists for this request: ' + requestName);
+});
+
+// This will be handled by the default request
+myChannel.request('someUnhandledRequest');
+```
 
 Returns the instance of Requests.
 
