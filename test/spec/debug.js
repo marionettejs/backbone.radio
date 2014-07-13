@@ -17,25 +17,25 @@ describe('DEBUG mode:', function() {
 
     it('should log a console warning when firing a command on a channel without a handler', function() {
       this.channel.command(this.eventName);
-      this.warning = 'An unhandled event was fired on the ' + this.channelName + ' channel: "' + this.eventName + '"';
+      this.warning = 'An unhandled command was fired on the ' + this.channelName + ' channel: "' + this.eventName + '"';
       expect(this.consoleStub).to.have.been.calledOnce.and.calledWithExactly(this.warning);
     });
 
     it('should log a console warning when firing a request on a channel without a handler', function() {
       this.channel.request(this.eventName);
-      this.warning = 'An unhandled event was fired on the ' + this.channelName + ' channel: "' + this.eventName + '"';
+      this.warning = 'An unhandled request was fired on the ' + this.channelName + ' channel: "' + this.eventName + '"';
       expect(this.consoleStub).to.have.been.calledOnce.and.calledWithExactly(this.warning);
     });
 
     it('should log a console warning when firing a command on an object without a handler', function() {
       this.Commands.command(this.eventName);
-      this.warning = 'An unhandled event was fired: "' + this.eventName + '"';
+      this.warning = 'An unhandled command was fired: "' + this.eventName + '"';
       expect(this.consoleStub).to.have.been.calledOnce.and.calledWithExactly(this.warning);
     });
 
     it('should log a console warning when firing a request on an object without a handler', function() {
       this.Requests.request(this.eventName);
-      this.warning = 'An unhandled event was fired: "' + this.eventName + '"';
+      this.warning = 'An unhandled request was fired: "' + this.eventName + '"';
       expect(this.consoleStub).to.have.been.calledOnce.and.calledWithExactly(this.warning);
     });
 
