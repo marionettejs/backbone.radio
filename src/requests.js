@@ -26,7 +26,7 @@ Radio.Requests = {
       args = requests[name] ? args : arguments;
       return handler.callback.apply(handler.context, args);
     } else {
-      Radio._debugLog('An unhandled event was fired', name, channelName);
+      Radio._debugLog('An unhandled request was fired', name, channelName);
     }
   },
 
