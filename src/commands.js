@@ -11,7 +11,7 @@ Radio.Commands = {
     var channelName = this.channelName;
     var commands = this._commands;
 
-    // Check if we should log the request, and if so, do it
+    // Check if we should log the command, and if so, do it
     if (channelName && this._tunedIn) {
       Radio.log.apply(this, [channelName, name].concat(args));
     }
@@ -22,7 +22,7 @@ Radio.Commands = {
       args = commands[name] ? args : arguments;
       handler.callback.apply(handler.context, args);
     } else {
-      Radio._debugLog('An unhandled event was fired', name, channelName);
+      Radio._debugLog('An unhandled command was fired', name, channelName);
     }
 
     return this;
