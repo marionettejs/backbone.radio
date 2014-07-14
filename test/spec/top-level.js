@@ -18,22 +18,22 @@ describe('Top-level API:', function() {
       expect(this.channelStub.comply)
         .to.have.been.calledOnce
         .and.to.have.been.calledOn(this.channel)
-        .and.calledWithExactly('firstArg1', 'secondArg1');
+        .and.calledWithExactly(this.eventName, 'firstArg1', 'secondArg1');
 
       expect(this.channelStub.complyOnce)
         .to.have.been.calledOnce
         .and.to.have.been.calledOn(this.channel)
-        .and.calledWithExactly('firstArg2', 'secondArg2');
+        .and.calledWithExactly(this.eventName, 'firstArg2', 'secondArg2');
 
       expect(this.channelStub.stopComplying)
         .to.have.been.calledOnce
         .and.to.have.been.calledOn(this.channel)
-        .and.calledWithExactly('firstArg3', 'secondArg3');
+        .and.calledWithExactly(this.eventName, 'firstArg3', 'secondArg3');
 
       expect(this.channelStub.command)
         .to.have.been.calledOnce
         .and.to.have.been.calledOn(this.channel)
-        .and.calledWithExactly('firstArg4', 'secondArg4');
+        .and.calledWithExactly(this.eventName, 'firstArg4', 'secondArg4');
     });
   });
 
@@ -49,22 +49,22 @@ describe('Top-level API:', function() {
       expect(this.channelStub.reply)
         .to.have.been.calledOnce
         .and.to.have.been.calledOn(this.channel)
-        .and.calledWithExactly('firstArg1', 'secondArg1');
+        .and.calledWithExactly(this.eventName, 'firstArg1', 'secondArg1');
 
       expect(this.channelStub.replyOnce)
         .to.have.been.calledOnce
         .and.to.have.been.calledOn(this.channel)
-        .and.calledWithExactly('firstArg2', 'secondArg2');
+        .and.calledWithExactly(this.eventName, 'firstArg2', 'secondArg2');
 
       expect(this.channelStub.stopReplying)
         .to.have.been.calledOnce
         .and.to.have.been.calledOn(this.channel)
-        .and.calledWithExactly('firstArg3', 'secondArg3');
+        .and.calledWithExactly(this.eventName, 'firstArg3', 'secondArg3');
 
       expect(this.channelStub.request)
         .to.have.been.calledOnce
         .and.to.have.been.calledOn(this.channel)
-        .and.calledWithExactly('firstArg4', 'secondArg4');
+        .and.calledWithExactly(this.eventName, 'firstArg4', 'secondArg4');
     });
   });
 
@@ -83,37 +83,37 @@ describe('Top-level API:', function() {
       expect(this.channelStub.listenTo)
         .to.have.been.calledOnce
         .and.to.have.been.calledOn(this.channel)
-        .and.calledWithExactly('firstArg1', 'secondArg1');
+        .and.calledWithExactly(this.eventName, 'firstArg1', 'secondArg1');
 
       expect(this.channelStub.listenToOnce)
         .to.have.been.calledOnce
         .and.to.have.been.calledOn(this.channel)
-        .and.calledWithExactly('firstArg2', 'secondArg2');
+        .and.calledWithExactly(this.eventName, 'firstArg2', 'secondArg2');
 
       expect(this.channelStub.stopListening)
         .to.have.been.calledOnce
         .and.to.have.been.calledOn(this.channel)
-        .and.calledWithExactly('firstArg3', 'secondArg3');
+        .and.calledWithExactly(this.eventName, 'firstArg3', 'secondArg3');
 
       expect(this.channelStub.trigger)
         .to.have.been.calledOnce
         .and.to.have.been.calledOn(this.channel)
-        .and.calledWithExactly('firstArg4', 'secondArg4');
+        .and.calledWithExactly(this.eventName, 'firstArg4', 'secondArg4');
 
       expect(this.channelStub.on)
         .to.have.been.calledOnce
         .and.to.have.been.calledOn(this.channel)
-        .and.calledWithExactly('firstArg5', 'secondArg5');
+        .and.calledWithExactly(this.eventName, 'firstArg5', 'secondArg5');
 
       expect(this.channelStub.once)
         .to.have.been.calledOnce
         .and.to.have.been.calledOn(this.channel)
-        .and.calledWithExactly('firstArg6', 'secondArg6');
+        .and.calledWithExactly(this.eventName, 'firstArg6', 'secondArg6');
 
       expect(this.channelStub.off)
         .to.have.been.calledOnce
         .and.to.have.been.calledOn(this.channel)
-        .and.calledWithExactly('firstArg7', 'secondArg7');
+        .and.calledWithExactly(this.eventName, 'firstArg7', 'secondArg7');
     });
   });
 });
