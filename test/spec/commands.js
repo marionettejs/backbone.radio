@@ -9,7 +9,8 @@ describe('Commands:', function() {
 
   describe('when commanding an action that has no handler', function() {
     beforeEach(function() {
-      this.Commands.command('handlerDoesNotExist');
+      this.actionName = 'handlerDoesNotExist';
+      this.Commands.command(this.actionName);
     });
 
     it('should return the Commands object itself.', function() {
@@ -25,13 +26,13 @@ describe('Commands:', function() {
         this.argumentTwo = 'argTwo';
 
         this.Commands.comply('default', this.callbackStub);
-        this.Commands.command('handlerDoesNotExist', this.argumentOne, this.argumentTwo);
+        this.Commands.command(this.actionName, this.argumentOne, this.argumentTwo);
       });
 
       it('should pass along the arguments to the "default" handler.', function() {
         expect(this.callbackStub)
           .to.have.been.calledOnce
-          .and.calledWithExactly(this.argumentOne, this.argumentTwo);
+          .and.calledWithExactly(this.actionName, this.argumentOne, this.argumentTwo);
       });
     });
   });
@@ -191,8 +192,8 @@ describe('Commands:', function() {
         expect(this.defaultCallbackStub)
           .to.have.been.calledTwice
           .and.calledAfter(this.callbackStub)
-          .and.calledWithExactly(this.argumentOne)
-          .and.calledWithExactly(this.argumentTwo);
+          .and.calledWithExactly(this.actionName, this.argumentOne)
+          .and.calledWithExactly(this.actionName, this.argumentTwo);
       });
     });
   });

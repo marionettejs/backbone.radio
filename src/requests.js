@@ -23,6 +23,7 @@ Radio.Requests = {
     // If the request isn't handled, log it in DEBUG mode and exit
     if (requests && (requests[name] || requests['default'])) {
       var handler = requests[name] || requests['default'];
+      args = requests[name] ? args : arguments;
       return handler.callback.apply(handler.context, args);
     } else {
       Radio._debugLog('An unhandled event was fired', name, channelName);

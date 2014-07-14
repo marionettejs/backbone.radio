@@ -19,6 +19,7 @@ Radio.Commands = {
     // If the command isn't handled, log it in DEBUG mode and exit
     if (commands && (commands[name] || commands['default'])) {
       var handler = commands[name] || commands['default'];
+      args = commands[name] ? args : arguments;
       handler.callback.apply(handler.context, args);
     } else {
       Radio._debugLog('An unhandled event was fired', name, channelName);
