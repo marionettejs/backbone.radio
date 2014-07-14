@@ -10,7 +10,7 @@
  _.each(systems, function(system) {
   _.each(system, function(method, methodName) {
     Radio[methodName] = function(channelName) {
-      args = slice.call(arguments, 2);
+      args = slice.call(arguments, 1);
       channel = this.channel(channelName);
       return channel[methodName].apply(channel, args);
     };
