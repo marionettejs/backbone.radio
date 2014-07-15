@@ -1,4 +1,4 @@
-// Backbone.Radio v0.5.1
+// Backbone.Radio v0.5.2
 (function(root, factory) {
   if (typeof define === 'function' && define.amd) {
     define(['backbone', 'underscore'], function(Backbone, _) {
@@ -22,7 +22,7 @@
   
   var Radio = Backbone.Radio = {};
   
-  Radio.VERSION = '0.5.1';
+  Radio.VERSION = '0.5.2';
   
   Radio.noConflict = function () {
     Backbone.Radio = previousRadio;
@@ -41,20 +41,18 @@
   
     DEBUG: false,
   
+    _debugLog: function(warning, eventName, channelName) {
+      if (this.DEBUG) {
+        var channelText = channelName ? ' on the ' + channelName + ' channel' : '';
+        console.warn(warning + channelText + ': "' + eventName + '"');
+      }
+    },
+  
     channel: function(channelName) {
       if (!channelName) {
         throw new Error('You must provide a name for the channel.');
       }
-      return Radio._getChannel(channelName);
-    },
-  
-    _getChannel: function(channelName) {
-      var channel = Radio._channels[channelName];
-      if (!channel) {
-        channel = new Radio.Channel(channelName);
-        Radio._channels[channelName] = channel;
-      }
-      return channel;
+      return Radio._channels[channelName] || new Radio.Channel(channelName);
     }
   });
   
@@ -119,15 +117,11 @@
       }
   
       // If the command isn't handled, log it in DEBUG mode and exit
-      if (!this._commands || !this._commands[name]) {
-        if (Radio.DEBUG) {
-          var channelText = channelName ? ' on the ' + channelName + ' channel' : '';
-          console.warn('An unhandled event was fired' + channelText + ': "' + name + '"');
-        }
-      }
-      else {
+      if (this._commands && this._commands[name]) {
         var handler = this._commands[name];
         handler.callback.apply(handler.context, args);
+      } else {
+        Radio._debugLog('An unhandled event was fired', name, channelName);
       }
   
       return this;
@@ -146,26 +140,26 @@
   
     complyOnce: function(name, callback, context) {
       var self = this;
+  
       var once = _.once(function() {
         self.stopComplying(name);
         return callback.apply(this, arguments);
       });
+  
       return this.comply(name, once, context);
     },
   
     stopComplying: function(name) {
       var store = this._commands;
+  
       if (!name) {
         delete this._commands;
-      }
-      else if (store && store[name]) {
+      } else if (store && store[name]) {
         delete store[name];
+      } else {
+        Radio._debugLog('Attempted to remove the unregistered command', name, this._channelName);
       }
-      else if (Radio.DEBUG) {
-        var channelName = this._channelName;
-        var channelText = channelName ? ' on the ' + channelName + ' channel.' : '';
-        console.warn('Attempted to remove the unregistered command "' + name + '"' + channelText);
-      }
+  
       return this;
     }
   };
@@ -192,15 +186,12 @@
       }
   
       // If the request isn't handled, log it in DEBUG mode and exit
-      if (!this._requests || !this._requests[name]) {
-        if (Radio.DEBUG) {
-          var channelText = channelName ? ' on the ' + channelName + ' channel' : '';
-          console.warn('An unhandled event was fired' + channelText + ': "' + name + '"');
-        }
-        return;
+      if (this._requests && this._requests[name]) {
+        var handler = this._requests[name];
+        return handler.callback.apply(handler.context, args);
+      } else {
+        Radio._debugLog('An unhandled event was fired', name, channelName);
       }
-      var handler = this._requests[name];
-      return handler.callback.apply(handler.context, args);
     },
   
     reply: function(name, callback, context) {
@@ -216,26 +207,26 @@
   
     replyOnce: function(name, callback, context) {
       var self = this;
+  
       var once = _.once(function() {
         self.stopReplying(name);
         return makeCallback(callback).apply(this, arguments);
       });
+  
       return this.reply(name, once, context);
     },
   
     stopReplying: function(name) {
       var store = this._requests;
+  
       if (!name) {
         delete this._requests;
-      }
-      else if (store && store[name]) {
+      } else if (store && store[name]) {
         delete store[name];
+      } else {
+        Radio._debugLog('Attempted to remove the unregistered request', name, this._channelName);
       }
-      else if (Radio.DEBUG) {
-        var channelName = this._channelName;
-        var channelText = channelName ? ' on the ' + channelName + ' channel.' : '';
-        console.warn('Attempted to remove the unregistered request "' + name + '"' + channelText);
-      }
+  
       return this;
     }
   };
@@ -250,10 +241,10 @@
   
   Radio.Channel = function(channelName) {
     this._channelName = channelName;
-    _.extend(this, Backbone.Events, Radio.Commands, Radio.Requests);
+    Radio._channels[channelName] = this;
   };
   
-  _.extend(Radio.Channel.prototype, {
+  _.extend(Radio.Channel.prototype, Backbone.Events, Radio.Commands, Radio.Requests, {
   
     // Remove all handlers from the messaging systems of this channel
     reset: function() {
@@ -282,9 +273,9 @@
       _.each(hash, function(fn, eventName) {
         this[methodName](eventName, fn, context || this);
       }, this);
+  
       return this;
     }
-  
   });
   
   /*
@@ -299,7 +290,7 @@
    _.each(systems, function(system) {
     _.each(system, function(method, methodName) {
       Radio[methodName] = function(channelName) {
-        args = slice.call(arguments, 2);
+        args = slice.call(arguments, 1);
         channel = this.channel(channelName);
         return channel[methodName].apply(channel, args);
       };
