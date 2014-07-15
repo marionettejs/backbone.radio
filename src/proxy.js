@@ -5,9 +5,13 @@
  *
  */
 
- var channel, args, systems = [Backbone.Events, Radio.Commands, Radio.Requests];
+/**
+ * @file Supplies a top-level API.
+ */
 
- _.each(systems, function(system) {
+var channel, args, systems = [Backbone.Events, Radio.Commands, Radio.Requests];
+
+_.each(systems, function(system) {
   _.each(system, function(method, methodName) {
     Radio[methodName] = function(channelName) {
       args = slice.call(arguments, 1);
