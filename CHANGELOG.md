@@ -1,3 +1,7 @@
+### [0.5.2](https://github.com/jmeas/backbone.radio/releases/tag/v0.5.2)
+
+- Fixes a bug where the top-level API would not pass the correct arguments to the underlying methods.
+
 ### [0.5.1](https://github.com/jmeas/backbone.radio/releases/tag/v0.5.1)
 
 - Fixes Radio.VERSION in the built library
