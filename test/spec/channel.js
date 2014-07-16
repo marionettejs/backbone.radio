@@ -1,7 +1,6 @@
 describe('Channel:', function () {
   beforeEach(function () {
-    this.channelName = 'myChannel';
-    this.channel = Backbone.Radio.channel(this.channelName);
+    this.channel = Backbone.Radio.channel('myChannel');
   });
 
   describe('when calling Radio.channel with no name', function() {
@@ -16,7 +15,7 @@ describe('Channel:', function () {
     });
 
     it('should have its name set', function() {
-      expect(this.channel).to.have.property('_channelName', this.channelName);
+      expect(this.channel).to.have.property('_channelName', 'myChannel');
     });
 
     it('should have all of the Backbone.Events methods', function() {
@@ -34,11 +33,11 @@ describe('Channel:', function () {
 
   describe('calling channel twice with the same name', function() {
     beforeEach(function() {
-      this.channelTwo = Backbone.Radio.channel(this.channelName);
+      this.channelCopy = Backbone.Radio.channel('myChannel');
     });
 
     it('should return the same channel', function() {
-      expect(this.channelTwo).to.deep.equal(this.channel);
+      expect(this.channelCopy).to.deep.equal(this.channel);
     });
   });
 

@@ -1,16 +1,16 @@
 describe('No conflict:', function() {
   beforeEach(function() {
     this.noConflictSpy = spy(Backbone.Radio, 'noConflict');
-    this.radio = Backbone.Radio;
+    this.Radio = Backbone.Radio;
     Backbone.Radio.noConflict();
   });
 
   afterEach(function() {
-    Backbone.Radio = this.radio;
+    Backbone.Radio = this.Radio;
   });
 
   it('should have always returned the new instance of Backbone.Radio', function() {
-    expect(this.noConflictSpy).to.have.always.returned(this.radio);
+    expect(this.noConflictSpy).to.have.always.returned(this.Radio);
   });
 
   it('should set Backbone.Radio to be what it was before: undefined', function() {
