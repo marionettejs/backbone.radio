@@ -1,6 +1,6 @@
 describe('No conflict:', function() {
   beforeEach(function() {
-    this.noConflictSpy = this.sinon.spy(Backbone.Radio, 'noConflict');
+    this.noConflictSpy = spy(Backbone.Radio, 'noConflict');
     this.radio = Backbone.Radio;
     Backbone.Radio.noConflict();
   });

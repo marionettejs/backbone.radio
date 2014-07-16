@@ -2,10 +2,10 @@ describe('Requests:', function() {
   beforeEach(function() {
     this.actionName = 'actionName';
     this.Requests = _.clone(Backbone.Radio.Requests);
-    this.requestSpy = this.sinon.spy(this.Requests, 'request');
-    this.replySpy = this.sinon.spy(this.Requests, 'reply');
-    this.replyOnceSpy = this.sinon.spy(this.Requests, 'replyOnce');
-    this.stopReplyingSpy = this.sinon.spy(this.Requests, 'stopReplying');
+    this.requestSpy = spy(this.Requests, 'request');
+    this.replySpy = spy(this.Requests, 'reply');
+    this.replyOnceSpy = spy(this.Requests, 'replyOnce');
+    this.stopReplyingSpy = spy(this.Requests, 'stopReplying');
   });
 
   describe('when making a request that has no handler', function() {
@@ -26,7 +26,7 @@ describe('Requests:', function() {
       this.argumentTwo = 'argTwo';
 
       this.callbackReturned = 'request complete';
-      this.callbackStub = this.sinon.stub().returns(this.callbackReturned);
+      this.callbackStub = stub().returns(this.callbackReturned);
     });
 
     describe('and no context', function() {
@@ -87,7 +87,7 @@ describe('Requests:', function() {
       this.argumentTwo = 'argTwo';
 
       this.callbackReturned = 'request complete';
-      this.callbackStub = this.sinon.stub().returns(this.callbackReturned);
+      this.callbackStub = stub().returns(this.callbackReturned);
 
       this.Requests.reply(this.actionName, this.callbackStub);
       this.Requests.request(this.actionName, this.argumentOne, this.argumentTwo);
@@ -113,7 +113,7 @@ describe('Requests:', function() {
       this.argumentTwo = 'argTwo';
 
       this.callbackReturned = 'request complete';
-      this.callbackStub = this.sinon.stub().returns(this.callbackReturned);
+      this.callbackStub = stub().returns(this.callbackReturned);
 
       this.Requests.replyOnce(this.actionName, this.callbackStub);
       this.Requests.request(this.actionName, this.argumentOne);
@@ -145,7 +145,7 @@ describe('Requests:', function() {
       this.context = {};
 
       this.callbackReturned = 'request complete';
-      this.callbackStub = this.sinon.stub().returns(this.callbackReturned);
+      this.callbackStub = stub().returns(this.callbackReturned);
 
       this.Requests.replyOnce(this.actionName, this.callbackStub, this.context);
       this.Requests.request(this.actionName, this.argumentOne, this.argumentTwo);
@@ -199,8 +199,8 @@ describe('Requests:', function() {
     beforeEach(function() {
       this.requestOne = 'requestOne';
       this.requestTwo = 'requestTwo';
-      this.requestOneStub = this.sinon.stub();
-      this.requestTwoStub = this.sinon.stub();
+      this.requestOneStub = stub();
+      this.requestTwoStub = stub();
       this.Requests.reply(this.requestOne, this.requestOneStub);
       this.Requests.reply(this.requestTwo, this.requestTwoStub);
       this.Requests.stopReplying();

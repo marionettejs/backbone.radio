@@ -2,8 +2,8 @@ describe('Tune-in:', function() {
   describe('both methods, tuneIn and tuneOut,', function() {
     beforeEach(function() {
       this.channelName = 'myChannel';
-      this.tuneInSpy = this.sinon.spy(Backbone.Radio, 'tuneIn');
-      this.tuneOutSpy = this.sinon.spy(Backbone.Radio, 'tuneOut');
+      this.tuneInSpy = spy(Backbone.Radio, 'tuneIn');
+      this.tuneOutSpy = spy(Backbone.Radio, 'tuneOut');
       Backbone.Radio.tuneIn(this.channelName);
       Backbone.Radio.tuneOut(this.channelName);
     });
@@ -22,7 +22,7 @@ describe('Tune-in:', function() {
     this.channelName = 'myChannel';
     this.eventName = 'some:event';
     this.channel = Backbone.Radio.channel(this.channelName);
-    this.consoleStub = this.sinon.stub(console, 'log');
+    this.consoleStub = stub(console, 'log');
     Backbone.Radio.tuneIn(this.channelName);
   });
 
@@ -101,7 +101,7 @@ describe('Tune-in:', function() {
 
   describe('When providing a custom logging function and tuning it', function() {
     beforeEach(function() {
-      this.logStub = this.sinon.stub(Backbone.Radio, 'log');
+      this.logStub = stub(Backbone.Radio, 'log');
       this.channel.command(this.eventName, 'argOne', 'argTwo');
     });
 

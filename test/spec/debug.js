@@ -7,7 +7,7 @@ describe('DEBUG mode:', function() {
     this.Commands = _.clone(Backbone.Radio.Commands);
     this.Requests = _.clone(Backbone.Radio.Requests);
 
-    this.consoleStub = this.sinon.stub(console, 'warn');
+    this.consoleStub = stub(console, 'warn');
   });
 
   describe('when turned on', function() {

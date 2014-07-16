@@ -1,10 +1,10 @@
 describe('Commands:', function() {
   beforeEach(function() {
     this.Commands = _.clone(Backbone.Radio.Commands);
-    this.commandSpy = this.sinon.spy(this.Commands, 'command');
-    this.complySpy = this.sinon.spy(this.Commands, 'comply');
-    this.complyOnceSpy = this.sinon.spy(this.Commands, 'complyOnce');
-    this.stopComplyingSpy = this.sinon.spy(this.Commands, 'stopComplying');
+    this.commandSpy = spy(this.Commands, 'command');
+    this.complySpy = spy(this.Commands, 'comply');
+    this.complyOnceSpy = spy(this.Commands, 'complyOnce');
+    this.stopComplyingSpy = spy(this.Commands, 'stopComplying');
   });
 
   describe('when commanding an action that has no handler', function() {
@@ -25,7 +25,7 @@ describe('Commands:', function() {
       this.argumentOne = 'argOne';
       this.argumentTwo = 'argTwo';
 
-      this.callbackStub = this.sinon.stub();
+      this.callbackStub = stub();
     });
 
     describe('and no context', function() {
@@ -90,7 +90,7 @@ describe('Commands:', function() {
       this.argumentOne = 'argOne';
       this.argumentTwo = 'argTwo';
 
-      this.callbackStub = this.sinon.stub();
+      this.callbackStub = stub();
 
       this.Commands.comply(this.actionName, this.callbackStub);
       this.Commands.command(this.actionName);
@@ -117,7 +117,7 @@ describe('Commands:', function() {
       this.argumentOne = 'argOne';
       this.argumentTwo = 'argTwo';
 
-      this.callbackStub = this.sinon.stub();
+      this.callbackStub = stub();
 
       this.Commands.complyOnce(this.actionName, this.callbackStub);
       this.Commands.command(this.actionName, this.argumentOne, this.argumentTwo);
@@ -151,7 +151,7 @@ describe('Commands:', function() {
       this.argumentTwo = 'argTwo';
       this.context = {};
 
-      this.callbackStub = this.sinon.stub();
+      this.callbackStub = stub();
 
       this.Commands.complyOnce(this.actionName, this.callbackStub, this.context);
       this.Commands.command(this.actionName, this.argumentOne, this.argumentTwo);
@@ -189,8 +189,8 @@ describe('Commands:', function() {
     beforeEach(function() {
       this.commandOne = 'commandOne';
       this.commandTwo = 'commandTwo';
-      this.commandOneStub = this.sinon.stub();
-      this.commandTwoStub = this.sinon.stub();
+      this.commandOneStub = stub();
+      this.commandTwoStub = stub();
       this.Commands.comply(this.commandOne, this.commandOneStub);
       this.Commands.comply(this.commandTwo, this.commandTwoStub);
       this.Commands.stopComplying();

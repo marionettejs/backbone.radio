@@ -44,11 +44,11 @@ describe('Channel:', function () {
 
   describe('executing the `reset` method of a Channel', function() {
     beforeEach(function() {
-      this.offStub            = this.sinon.stub(this.channel, 'off');
-      this.stopListeningStub  = this.sinon.stub(this.channel, 'stopListening');
-      this.stopComplyingStub   = this.sinon.stub(this.channel, 'stopComplying');
-      this.stopReplyingStub   = this.sinon.stub(this.channel, 'stopReplying');
-      this.resetSpy           = this.sinon.spy(this.channel, 'reset');
+      this.offStub            = stub(this.channel, 'off');
+      this.stopListeningStub  = stub(this.channel, 'stopListening');
+      this.stopComplyingStub   = stub(this.channel, 'stopComplying');
+      this.stopReplyingStub   = stub(this.channel, 'stopReplying');
+      this.resetSpy           = spy(this.channel, 'reset');
 
       this.channel.reset();
     });
@@ -74,13 +74,13 @@ describe('Channel:', function () {
   describe('convenience methods', function() {
     beforeEach(function() {
       this.hash = {
-        eventOne: this.sinon.stub(),
-        eventTwo: this.sinon.stub()
+        eventOne: stub(),
+        eventTwo: stub()
       };
       this.keys = Object.keys(this.hash);
-      this.connectEventsSpy = this.sinon.spy(this.channel, 'connectEvents');
-      this.connectCommandsSpy = this.sinon.spy(this.channel, 'connectCommands');
-      this.connectRequestsSpy = this.sinon.spy(this.channel, 'connectRequests');
+      this.connectEventsSpy = spy(this.channel, 'connectEvents');
+      this.connectCommandsSpy = spy(this.channel, 'connectCommands');
+      this.connectRequestsSpy = spy(this.channel, 'connectRequests');
     });
 
     it('should attach the listeners to the Channel when passing an event hash to `connectEvents`', function() {

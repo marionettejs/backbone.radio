@@ -3,7 +3,7 @@ describe('Top-level API:', function() {
     this.channelName = 'myChannel';
     this.eventName = 'some:event';
     this.channel = Backbone.Radio.channel(this.channelName);
-    this.channelStub = this.sinon.stub(this.channel);
+    this.channelStub = stub(this.channel);
   });
 
   describe('when executing Commands methods', function() {
