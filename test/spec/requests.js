@@ -2,10 +2,10 @@ describe('Requests:', function() {
   beforeEach(function() {
     this.actionName = 'actionName';
     this.Requests = _.clone(Backbone.Radio.Requests);
-    this.requestSpy = spy(this.Requests, 'request');
-    this.replySpy = spy(this.Requests, 'reply');
-    this.replyOnceSpy = spy(this.Requests, 'replyOnce');
-    this.stopReplyingSpy = spy(this.Requests, 'stopReplying');
+    spy(this.Requests, 'request');
+    spy(this.Requests, 'reply');
+    spy(this.Requests, 'replyOnce');
+    spy(this.Requests, 'stopReplying');
   });
 
   describe('when making a request that has no handler', function() {
@@ -14,7 +14,7 @@ describe('Requests:', function() {
     });
 
     it('should not return anything.', function() {
-      expect(this.requestSpy)
+      expect(this.Requests.request)
         .to.have.been.calledOnce
         .and.to.have.always.returned(undefined);
     });
@@ -42,11 +42,11 @@ describe('Requests:', function() {
       });
 
       it('should return the value of the handler from `request`.', function() {
-        expect(this.requestSpy).to.have.always.returned(this.callbackReturned);
+        expect(this.Requests.request).to.have.always.returned(this.callbackReturned);
       });
 
       it('should return Requests from `reply`', function() {
-        expect(this.replySpy).to.have.always.returned(this.Requests);
+        expect(this.Requests.reply).to.have.always.returned(this.Requests);
       });
 
       it('should be called with the Requests object as the context', function() {
@@ -68,11 +68,11 @@ describe('Requests:', function() {
       });
 
       it('should return the value of the handler from `request`.', function() {
-        expect(this.requestSpy).to.have.always.returned(this.callbackReturned);
+        expect(this.Requests.request).to.have.always.returned(this.callbackReturned);
       });
 
       it('should return Requests from `reply`', function() {
-        expect(this.replySpy).to.have.always.returned(this.Requests);
+        expect(this.Requests.reply).to.have.always.returned(this.Requests);
       });
 
       it('should be called with the correct context', function() {
@@ -103,7 +103,7 @@ describe('Requests:', function() {
     });
 
     it('should return Requests from `reply`', function() {
-      expect(this.replySpy).to.have.always.returned(this.Requests);
+      expect(this.Requests.reply).to.have.always.returned(this.Requests);
     });
   });
 
@@ -128,13 +128,13 @@ describe('Requests:', function() {
     });
 
     it('should return the value of the handler once for `request`.', function() {
-      expect(this.requestSpy.returnValues[0]).to.equal(this.callbackReturned);
-      expect(this.requestSpy.returnValues[1]).to.be.undefined;
-      expect(this.requestSpy.returnValues[2]).to.be.undefined;
+      expect(this.Requests.request.returnValues[0]).to.equal(this.callbackReturned);
+      expect(this.Requests.request.returnValues[1]).to.be.undefined;
+      expect(this.Requests.request.returnValues[2]).to.be.undefined;
     });
 
     it('should return Requests from `replyOnce`', function() {
-      expect(this.replyOnceSpy).to.have.always.returned(this.Requests);
+      expect(this.Requests.replyOnce).to.have.always.returned(this.Requests);
     });
   });
 
@@ -158,11 +158,11 @@ describe('Requests:', function() {
     });
 
     it('should return the value of the handler from `request`.', function() {
-      expect(this.requestSpy).to.have.always.returned(this.callbackReturned);
+      expect(this.Requests.request).to.have.always.returned(this.callbackReturned);
     });
 
     it('should return Requests from `reply`', function() {
-      expect(this.replySpy).to.have.always.returned(this.Requests);
+      expect(this.Requests.reply).to.have.always.returned(this.Requests);
     });
 
     it('should be called with the correct context', function() {
@@ -178,7 +178,7 @@ describe('Requests:', function() {
     });
 
     it('should return that value.', function() {
-      expect(this.requestSpy)
+      expect(this.Requests.request)
         .to.have.been.calledOnce
         .and.to.have.always.returned(this.response);
     });
@@ -211,7 +211,7 @@ describe('Requests:', function() {
     });
 
     it('should return the instance of Requests from stopReplying', function() {
-      expect(this.stopReplyingSpy).to.have.always.returned(this.Requests);
+      expect(this.Requests.stopReplying).to.have.always.returned(this.Requests);
     });
 
     describe('and subsequently calling the handler', function() {

@@ -44,30 +44,30 @@ describe('Channel:', function () {
 
   describe('executing the `reset` method of a Channel', function() {
     beforeEach(function() {
-      this.offStub            = stub(this.channel, 'off');
-      this.stopListeningStub  = stub(this.channel, 'stopListening');
-      this.stopComplyingStub   = stub(this.channel, 'stopComplying');
-      this.stopReplyingStub   = stub(this.channel, 'stopReplying');
-      this.resetSpy           = spy(this.channel, 'reset');
+      stub(this.channel, 'off');
+      stub(this.channel, 'stopListening');
+      stub(this.channel, 'stopComplying');
+      stub(this.channel, 'stopReplying');
+      spy(this.channel, 'reset');
 
       this.channel.reset();
     });
 
     it('should call the reset functions of Backbone.Events', function() {
-      expect(this.offStub).to.have.been.calledOnce;
-      expect(this.stopListeningStub).to.have.been.calledOnce;
+      expect(this.channel.off).to.have.been.calledOnce;
+      expect(this.channel.stopListening).to.have.been.calledOnce;
     });
 
     it('should call the reset functions of Backbone.Radio.Commands', function() {
-      expect(this.stopComplyingStub).to.have.been.calledOnce;
+      expect(this.channel.stopComplying).to.have.been.calledOnce;
     });
 
     it('should call the reset functions of Backbone.Radio.Requests', function() {
-      expect(this.stopReplyingStub).to.have.been.calledOnce;
+      expect(this.channel.stopReplying).to.have.been.calledOnce;
     });
 
     it('should return the Channel', function() {
-      expect(this.resetSpy).to.have.always.returned(this.channel);
+      expect(this.channel.reset).to.have.always.returned(this.channel);
     });
   });
 
@@ -78,9 +78,9 @@ describe('Channel:', function () {
         eventTwo: stub()
       };
       this.keys = Object.keys(this.hash);
-      this.connectEventsSpy = spy(this.channel, 'connectEvents');
-      this.connectCommandsSpy = spy(this.channel, 'connectCommands');
-      this.connectRequestsSpy = spy(this.channel, 'connectRequests');
+      spy(this.channel, 'connectEvents');
+      spy(this.channel, 'connectCommands');
+      spy(this.channel, 'connectRequests');
     });
 
     it('should attach the listeners to the Channel when passing an event hash to `connectEvents`', function() {
@@ -103,9 +103,9 @@ describe('Channel:', function () {
       this.channel.connectCommands(this.hash);
       this.channel.connectRequests(this.hash);
 
-      expect(this.connectEventsSpy).to.have.always.returned(this.channel);
-      expect(this.connectCommandsSpy).to.have.always.returned(this.channel);
-      expect(this.connectRequestsSpy).to.have.always.returned(this.channel);
+      expect(this.channel.connectEvents).to.have.always.returned(this.channel);
+      expect(this.channel.connectCommands).to.have.always.returned(this.channel);
+      expect(this.channel.connectRequests).to.have.always.returned(this.channel);
     });
   });
 });

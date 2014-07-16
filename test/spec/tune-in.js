@@ -2,17 +2,17 @@ describe('Tune-in:', function() {
   describe('both methods, tuneIn and tuneOut,', function() {
     beforeEach(function() {
       this.channelName = 'myChannel';
-      this.tuneInSpy = spy(Backbone.Radio, 'tuneIn');
-      this.tuneOutSpy = spy(Backbone.Radio, 'tuneOut');
+      spy(Backbone.Radio, 'tuneIn');
+      spy(Backbone.Radio, 'tuneOut');
       Backbone.Radio.tuneIn(this.channelName);
       Backbone.Radio.tuneOut(this.channelName);
     });
 
     it('should return the Radio object', function() {
-      expect(this.tuneInSpy)
+      expect(Backbone.Radio.tuneIn)
         .to.have.been.calledOnce
         .and.to.have.always.returned(Backbone.Radio);
-      expect(this.tuneOutSpy)
+      expect(Backbone.Radio.tuneOut)
         .to.have.been.calledOnce
         .and.to.have.always.returned(Backbone.Radio);
     });
@@ -22,7 +22,7 @@ describe('Tune-in:', function() {
     this.channelName = 'myChannel';
     this.eventName = 'some:event';
     this.channel = Backbone.Radio.channel(this.channelName);
-    this.consoleStub = stub(console, 'log');
+    stub(console, 'log');
     Backbone.Radio.tuneIn(this.channelName);
   });
 
@@ -38,7 +38,7 @@ describe('Tune-in:', function() {
     });
 
     it('should log that activity, with the arguments', function() {
-      expect(this.consoleStub).to.have.been.calledOnce.and.calledWithExactly(this.warning, this.args);
+      expect(console.log).to.have.been.calledOnce.and.calledWithExactly(this.warning, this.args);
     });
   });
 
@@ -49,7 +49,7 @@ describe('Tune-in:', function() {
     });
 
     it('should not log that activity', function() {
-      expect(this.consoleStub).to.not.have.been.called;
+      expect(console.log).to.not.have.been.called;
     });
   });
 
@@ -61,7 +61,7 @@ describe('Tune-in:', function() {
     });
 
     it('should log that activity', function() {
-      expect(this.consoleStub).to.have.been.calledOnce.and.calledWithExactly(this.warning, this.args);
+      expect(console.log).to.have.been.calledOnce.and.calledWithExactly(this.warning, this.args);
     });
   });
 
@@ -72,7 +72,7 @@ describe('Tune-in:', function() {
     });
 
     it('should not log that activity', function() {
-      expect(this.consoleStub).to.not.have.been.called;
+      expect(console.log).to.not.have.been.called;
     });
   });
 
@@ -84,7 +84,7 @@ describe('Tune-in:', function() {
     });
 
     it('should log that activity', function() {
-      expect(this.consoleStub).to.have.been.calledOnce.and.calledWithExactly(this.warning, this.args);
+      expect(console.log).to.have.been.calledOnce.and.calledWithExactly(this.warning, this.args);
     });
   });
 
@@ -95,18 +95,18 @@ describe('Tune-in:', function() {
     });
 
     it('should not log that activity', function() {
-      expect(this.consoleStub).to.not.have.been.called;
+      expect(console.log).to.not.have.been.called;
     });
   });
 
   describe('When providing a custom logging function and tuning it', function() {
     beforeEach(function() {
-      this.logStub = stub(Backbone.Radio, 'log');
+      stub(Backbone.Radio, 'log');
       this.channel.command(this.eventName, 'argOne', 'argTwo');
     });
 
     it('should log your custom message', function() {
-      expect(this.logStub)
+      expect(Backbone.Radio.log)
         .to.have.been.calledOnce
         .and.calledOn(this.channel)
         .and.calledWithExactly(this.channelName, this.eventName, 'argOne', 'argTwo');

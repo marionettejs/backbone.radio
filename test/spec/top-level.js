@@ -3,7 +3,7 @@ describe('Top-level API:', function() {
     this.channelName = 'myChannel';
     this.eventName = 'some:event';
     this.channel = Backbone.Radio.channel(this.channelName);
-    this.channelStub = stub(this.channel);
+    stub(this.channel);
   });
 
   describe('when executing Commands methods', function() {
@@ -15,22 +15,22 @@ describe('Top-level API:', function() {
     });
 
     it('should execute each method on the proper channel with the arguments.', function() {
-      expect(this.channelStub.comply)
+      expect(this.channel.comply)
         .to.have.been.calledOnce
         .and.to.have.been.calledOn(this.channel)
         .and.calledWithExactly(this.eventName, 'firstArg1', 'secondArg1');
 
-      expect(this.channelStub.complyOnce)
+      expect(this.channel.complyOnce)
         .to.have.been.calledOnce
         .and.to.have.been.calledOn(this.channel)
         .and.calledWithExactly(this.eventName, 'firstArg2', 'secondArg2');
 
-      expect(this.channelStub.stopComplying)
+      expect(this.channel.stopComplying)
         .to.have.been.calledOnce
         .and.to.have.been.calledOn(this.channel)
         .and.calledWithExactly(this.eventName, 'firstArg3', 'secondArg3');
 
-      expect(this.channelStub.command)
+      expect(this.channel.command)
         .to.have.been.calledOnce
         .and.to.have.been.calledOn(this.channel)
         .and.calledWithExactly(this.eventName, 'firstArg4', 'secondArg4');
@@ -46,22 +46,22 @@ describe('Top-level API:', function() {
     });
 
     it('should execute each method on the proper channel with the arguments.', function() {
-      expect(this.channelStub.reply)
+      expect(this.channel.reply)
         .to.have.been.calledOnce
         .and.to.have.been.calledOn(this.channel)
         .and.calledWithExactly(this.eventName, 'firstArg1', 'secondArg1');
 
-      expect(this.channelStub.replyOnce)
+      expect(this.channel.replyOnce)
         .to.have.been.calledOnce
         .and.to.have.been.calledOn(this.channel)
         .and.calledWithExactly(this.eventName, 'firstArg2', 'secondArg2');
 
-      expect(this.channelStub.stopReplying)
+      expect(this.channel.stopReplying)
         .to.have.been.calledOnce
         .and.to.have.been.calledOn(this.channel)
         .and.calledWithExactly(this.eventName, 'firstArg3', 'secondArg3');
 
-      expect(this.channelStub.request)
+      expect(this.channel.request)
         .to.have.been.calledOnce
         .and.to.have.been.calledOn(this.channel)
         .and.calledWithExactly(this.eventName, 'firstArg4', 'secondArg4');
@@ -80,37 +80,37 @@ describe('Top-level API:', function() {
     });
 
     it('should execute each method on the proper channel with the arguments.', function() {
-      expect(this.channelStub.listenTo)
+      expect(this.channel.listenTo)
         .to.have.been.calledOnce
         .and.to.have.been.calledOn(this.channel)
         .and.calledWithExactly(this.eventName, 'firstArg1', 'secondArg1');
 
-      expect(this.channelStub.listenToOnce)
+      expect(this.channel.listenToOnce)
         .to.have.been.calledOnce
         .and.to.have.been.calledOn(this.channel)
         .and.calledWithExactly(this.eventName, 'firstArg2', 'secondArg2');
 
-      expect(this.channelStub.stopListening)
+      expect(this.channel.stopListening)
         .to.have.been.calledOnce
         .and.to.have.been.calledOn(this.channel)
         .and.calledWithExactly(this.eventName, 'firstArg3', 'secondArg3');
 
-      expect(this.channelStub.trigger)
+      expect(this.channel.trigger)
         .to.have.been.calledOnce
         .and.to.have.been.calledOn(this.channel)
         .and.calledWithExactly(this.eventName, 'firstArg4', 'secondArg4');
 
-      expect(this.channelStub.on)
+      expect(this.channel.on)
         .to.have.been.calledOnce
         .and.to.have.been.calledOn(this.channel)
         .and.calledWithExactly(this.eventName, 'firstArg5', 'secondArg5');
 
-      expect(this.channelStub.once)
+      expect(this.channel.once)
         .to.have.been.calledOnce
         .and.to.have.been.calledOn(this.channel)
         .and.calledWithExactly(this.eventName, 'firstArg6', 'secondArg6');
 
-      expect(this.channelStub.off)
+      expect(this.channel.off)
         .to.have.been.calledOnce
         .and.to.have.been.calledOn(this.channel)
         .and.calledWithExactly(this.eventName, 'firstArg7', 'secondArg7');

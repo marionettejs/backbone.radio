@@ -1,10 +1,10 @@
 describe('Commands:', function() {
   beforeEach(function() {
     this.Commands = _.clone(Backbone.Radio.Commands);
-    this.commandSpy = spy(this.Commands, 'command');
-    this.complySpy = spy(this.Commands, 'comply');
-    this.complyOnceSpy = spy(this.Commands, 'complyOnce');
-    this.stopComplyingSpy = spy(this.Commands, 'stopComplying');
+    spy(this.Commands, 'command');
+    spy(this.Commands, 'comply');
+    spy(this.Commands, 'complyOnce');
+    spy(this.Commands, 'stopComplying');
   });
 
   describe('when commanding an action that has no handler', function() {
@@ -13,7 +13,7 @@ describe('Commands:', function() {
     });
 
     it('should return the Commands object itself.', function() {
-      expect(this.commandSpy)
+      expect(this.Commands.command)
         .to.have.been.calledOnce
         .and.to.have.always.returned(this.Commands);
     });
@@ -41,11 +41,11 @@ describe('Commands:', function() {
       });
 
       it('should return the instance of Commands from `command`.', function() {
-        expect(this.commandSpy).to.have.always.returned(this.Commands);
+        expect(this.Commands.command).to.have.always.returned(this.Commands);
       });
 
       it('should always return the instance of Commands from `comply`', function() {
-        expect(this.complySpy)
+        expect(this.Commands.comply)
           .to.have.been.calledOnce
           .and.to.have.always.returned(this.Commands);
       });
@@ -69,11 +69,11 @@ describe('Commands:', function() {
       });
 
       it('should return the instance of Commands from `command`.', function() {
-        expect(this.commandSpy).to.have.always.returned(this.Commands);
+        expect(this.Commands.command).to.have.always.returned(this.Commands);
       });
 
       it('should always return the instance of Commands from `comply`', function() {
-        expect(this.complySpy)
+        expect(this.Commands.comply)
           .to.have.been.calledOnce
           .and.to.have.always.returned(this.Commands);
       });
@@ -99,13 +99,13 @@ describe('Commands:', function() {
     });
 
     it('should always return Commands from `command`.', function() {
-      expect(this.commandSpy)
+      expect(this.Commands.command)
         .to.have.been.calledThrice
         .and.to.have.always.returned(this.Commands);
     });
 
     it('should always return the instance of Commands from `comply`', function() {
-      expect(this.complySpy)
+      expect(this.Commands.comply)
         .to.have.been.calledOnce
         .and.to.have.always.returned(this.Commands);
     });
@@ -132,13 +132,13 @@ describe('Commands:', function() {
     });
 
     it('should always return the instance of Commands from `command`.', function() {
-      expect(this.commandSpy)
+      expect(this.Commands.command)
         .to.have.been.calledThrice
         .and.to.have.always.returned(this.Commands);
     });
 
     it('should always return the instance of Commands from `complyOnce`', function() {
-      expect(this.complyOnceSpy)
+      expect(this.Commands.complyOnce)
         .to.have.been.calledOnce
         .and.to.have.always.returned(this.Commands);
     });
@@ -164,7 +164,7 @@ describe('Commands:', function() {
     });
 
     it('should always return the instance of Commands from `complyOnce`', function() {
-      expect(this.complyOnceSpy)
+      expect(this.Commands.complyOnce)
         .to.have.been.calledOnce
         .and.to.have.always.returned(this.Commands);
     });
@@ -201,7 +201,7 @@ describe('Commands:', function() {
     });
 
     it('should return the instance of Commands from stopComplying', function() {
-      expect(this.stopComplyingSpy).to.have.always.returned(this.Commands);
+      expect(this.Commands.stopComplying).to.have.always.returned(this.Commands);
     });
 
     describe('and subsequently calling the handler', function() {
