@@ -78,6 +78,8 @@
     "require": true,
     "module": true,
     "define": true,
-    "exports": true
+    "exports": true,
+    "stub": true,
+    "spy": true
   }
 }
