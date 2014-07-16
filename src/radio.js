@@ -17,6 +17,22 @@ _.extend(Radio, {
     }
   },
 
+  _eventsApi: function(obj, action, name, rest) {
+    if (!name) {
+      return true;
+    }
+
+    // Handle event maps.
+    if (typeof name === 'object') {
+      for (var key in name) {
+        obj[action].apply(obj, [key, name[key]].concat(rest));
+      }
+      return false;
+    }
+
+    return true;
+  },
+
   channel: function(channelName) {
     if (!channelName) {
       throw new Error('You must provide a name for the channel.');

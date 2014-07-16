@@ -69,42 +69,4 @@ describe('Channel:', function () {
       expect(this.channel.reset).to.have.always.returned(this.channel);
     });
   });
-
-  describe('convenience methods', function() {
-    beforeEach(function() {
-      this.hash = {
-        eventOne: stub(),
-        eventTwo: stub()
-      };
-      this.keys = Object.keys(this.hash);
-      spy(this.channel, 'connectEvents');
-      spy(this.channel, 'connectCommands');
-      spy(this.channel, 'connectRequests');
-    });
-
-    it('should attach the listeners to the Channel when passing an event hash to `connectEvents`', function() {
-      this.channel.connectEvents(this.hash);
-      expect(this.channel._events).to.have.keys(this.keys);
-    });
-
-    it('should attach the listeners to the Channel when passing a commands hash to `connectCommands`', function() {
-      this.channel.connectCommands(this.hash);
-      expect(this.channel._commands).to.have.keys(this.keys);
-    });
-
-    it('should attach the listeners to the Channel when passing a requests hash to `connectRequests`', function() {
-      this.channel.connectRequests(this.hash);
-      expect(this.channel._requests).to.have.keys(this.keys);
-    });
-
-    it('should return the channel for all three methods', function() {
-      this.channel.connectEvents(this.hash);
-      this.channel.connectCommands(this.hash);
-      this.channel.connectRequests(this.hash);
-
-      expect(this.channel.connectEvents).to.have.always.returned(this.channel);
-      expect(this.channel.connectCommands).to.have.always.returned(this.channel);
-      expect(this.channel.connectRequests).to.have.always.returned(this.channel);
-    });
-  });
 });

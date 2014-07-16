@@ -31,6 +31,10 @@ Radio.Requests = {
   },
 
   reply: function(name, callback, context) {
+    if (!Radio._eventsApi(this, 'reply', name, [callback, context])) {
+      return this;
+    }
+
     this._requests || (this._requests = {});
 
     this._requests[name] = {
@@ -42,6 +46,10 @@ Radio.Requests = {
   },
 
   replyOnce: function(name, callback, context) {
+    if (!Radio._eventsApi(this, 'replyOnce', name, [callback, context])) {
+      return this;
+    }
+
     var self = this;
 
     var once = _.once(function() {
@@ -53,6 +61,10 @@ Radio.Requests = {
   },
 
   stopReplying: function(name) {
+    if (!Radio._eventsApi(this, 'stopReplying', name)) {
+      return this;
+    }
+
     var store = this._requests;
 
     if (!name) {

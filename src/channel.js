@@ -20,27 +20,5 @@ _.extend(Radio.Channel.prototype, Backbone.Events, Radio.Commands, Radio.Request
     this.stopComplying();
     this.stopReplying();
     return this;
-  },
-
-  connectEvents: function(hash, context) {
-    return this._connect('on', hash, context);
-  },
-
-  connectCommands: function(hash, context) {
-    return this._connect('comply', hash, context);
-  },
-
-  connectRequests: function(hash, context) {
-    return this._connect('reply', hash, context);
-  },
-
-  _connect: function(methodName, hash, context) {
-    if (!hash) { return; }
-
-    _.each(hash, function(fn, eventName) {
-      this[methodName](eventName, fn, context || this);
-    }, this);
-
-    return this;
   }
 });

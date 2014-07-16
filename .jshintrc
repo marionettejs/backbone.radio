@@ -4,7 +4,7 @@
   "curly"         : true,
   "eqeqeq"        : true,
   "es3"           : true,
-  "forin"         : true,
+  "forin"         : false,
   "immed"         : true,
   "indent"        : 2,
   "latedef"       : true,
@@ -75,6 +75,7 @@
     "module": true,
     "define": true,
     "exports": true,
-    "slice": true
+    "slice": true,
+    "eventsApi": true
   }
 }

@@ -248,4 +248,94 @@ describe('Commands:', function() {
       });
     });
   });
+
+  describe('when calling `command` with object', function() {
+    beforeEach(function() {
+      this.Commands.command({
+        commandOne: 'argOne',
+        commandTwo: 'argTwo'
+      });
+    });
+
+    it('should return `this`', function() {
+      expect(this.Commands.command).to.have.always.returned(this.Commands);
+    });
+
+    it('should call the set of commands', function() {
+      expect(this.Commands.command)
+        .to.have.been.calledThrice
+        .and.calledWith('commandOne', 'argOne')
+        .and.calledWith('commandTwo', 'argTwo');
+    });
+  });
+
+  describe('when calling `comply` with object', function() {
+    beforeEach(function() {
+      this.commandOneStub = stub();
+      this.commandTwoStub = stub();
+
+      this.context = {};
+
+      this.Commands.comply({
+        commandOne: this.commandOneStub,
+        commandTwo: this.commandTwoStub
+      }, this.context);
+    });
+
+    it('should return `this`', function() {
+      expect(this.Commands.comply).to.have.always.returned(this.Commands);
+    });
+
+    it('should call the set of commands', function() {
+      expect(this.Commands.comply)
+        .to.have.been.calledThrice
+        .and.calledWith('commandOne', this.commandOneStub, this.context)
+        .and.calledWith('commandTwo', this.commandTwoStub, this.context);
+    });
+  });
+
+  describe('when calling `complyOnce` with object', function() {
+    beforeEach(function() {
+      this.commandOneStub = stub();
+      this.commandTwoStub = stub();
+
+      this.context = {};
+
+      this.Commands.complyOnce({
+        commandOne: this.commandOneStub,
+        commandTwo: this.commandTwoStub
+      }, this.context);
+    });
+
+    it('should return `this`', function() {
+      expect(this.Commands.complyOnce).to.have.always.returned(this.Commands);
+    });
+
+    it('should call the set of commands', function() {
+      expect(this.Commands.complyOnce)
+        .to.have.been.calledThrice
+        .and.calledWith('commandOne', this.commandOneStub, this.context)
+        .and.calledWith('commandTwo', this.commandTwoStub, this.context);
+    });
+  });
+
+  describe('when calling `stopComplying` with object', function() {
+    beforeEach(function() {
+      this.Commands.stopComplying({
+        commandOne: null,
+        commandTwo: null
+      });
+    });
+
+    it('should return `this`', function() {
+      expect(this.Commands.stopComplying).to.have.always.returned(this.Commands);
+    });
+
+    it('should call the set of commands', function() {
+      expect(this.Commands.stopComplying)
+        .to.have.been.calledThrice
+        .and.calledWith('commandOne')
+        .and.calledWith('commandTwo');
+    });
+  });
 });
