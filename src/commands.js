@@ -8,6 +8,9 @@
 Radio.Commands = {
   command: function(name) {
     var args = slice.call(arguments, 1);
+    if (!Radio._eventsApi(this, 'command', name, args)) {
+      return this;
+    }
     var channelName = this.channelName;
     var commands = this._commands;
 
@@ -28,6 +31,9 @@ Radio.Commands = {
   },
 
   comply: function(name, callback, context) {
+    if (!Radio._eventsApi(this, 'comply', name, [callback, context])) {
+      return this;
+    }
     this._commands || (this._commands = {});
 
     this._commands[name] = {
@@ -39,6 +45,9 @@ Radio.Commands = {
   },
 
   complyOnce: function(name, callback, context) {
+    if (!Radio._eventsApi(this, 'complyOnce', name, [callback, context])) {
+      return this;
+    }
     var self = this;
 
     var once = _.once(function() {
@@ -50,6 +59,9 @@ Radio.Commands = {
   },
 
   stopComplying: function(name) {
+    if (!Radio._eventsApi(this, 'stopComplying', name)) {
+      return this;
+    }
     var store = this._commands;
 
     if (!name) {
