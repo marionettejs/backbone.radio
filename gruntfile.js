@@ -120,13 +120,41 @@ module.exports = function(grunt) {
         src: 'coverage/lcov.info'
       }
     },
+
+    watch: {
+      tests: {
+        options: {
+          spawn: false
+        },
+        files: ['src/**/*.js', 'test/spec/**/*.js'],
+        tasks: ['test']
+      }
+    }
   });
 
-  grunt.registerTask('test', 'Test the library', ['jshint', 'mochaTest']);
+  grunt.registerTask('test', 'Test the library', [
+    'jshint',
+    'mochaTest'
+  ]);
 
-  grunt.registerTask('coverage', 'Generate coverage report for the library', ['env:coverage', 'instrument', 'mochaTest', 'storeCoverage', 'makeReport', 'coveralls']);
+  grunt.registerTask('coverage', 'Generate coverage report for the library', [
+    'env:coverage',
+    'instrument',
+    'mochaTest',
+    'storeCoverage',
+    'makeReport',
+    'coveralls'
+  ]);
 
-  grunt.registerTask('build', 'Build the library', ['test', 'preprocess:radio', 'template', 'concat', 'uglify']);
+  grunt.registerTask('build', 'Build the library', [
+    'test',
+    'preprocess:radio',
+    'template',
+    'concat',
+    'uglify'
+  ]);
 
-  grunt.registerTask('default', 'An alias of test', ['test']);
+  grunt.registerTask('default', 'An alias of test', [
+    'test'
+  ]);
 };
