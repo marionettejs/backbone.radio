@@ -279,4 +279,74 @@ describe('Requests:', function() {
       });
     });
   });
+
+  describe('when calling `reply` with object', function() {
+    beforeEach(function() {
+      this.requestOneStub = this.sinon.stub();
+      this.requestTwoStub = this.sinon.stub();
+
+      this.context = {};
+
+      this.Requests.reply({
+        requestOne: this.requestOneStub,
+        requestTwo: this.requestTwoStub
+      }, this.context);
+    });
+
+    it('should return `this`', function() {
+      expect(this.Requests.reply).to.have.always.returned(this.Requests);
+    });
+
+    it('should call the set of requests', function() {
+      expect(this.Requests.reply)
+        .to.have.been.calledThrice
+        .and.calledWith('requestOne', this.requestOneStub, this.context)
+        .and.calledWith('requestTwo', this.requestTwoStub, this.context);
+    });
+  });
+
+  describe('when calling `replyOnce` with object', function() {
+    beforeEach(function() {
+      this.requestOneStub = this.sinon.stub();
+      this.requestTwoStub = this.sinon.stub();
+
+      this.context = {};
+
+      this.Requests.replyOnce({
+        requestOne: this.requestOneStub,
+        requestTwo: this.requestTwoStub
+      }, this.context);
+    });
+
+    it('should return `this`', function() {
+      expect(this.Requests.replyOnce).to.have.always.returned(this.Requests);
+    });
+
+    it('should call the set of requests', function() {
+      expect(this.Requests.replyOnce)
+        .to.have.been.calledThrice
+        .and.calledWith('requestOne', this.requestOneStub, this.context)
+        .and.calledWith('requestTwo', this.requestTwoStub, this.context);
+    });
+  });
+
+  describe('when calling `stopReplying` with object', function() {
+    beforeEach(function() {
+      this.Requests.stopReplying({
+        requestOne: null,
+        requestTwo: null
+      });
+    });
+
+    it('should return `this`', function() {
+      expect(this.Requests.stopReplying).to.have.always.returned(this.Requests);
+    });
+
+    it('should call the set of requests', function() {
+      expect(this.Requests.stopReplying)
+        .to.have.been.calledThrice
+        .and.calledWith('requestOne')
+        .and.calledWith('requestTwo');
+    });
+  });
 });
