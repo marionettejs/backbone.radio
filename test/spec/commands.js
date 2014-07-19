@@ -125,7 +125,7 @@ describe('Commands:', function() {
       });
 
       it('should not call the "default" handler', function() {
-        expect(this.defaultCallback).not.have.been.called;
+        expect(this.defaultCallback).to.have.not.been.called;
       });
     });
   });
@@ -225,26 +225,33 @@ describe('Commands:', function() {
       this.commandTwo = stub();
       this.Commands.comply('commandOne', this.commandOne);
       this.Commands.comply('commandTwo', this.commandTwo);
-      this.Commands.stopComplying();
     });
 
-    it('should remove all of the handlers', function() {
-      expect(this.Commands._commands).to.be.undefined;
-    });
-
-    it('should return the instance of Commands from stopComplying', function() {
-      expect(this.Commands.stopComplying).to.have.always.returned(this.Commands);
-    });
-
-    describe('and subsequently calling the handler', function() {
+    describe('and passing a name', function() {
       beforeEach(function() {
-        this.Commands.command('commandOne');
-        this.Commands.command('commandTwo');
+        this.Commands.stopComplying('commandOne');
       });
 
-      it('should not execute them', function() {
-        expect(this.commandOne).to.have.not.beenCalled;
-        expect(this.commandTwo).to.have.not.beenCalled;
+      it('should remove the specified handler', function() {
+        expect(this.Commands._commands).to.not.contain.keys('commandOne');
+      });
+
+      it('should return the instance of Commands from stopComplying', function() {
+        expect(this.Commands.stopComplying).to.have.always.returned(this.Commands);
+      });
+    });
+
+    describe('and not passing any arguments', function() {
+      beforeEach(function() {
+        this.Commands.stopComplying();
+      });
+
+      it('should remove all of the handlers', function() {
+        expect(this.Commands._commands).to.be.undefined;
+      });
+
+      it('should return the instance of Commands from stopComplying', function() {
+        expect(this.Commands.stopComplying).to.have.always.returned(this.Commands);
       });
     });
   });
