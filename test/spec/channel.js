@@ -1,6 +1,7 @@
 describe('Channel:', function () {
   beforeEach(function () {
     this.channel = Backbone.Radio.channel('myChannel');
+    this.channelTwo = Backbone.Radio.channel('myOtherChannel');
   });
 
   describe('when calling Radio.channel with no name', function() {
@@ -67,6 +68,55 @@ describe('Channel:', function () {
 
     it('should return the Channel', function() {
       expect(this.channel.reset).to.have.always.returned(this.channel);
+    });
+  });
+
+  describe('when executing an event that exists on two channels', function() {
+    beforeEach(function() {
+      this.callbackOne = stub();
+      this.callbackTwo = stub();
+    });
+
+    describe('on Events', function() {
+      beforeEach(function() {
+        this.channel.on('some:event', this.callbackOne);
+        this.channelTwo.on('some:event', this.callbackOne);
+
+        this.channel.trigger('some:event');
+      });
+
+      it('should only trigger the callback on the channel specified', function() {
+        expect(this.callbackOne).to.have.been.calledOnce;
+        expect(this.callbackTwo).to.not.have.been.called;
+      });
+    });
+
+    describe('on Commands', function() {
+      beforeEach(function() {
+        this.channel.comply('some:command', this.callbackOne);
+        this.channelTwo.comply('some:command', this.callbackOne);
+
+        this.channel.command('some:command');
+      });
+
+      it('should only trigger the callback on the channel specified', function() {
+        expect(this.callbackOne).to.have.been.calledOnce;
+        expect(this.callbackTwo).to.not.have.been.called;
+      });
+    });
+
+    describe('on Requests', function() {
+      beforeEach(function() {
+        this.channel.reply('some:request', this.callbackOne);
+        this.channelTwo.reply('some:request', this.callbackOne);
+
+        this.channel.request('some:request');
+      });
+
+      it('should only trigger the callback on the channel specified', function() {
+        expect(this.callbackOne).to.have.been.calledOnce;
+        expect(this.callbackTwo).to.not.have.been.called;
+      });
     });
   });
 });
