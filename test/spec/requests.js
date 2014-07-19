@@ -234,26 +234,33 @@ describe('Requests:', function() {
       this.requestTwo = stub();
       this.Requests.reply('requestOne', this.requestOne);
       this.Requests.reply('requestTwo', this.requestTwo);
-      this.Requests.stopReplying();
     });
 
-    it('should remove all of the handlers', function() {
-      expect(this.Requests._requests).to.be.undefined;
-    });
-
-    it('should return the instance of Requests from stopReplying', function() {
-      expect(this.Requests.stopReplying).to.have.always.returned(this.Requests);
-    });
-
-    describe('and subsequently calling the handler', function() {
+    describe('and passing a name', function() {
       beforeEach(function() {
-        this.Requests.request(this.requestOne);
-        this.Requests.request(this.requestTwo);
+        this.Requests.stopReplying('requestOne');
       });
 
-      it('should not execute them', function() {
-        expect(this.requestOne).to.have.not.beenCalled;
-        expect(this.requestTwo).to.have.not.beenCalled;
+      it('should remove the specified handler', function() {
+        expect(this.Requests._requests).to.not.contain.keys('requestOne');
+      });
+
+      it('should return the instance of Requests from stopReplying', function() {
+        expect(this.Requests.stopReplying).to.have.always.returned(this.Requests);
+      });
+    });
+
+    describe('and not passing any arguments', function() {
+      beforeEach(function() {
+        this.Requests.stopReplying();
+      });
+
+      it('should remove all of the handlers', function() {
+        expect(this.Requests._requests).to.be.undefined;
+      });
+
+      it('should return the instance of Requests from stopReplying', function() {
+        expect(this.Requests.stopReplying).to.have.always.returned(this.Requests);
       });
     });
   });
