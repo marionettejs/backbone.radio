@@ -10,6 +10,8 @@ pub-sub message bus, then adds semantics to your communications through the addi
 patterns, Commands and Requests. The three systems are bound together as Channels, which provide explicit
 namespacing to your communications.
 
+Backbone.Radio will replace [Backbone.Wreqr](https://github.com/marionettejs/backbone.wreqr) used by [Marionette.js](https://github.com/marionettejs/backbone.marionette) framework in version 3.
+
 ## Installation
 
 Clone this repository or install via [Bower](http://bower.io/) or [npm](https://www.npmjs.org/).
