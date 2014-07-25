@@ -30,22 +30,6 @@ _.extend(Radio, {
     }
   },
 
-  _eventsApi: function(obj, action, name, rest) {
-    if (!name) {
-      return true;
-    }
-
-    // Handle event maps.
-    if (typeof name === 'object') {
-      for (var key in name) {
-        obj[action].apply(obj, [key, name[key]].concat(rest));
-      }
-      return false;
-    }
-
-    return true;
-  },
-
   channel: function(channelName) {
     if (!channelName) {
       throw new Error('You must provide a name for the channel.');
@@ -53,6 +37,22 @@ _.extend(Radio, {
     return Radio._channels[channelName] || new Radio.Channel(channelName);
   }
 });
+
+function eventsApi(obj, action, name, rest) {
+  if (!name) {
+    return true;
+  }
+
+  // Handle event maps.
+  if (typeof name === 'object') {
+    for (var key in name) {
+      obj[action].apply(obj, [key, name[key]].concat(rest));
+    }
+    return false;
+  }
+
+  return true;
+}
 
 /*
  * tune-in
@@ -107,7 +107,7 @@ _.extend(Radio, {
 Radio.Commands = {
   command: function(name) {
     var args = slice.call(arguments, 1);
-    if (!Radio._eventsApi(this, 'command', name, args)) {
+    if (!eventsApi(this, 'command', name, args)) {
       return this;
     }
     var channelName = this.channelName;
@@ -131,7 +131,7 @@ Radio.Commands = {
   },
 
   comply: function(name, callback, context) {
-    if (!Radio._eventsApi(this, 'comply', name, [callback, context])) {
+    if (!eventsApi(this, 'comply', name, [callback, context])) {
       return this;
     }
     this._commands || (this._commands = {});
@@ -145,7 +145,7 @@ Radio.Commands = {
   },
 
   complyOnce: function(name, callback, context) {
-    if (!Radio._eventsApi(this, 'complyOnce', name, [callback, context])) {
+    if (!eventsApi(this, 'complyOnce', name, [callback, context])) {
       return this;
     }
     var self = this;
@@ -159,7 +159,7 @@ Radio.Commands = {
   },
 
   stopComplying: function(name) {
-    if (!Radio._eventsApi(this, 'stopComplying', name)) {
+    if (!eventsApi(this, 'stopComplying', name)) {
       return this;
     }
     var store = this._commands;
@@ -209,7 +209,7 @@ Radio.Requests = {
   },
 
   reply: function(name, callback, context) {
-    if (!Radio._eventsApi(this, 'reply', name, [callback, context])) {
+    if (!eventsApi(this, 'reply', name, [callback, context])) {
       return this;
     }
 
@@ -224,7 +224,7 @@ Radio.Requests = {
   },
 
   replyOnce: function(name, callback, context) {
-    if (!Radio._eventsApi(this, 'replyOnce', name, [callback, context])) {
+    if (!eventsApi(this, 'replyOnce', name, [callback, context])) {
       return this;
     }
 
@@ -239,7 +239,7 @@ Radio.Requests = {
   },
 
   stopReplying: function(name) {
-    if (!Radio._eventsApi(this, 'stopReplying', name)) {
+    if (!eventsApi(this, 'stopReplying', name)) {
       return this;
     }
 
