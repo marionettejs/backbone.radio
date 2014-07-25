@@ -23,13 +23,6 @@ _.extend(Radio, {
 
   DEBUG: false,
 
-  _debugLog: function(warning, eventName, channelName) {
-    if (this.DEBUG) {
-      var channelText = channelName ? ' on the ' + channelName + ' channel' : '';
-      console.warn(warning + channelText + ': "' + eventName + '"');
-    }
-  },
-
   channel: function(channelName) {
     if (!channelName) {
       throw new Error('You must provide a name for the channel.');
@@ -37,6 +30,13 @@ _.extend(Radio, {
     return Radio._channels[channelName] || new Radio.Channel(channelName);
   }
 });
+
+function debugLog(warning, eventName, channelName) {
+  if (Radio.DEBUG) {
+    var channelText = channelName ? ' on the ' + channelName + ' channel' : '';
+    console.warn(warning + channelText + ': "' + eventName + '"');
+  }
+}
 
 function eventsApi(obj, action, name, rest) {
   if (!name) {
@@ -124,7 +124,7 @@ Radio.Commands = {
       args = commands[name] ? args : arguments;
       handler.callback.apply(handler.context, args);
     } else {
-      Radio._debugLog('An unhandled command was fired', name, channelName);
+      debugLog('An unhandled command was fired', name, channelName);
     }
 
     return this;
@@ -169,7 +169,7 @@ Radio.Commands = {
     } else if (store && store[name]) {
       delete store[name];
     } else {
-      Radio._debugLog('Attempted to remove the unregistered command', name, this.channelName);
+      debugLog('Attempted to remove the unregistered command', name, this.channelName);
     }
 
     return this;
@@ -204,7 +204,7 @@ Radio.Requests = {
       args = requests[name] ? args : arguments;
       return handler.callback.apply(handler.context, args);
     } else {
-      Radio._debugLog('An unhandled request was fired', name, channelName);
+      debugLog('An unhandled request was fired', name, channelName);
     }
   },
 
@@ -250,7 +250,7 @@ Radio.Requests = {
     } else if (store && store[name]) {
       delete store[name];
     } else {
-      Radio._debugLog('Attempted to remove the unregistered request', name, this.channelName);
+      debugLog('Attempted to remove the unregistered request', name, this.channelName);
     }
 
     return this;
