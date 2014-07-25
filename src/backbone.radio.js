@@ -21,14 +21,7 @@ Radio.noConflict = function () {
 _.extend(Radio, {
   _channels: {},
 
-  DEBUG: false,
-
-  channel: function(channelName) {
-    if (!channelName) {
-      throw new Error('You must provide a name for the channel.');
-    }
-    return Radio._channels[channelName] || new Radio.Channel(channelName);
-  }
+  DEBUG: false
 });
 
 function debugLog(warning, eventName, channelName) {
@@ -255,6 +248,20 @@ Radio.Requests = {
 
     return this;
   }
+};
+
+/*
+ * Backbone.Radio.channel
+ * ----------------------
+ * Get a reference to a channel by name.
+ *
+ */
+
+Radio.channel = function(channelName) {
+  if (!channelName) {
+    throw new Error('You must provide a name for the channel.');
+  }
+  return Radio._channels[channelName] || new Radio.Channel(channelName);
 };
 
 /*
