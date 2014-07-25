@@ -1,4 +1,3 @@
-var requireHelper = require('./require_helper');
 var sinon = require('sinon');
 var chai = require('chai');
 var sinonChai = require('sinon-chai');
@@ -13,12 +12,6 @@ global.sinon = sinon;
 
 global.slice = Array.prototype.slice;
 
-requireHelper('misc');
-global.Radio = Backbone.Radio;
+require((process.env.APP_DIR_FOR_CODE_COVERAGE || '../../src/') + 'backbone.radio');
 
-requireHelper('radio');
-requireHelper('tune-in');
-requireHelper('commands');
-requireHelper('requests');
-requireHelper('channel');
-requireHelper('proxy');
+global.Radio = Backbone.Radio;
