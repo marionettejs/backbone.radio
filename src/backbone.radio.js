@@ -11,18 +11,7 @@ Radio.noConflict = function () {
   return this;
 };
 
-/*
- * Backbone.Radio
- * --------------
- * The 'top-level' API for working with Backbone.Radio
- *
- */
-
-_.extend(Radio, {
-  _channels: {},
-
-  DEBUG: false
-});
+Radio.DEBUG = false;
 
 function debugLog(warning, eventName, channelName) {
   if (Radio.DEBUG) {
@@ -256,6 +245,8 @@ Radio.Requests = {
  * Get a reference to a channel by name.
  *
  */
+
+Radio._channels = {};
 
 Radio.channel = function(channelName) {
   if (!channelName) {
