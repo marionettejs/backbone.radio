@@ -2,6 +2,7 @@
 
 [![Travis Build Status](http://img.shields.io/travis/jmeas/backbone.radio.svg?style=flat)](https://travis-ci.org/jmeas/backbone.radio)
 [![Coverage Status](https://img.shields.io/coveralls/jmeas/backbone.radio.svg?style=flat)](https://coveralls.io/r/jmeas/backbone.radio)
+[![Gitter chat room](https://img.shields.io/badge/gitter-backbone.radio-brightgreen.svg?style=flat)](https://gitter.im/jmeas/backbone.radio)
 
 Use Backbone.Radio to build large, maintainable, and decoupled applications.
 
