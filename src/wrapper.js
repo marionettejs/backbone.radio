@@ -15,15 +15,7 @@
 }(this, function(Backbone, _) {
   'use strict';
 
-  var slice = Array.prototype.slice;
-
-  // @include misc.js
-  // @include radio.js
-  // @include tune-in.js
-  // @include commands.js
-  // @include requests.js
-  // @include channel.js
-  // @include proxy.js
+  // @include backbone.radio.js
 
   return Radio;
 }));
