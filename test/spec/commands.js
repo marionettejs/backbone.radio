@@ -93,6 +93,20 @@ describe('Commands:', function() {
         expect(this.callback).to.have.always.been.calledOn(this.context);
       });
     });
+
+    describe('with many arguments', function() {
+      beforeEach(function() {
+        this.context = {};
+        this.Commands.comply('myCommand', this.callback, this.context);
+        this.Commands.command('myCommand', 'argOne', 'argTwo', 'argThree', 'argFour', 'argFive');
+      });
+
+      it('should pass all of the arguments', function() {
+        expect(this.callback)
+          .to.have.been.calledOnce
+          .and.calledWithExactly('argOne', 'argTwo', 'argThree', 'argFour', 'argFive');
+      });
+    });
   });
 
   describe('when commanding an action multiple times that has a handler', function() {

@@ -89,6 +89,20 @@ describe('Requests:', function() {
         expect(this.callback).to.have.always.been.calledOn(this.context);
       });
     });
+
+    describe('with many arguments', function() {
+      beforeEach(function() {
+        this.context = {};
+        this.Requests.reply('myRequest', this.callback, this.context);
+        this.Requests.request('myRequest', 'argOne', 'argTwo', 'argThree', 'argFour', 'argFive');
+      });
+
+      it('should pass all of the arguments', function() {
+        expect(this.callback)
+          .to.have.been.calledOnce
+          .and.calledWithExactly('argOne', 'argTwo', 'argThree', 'argFour', 'argFive');
+      });
+    });
   });
 
   describe('when making a request multiple times that has a handler', function() {
