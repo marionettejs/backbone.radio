@@ -50,6 +50,18 @@ function eventsApi(obj, action, name, rest) {
   return true;
 }
 
+// An optimized way to execute callbacks.
+function callHandler(callback, context, args) {
+  var a1 = args[0], a2 = args[1], a3 = args[2];
+  switch(args.length) {
+    case 0: return callback.call(context);
+    case 1: return callback.call(context, a1);
+    case 2: return callback.call(context, a1, a2);
+    case 3: return callback.call(context, a1, a2, a3);
+    default: return callback.apply(context, args);
+  }
+}
+
 /*
  * tune-in
  * -------
@@ -120,7 +132,7 @@ Radio.Commands = {
     if (commands && (commands[name] || commands['default'])) {
       var handler = commands[name] || commands['default'];
       args = commands[name] ? args : arguments;
-      handler.callback.apply(handler.context, args);
+      callHandler(handler.callback, handler.context, args);
     } else {
       debugLog('An unhandled command was fired', name, channelName);
     }
@@ -205,7 +217,7 @@ Radio.Requests = {
     if (requests && (requests[name] || requests['default'])) {
       var handler = requests[name] || requests['default'];
       args = requests[name] ? args : arguments;
-      return handler.callback.apply(handler.context, args);
+      return callHandler(handler.callback, handler.context, args);
     } else {
       debugLog('An unhandled request was fired', name, channelName);
     }
