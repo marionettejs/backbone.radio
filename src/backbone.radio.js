@@ -6,13 +6,23 @@ var Radio = Backbone.Radio = {};
 
 Radio.VERSION = '<%= version %>';
 
+// This allows you to run multiple instances of Radio on the same
+// webapp. After loading the new version, call `noConflict()` to
+// get a reference to it. At the same time the old version will be
+// returned to Backbone.Radio.
 Radio.noConflict = function () {
   Backbone.Radio = previousRadio;
   return this;
 };
 
+// Whether or not we're in DEBUG mode or not. DEBUG mode helps you
+// get around the issues of lack of warnings when events are mis-typed.
 Radio.DEBUG = false;
 
+// This is the method that's called when an unregistered event was called.
+// By default, it logs warning to the console. By overriding this you could
+// make it throw an Error, for instance. This would make firing a nonexistent event
+// have the same consequence as firing a nonexistent method on an Object.
 function debugLog(warning, eventName, channelName) {
   if (Radio.DEBUG) {
     var channelText = channelName ? ' on the ' + channelName + ' channel' : '';
@@ -20,6 +30,10 @@ function debugLog(warning, eventName, channelName) {
   }
 }
 
+// An internal method used to handle Radio's method overloading for Requests and
+// Commands. It's borrowed from Backbone.Events. It differs from Backbone's overload
+// API (which is used in Backbone.Events) in that it doesn't support space-separated
+// event names.
 function eventsApi(obj, action, name, rest) {
   if (!name) {
     return true;
@@ -87,6 +101,8 @@ _.extend(Radio, {
  */
 
 Radio.Commands = {
+  
+  // Issue a command
   command: function(name) {
     var args = slice.call(arguments, 1);
     if (!eventsApi(this, 'command', name, args)) {
@@ -112,6 +128,7 @@ Radio.Commands = {
     return this;
   },
 
+  // Register a handler for a command.
   comply: function(name, callback, context) {
     if (!eventsApi(this, 'comply', name, [callback, context])) {
       return this;
@@ -126,6 +143,7 @@ Radio.Commands = {
     return this;
   },
 
+  // Register a handler for a command that happens just once.
   complyOnce: function(name, callback, context) {
     if (!eventsApi(this, 'complyOnce', name, [callback, context])) {
       return this;
@@ -140,6 +158,7 @@ Radio.Commands = {
     return this.comply(name, once, context);
   },
 
+  // Remove handler(s)
   stopComplying: function(name) {
     if (!eventsApi(this, 'stopComplying', name)) {
       return this;
@@ -170,6 +189,8 @@ function makeCallback(callback) {
 }
 
 Radio.Requests = {
+
+  // Make a request
   request: function(name) {
     var args = slice.call(arguments, 1);
     var channelName = this.channelName;
@@ -190,6 +211,7 @@ Radio.Requests = {
     }
   },
 
+  // Set up a handler for a request
   reply: function(name, callback, context) {
     if (!eventsApi(this, 'reply', name, [callback, context])) {
       return this;
@@ -205,6 +227,7 @@ Radio.Requests = {
     return this;
   },
 
+  // Set up a handler that can only be requested once
   replyOnce: function(name, callback, context) {
     if (!eventsApi(this, 'replyOnce', name, [callback, context])) {
       return this;
@@ -220,6 +243,7 @@ Radio.Requests = {
     return this.reply(name, once, context);
   },
 
+  // Remove handler(s)
   stopReplying: function(name) {
     if (!eventsApi(this, 'stopReplying', name)) {
       return this;
@@ -281,9 +305,10 @@ _.extend(Radio.Channel.prototype, Backbone.Events, Radio.Commands, Radio.Request
 });
 
 /*
- * proxy
- * -----
- * Supplies a top-level API.
+ * Top-level API
+ * -------------
+ * Supplies the 'top-level API' for working with Channels directly
+ * from Backbone.Radio.
  *
  */
 
