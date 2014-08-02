@@ -1,3 +1,19 @@
+### [0.6.0](https://github.com/jmeas/backbone.radio/releases/tag/v0.6.0)
+
+*This update is not backwards compatible.*
+
+- **Feature:** `channelName` is now a public property on each Channel.
+- **Feature:** Requests and Commands can now have `"default"` handlers which will be called when the specified event isn't registered.
+- **API Change:** The convenience connectX methods have been removed. In their place, the object syntax can be used for registering
+  multiple events on channels. This makes the API of Radio more consistent with Backbone.Events. For instance,
+
+  ```js
+  myChannel.reply({
+    oneRequest: myCallback,
+    anotherRequest: myCallback
+  }, myContext);
+  ```
+
 ### [0.5.2](https://github.com/jmeas/backbone.radio/releases/tag/v0.5.2)
 
 - Fixes a bug where the top-level API would not pass the correct arguments to the underlying methods.
