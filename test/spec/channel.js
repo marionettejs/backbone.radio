@@ -1,6 +1,7 @@
 describe('Channel:', function () {
   beforeEach(function () {
     this.channel = Backbone.Radio.channel('myChannel');
+    this.channelTwo = Backbone.Radio.channel('myOtherChannel');
   });
 
   describe('when calling Radio.channel with no name', function() {
@@ -15,7 +16,7 @@ describe('Channel:', function () {
     });
 
     it('should have its name set', function() {
-      expect(this.channel).to.have.property('_channelName', 'myChannel');
+      expect(this.channel).to.have.property('channelName', 'myChannel');
     });
 
     it('should have all of the Backbone.Events methods', function() {
@@ -70,41 +71,52 @@ describe('Channel:', function () {
     });
   });
 
-  describe('convenience methods', function() {
+  describe('when executing an event that exists on two channels', function() {
     beforeEach(function() {
-      this.hash = {
-        eventOne: stub(),
-        eventTwo: stub()
-      };
-      this.keys = Object.keys(this.hash);
-      spy(this.channel, 'connectEvents');
-      spy(this.channel, 'connectCommands');
-      spy(this.channel, 'connectRequests');
+      this.callbackOne = stub();
+      this.callbackTwo = stub();
     });
 
-    it('should attach the listeners to the Channel when passing an event hash to `connectEvents`', function() {
-      this.channel.connectEvents(this.hash);
-      expect(this.channel._events).to.have.keys(this.keys);
+    describe('on Events', function() {
+      beforeEach(function() {
+        this.channel.on('some:event', this.callbackOne);
+        this.channelTwo.on('some:event', this.callbackOne);
+
+        this.channel.trigger('some:event');
+      });
+
+      it('should only trigger the callback on the channel specified', function() {
+        expect(this.callbackOne).to.have.been.calledOnce;
+        expect(this.callbackTwo).to.not.have.been.called;
+      });
     });
 
-    it('should attach the listeners to the Channel when passing a commands hash to `connectCommands`', function() {
-      this.channel.connectCommands(this.hash);
-      expect(this.channel._commands).to.have.keys(this.keys);
+    describe('on Commands', function() {
+      beforeEach(function() {
+        this.channel.comply('some:command', this.callbackOne);
+        this.channelTwo.comply('some:command', this.callbackOne);
+
+        this.channel.command('some:command');
+      });
+
+      it('should only trigger the callback on the channel specified', function() {
+        expect(this.callbackOne).to.have.been.calledOnce;
+        expect(this.callbackTwo).to.not.have.been.called;
+      });
     });
 
-    it('should attach the listeners to the Channel when passing a requests hash to `connectRequests`', function() {
-      this.channel.connectRequests(this.hash);
-      expect(this.channel._requests).to.have.keys(this.keys);
-    });
+    describe('on Requests', function() {
+      beforeEach(function() {
+        this.channel.reply('some:request', this.callbackOne);
+        this.channelTwo.reply('some:request', this.callbackOne);
 
-    it('should return the channel for all three methods', function() {
-      this.channel.connectEvents(this.hash);
-      this.channel.connectCommands(this.hash);
-      this.channel.connectRequests(this.hash);
+        this.channel.request('some:request');
+      });
 
-      expect(this.channel.connectEvents).to.have.always.returned(this.channel);
-      expect(this.channel.connectCommands).to.have.always.returned(this.channel);
-      expect(this.channel.connectRequests).to.have.always.returned(this.channel);
+      it('should only trigger the callback on the channel specified', function() {
+        expect(this.callbackOne).to.have.been.calledOnce;
+        expect(this.callbackTwo).to.not.have.been.called;
+      });
     });
   });
 });

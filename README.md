@@ -205,17 +205,44 @@ this method returns the instance of Commands.
 Register a handler for `commandName` on this object. `callback` will be executed whenever the command is run. Optionally
 pass a `context` for the callback, defaulting to `this`.
 
+To register a default handler for Commands use the `default` commandName. The unhandled `commandName` will be passed as the first argument.
+
+```js
+myChannel.comply('default', function(commandName) {
+  console.log('No handler was found for this command: ' + commandName);
+});
+
+// This will be handled by the default handler
+myChannel.command('someUnhandledCommand');
+```
+
+To register multiple commands at once you may also pass in a hash.
+
+```js
+// Connect all of the commands at once
+myChannel.comply({
+  'some:command': myCallback,
+  'some:other:command': someOtherCallback
+}, context);
+```
+
 Returns the instance of Commands.
 
 ##### `complyOnce( commandName, callback [, context] )`
 
 Register a handler for `commandName` that only executes a single time.
 
+Like `comply`, you may also pass a hash of commands to register many at once. Refer to the `comply` documentation above
+for an example.
+
 Returns the instance of Commands.
 
 ##### `stopComplying( [commandName] )`
 
 If `commandName` is passed then that handler is removed from the object. Otherwise, all handlers are removed.
+
+Like `comply`, you may also pass a hash of commands to remove many at once. Refer to the `comply` documentation above
+for an example.
 
 Returns the instance of Commands.
 
@@ -231,11 +258,35 @@ exists. If there is no request then `undefined` will be returned.
 Register a handler for `requestName` on this object. `callback` will be executed whenever the request is made. Optionally
 pass a `context` for the callback, defaulting to `this`.
 
+To register a default handler for Requests use the `default` requestName. The unhandled `requestName` will be passed as the first argument.
+
+```js
+myChannel.reply('default', function(requestName) {
+  console.log('No reply exists for this request: ' + requestName);
+});
+
+// This will be handled by the default request
+myChannel.request('someUnhandledRequest');
+```
+
+To register multiple requests at once you may also pass in a hash.
+
+```js
+// Connect all of the replies at once
+myChannel.reply({
+  'some:request': myCallback,
+  'some:other:request': someOtherCallback
+}, context);
+```
+
 Returns the instance of Requests.
 
 ##### `replyOnce( requestName, callback [, context] )`
 
 Register a handler for `requestName` that will only be called a single time.
+
+Like `reply`, you may also pass a hash of replies to register many at once. Refer to the `reply` documentation above
+for an example.
 
 Returns the instance of Requests.
 
@@ -243,37 +294,20 @@ Returns the instance of Requests.
 
 If `requestName` is passed then this method will remove that reply. Otherwise, all replies are removed from the object.
 
+Like `reply`, you may also pass a hash of replies to remove many replies. Refer to the `reply` documentation above
+for an example.
+
 Returns the instance of Requests.
 
 ### Channel
 
-##### `reset`
+##### `channelName`
+
+The name of the channel.
+
+##### `reset()`
 
 Destroy all handlers from Backbone.Events, Radio.Commands, and Radio.Requests from the channel. Returns the channel.
-
-##### `connectEvents( eventsHash )`
-
-A convenience method for connecting a hash of events to the channel. Returns the
-channel.
-
-```js
-// Set up a hash of events
-var eventsHash = {
-  'some:event': myCallback,
-  'some:other:event': someOtherCallback
-};
-
-// Connect all of the events at once
-myChannel.connectEvents(eventsHash);
-```
-
-##### `connectCommands( commandsHash )`
-
-A convenience method for connecting a hash of Commands handles to the channel. Returns the channel.
-
-##### `connectRequests( requestsHash )`
-
-A convenience method for connecting a hash of Requests replies to the channel. Returns the channel.
 
 ### Radio
 
