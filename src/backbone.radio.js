@@ -113,7 +113,7 @@ _.extend(Radio, {
  */
 
 Radio.Commands = {
-  
+
   // Issue a command
   command: function(name) {
     var args = slice.call(arguments, 1);
@@ -288,7 +288,12 @@ Radio.channel = function(channelName) {
   if (!channelName) {
     throw new Error('You must provide a name for the channel.');
   }
-  return Radio._channels[channelName] || new Radio.Channel(channelName);
+
+  if (Radio._channels[channelName]) {
+    return Radio._channels[channelName];
+  } else {
+    return (Radio._channels[channelName] = new Radio.Channel(channelName));
+  }
 };
 
 /*
@@ -301,7 +306,6 @@ Radio.channel = function(channelName) {
 
 Radio.Channel = function(channelName) {
   this.channelName = channelName;
-  Radio._channels[channelName] = this;
 };
 
 _.extend(Radio.Channel.prototype, Backbone.Events, Radio.Commands, Radio.Requests, {
