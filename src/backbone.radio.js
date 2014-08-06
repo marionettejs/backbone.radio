@@ -101,7 +101,7 @@ _.extend(Radio, {
  */
 
 Radio.Commands = {
-  
+
   // Issue a command
   command: function(name) {
     var args = slice.call(arguments, 1);
@@ -312,9 +312,9 @@ _.extend(Radio.Channel.prototype, Backbone.Events, Radio.Commands, Radio.Request
  *
  */
 
- var channel, args, systems = [Backbone.Events, Radio.Commands, Radio.Requests];
+var channel, args, systems = [Backbone.Events, Radio.Commands, Radio.Requests];
 
- _.each(systems, function(system) {
+_.each(systems, function(system) {
   _.each(system, function(method, methodName) {
     Radio[methodName] = function(channelName) {
       args = slice.call(arguments, 1);
