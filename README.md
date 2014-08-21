@@ -20,6 +20,20 @@ bower install backbone.radio
 npm install backbone.radio
 ```
 
+## Documentation
+
+- [Getting Started](#getting-started)
+  - [Backbone.Events](#backboneevents)
+  - [Radio.Commands](#backboneradiocommands)
+  - [Radio.Requests](#backboneradiorequests)
+  - [Channels](#channels)
+- [API](#api)
+  - [Radio.Commands](#commands)
+  - [Radio.Requests](#requests)
+  - [Channel](#channel)
+  - [Radio](#radio)
+  - [Top-level API](#top-level-api)
+
 ## Getting Started
 
 ### Backbone.Events
