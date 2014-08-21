@@ -246,8 +246,14 @@ describe('Requests:', function() {
     beforeEach(function() {
       this.requestOne = stub();
       this.requestTwo = stub();
+      this.requestThree = stub();
+      this.contextOne = {};
+      this.contextTwo = {};
       this.Requests.reply('requestOne', this.requestOne);
       this.Requests.reply('requestTwo', this.requestTwo);
+      this.Requests.reply('requestThree', this.requestTwo, this.contextOne);
+      this.Requests.reply('requestFour', this.requestTwo, this.contextTwo);
+      this.Requests.reply('requestFive', this.requestThree, this.contextTwo);
     });
 
     describe('and passing a name', function() {
@@ -257,6 +263,10 @@ describe('Requests:', function() {
 
       it('should remove the specified handler', function() {
         expect(this.Requests._requests).to.not.contain.keys('requestOne');
+      });
+
+      it('should leave the other handlers untouched', function() {
+        expect(this.Requests._requests).to.have.keys(['requestTwo', 'requestThree', 'requestFour', 'requestFive']);
       });
 
       it('should return the instance of Requests from stopReplying', function() {
@@ -271,6 +281,60 @@ describe('Requests:', function() {
 
       it('should remove all of the handlers', function() {
         expect(this.Requests._requests).to.be.undefined;
+      });
+
+      it('should return the instance of Requests from stopReplying', function() {
+        expect(this.Requests.stopReplying).to.have.always.returned(this.Requests);
+      });
+    });
+
+    describe('and passing just a callback', function() {
+      beforeEach(function() {
+        this.Requests.stopReplying(undefined, this.requestTwo);
+      });
+
+      it('should remove all handlers with that callback', function() {
+        expect(this.Requests._requests).to.not.contain.keys('requestTwo', 'requestThree', 'requestFour');
+      });
+
+      it('should leave the other handlers', function() {
+        expect(this.Requests._requests).to.have.keys(['requestOne', 'requestFive']);
+      });
+
+      it('should return the instance of Requests from stopReplying', function() {
+        expect(this.Requests.stopReplying).to.have.always.returned(this.Requests);
+      });
+    });
+
+    describe('and passing just a context', function() {
+      beforeEach(function() {
+        this.Requests.stopReplying(undefined, undefined, this.contextTwo);
+      });
+
+      it('should remove all handlers with that context', function() {
+        expect(this.Requests._requests).to.not.contain.keys('requestFour', 'requestFive');
+      });
+
+      it('should leave the other handlers', function() {
+        expect(this.Requests._requests).to.have.keys(['requestOne', 'requestTwo', 'requestThree']);
+      });
+
+      it('should return the instance of Requests from stopReplying', function() {
+        expect(this.Requests.stopReplying).to.have.always.returned(this.Requests);
+      });
+    });
+
+    describe('and passing a name, callback, and context', function() {
+      beforeEach(function() {
+        this.Requests.stopReplying('requestThree', this.requestTwo, this.contextOne);
+      });
+
+      it('should remove that handler', function() {
+        expect(this.Requests._requests).to.not.contain.keys('requestThree');
+      });
+
+      it('should leave the other handlers', function() {
+        expect(this.Requests._requests).to.have.keys(['requestOne', 'requestTwo', 'requestFour', 'requestFive']);
       });
 
       it('should return the instance of Requests from stopReplying', function() {

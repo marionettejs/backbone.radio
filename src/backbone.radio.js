@@ -171,18 +171,43 @@ Radio.Commands = {
   },
 
   // Remove handler(s)
-  stopComplying: function(name) {
+  stopComplying: function(name, callback, context) {
     if (!eventsApi(this, 'stopComplying', name)) {
       return this;
     }
-    var store = this._commands;
 
-    if (!name) {
+    var store = this._commands || {};
+
+    if (!name && !callback && !context) {
       delete this._commands;
-    } else if (store && store[name]) {
-      delete store[name];
-    } else {
-      debugLog('Attempted to remove the unregistered command', name, this.channelName);
+    }
+
+    // Remove everything if there are no arguments passed
+    if (!name && !callback && !context) {
+      delete this._commands;
+    }
+
+    var names = name ? [name] : _.keys(store);
+
+    for (var i = 0, length = names.length; i < length; i++) {
+      name = names[i];
+
+      // If there's no event by this name, log it and continue
+      // with the loop
+      var event = store[name];
+      if (!event) {
+        debugLog('Attempted to remove the unregistered command', name, this.channelName);
+        continue;
+      }
+
+      if (
+        (!callback && !context) ||
+        callback && (callback === event.callback || callback === event.callback._callback) ||
+        context && context === event.context
+      ) {
+        delete store[name];
+        continue;
+      }
     }
 
     return this;
@@ -256,19 +281,45 @@ Radio.Requests = {
   },
 
   // Remove handler(s)
-  stopReplying: function(name) {
+  stopReplying: function(name, callback, context) {
     if (!eventsApi(this, 'stopReplying', name)) {
       return this;
     }
 
-    var store = this._requests;
+    var store = this._requests || {};
 
-    if (!name) {
+    // Remove everything if there are no arguments passed
+    if (!name && !callback && !context) {
       delete this._requests;
-    } else if (store && store[name]) {
-      delete store[name];
-    } else {
-      debugLog('Attempted to remove the unregistered request', name, this.channelName);
+    }
+
+    var names = name ? [name] : _.keys(store);
+
+    for (var i = 0, length = names.length; i < length; i++) {
+      name = names[i];
+
+      // If there's no event by this name, log it and continue
+      // with the loop
+      var event = store[name];
+      if (!event) {
+        debugLog('Attempted to remove the unregistered request', name, this.channelName);
+        continue;
+      }
+
+      // Remove all callbacks for this event.
+      if (!callback && !context) {
+        delete store[name];
+        continue;
+      }
+
+      if (
+        (!callback && !context) ||
+        callback && (callback === event.callback || callback === event.callback._callback) ||
+        context && context === event.context
+      ) {
+        delete store[name];
+        continue;
+      }
     }
 
     return this;
