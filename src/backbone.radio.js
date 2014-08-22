@@ -62,6 +62,18 @@ function callHandler(callback, context, args) {
   }
 }
 
+// A helper used by `off` methods to the handler from the store
+function removeHandler(store, name, callback, context) {
+  var event = store[name];
+  if (
+    (!callback && !context) ||
+    callback && (callback === event.callback || callback === event.callback._callback) ||
+    context && context === event.context
+  ) {
+    delete store[name];
+  }
+}
+
 /*
  * tune-in
  * -------
@@ -178,10 +190,6 @@ Radio.Commands = {
 
     var store = this._commands || {};
 
-    if (!name && !callback && !context) {
-      delete this._commands;
-    }
-
     // Remove everything if there are no arguments passed
     if (!name && !callback && !context) {
       delete this._commands;
@@ -194,20 +202,12 @@ Radio.Commands = {
 
       // If there's no event by this name, log it and continue
       // with the loop
-      var event = store[name];
-      if (!event) {
+      if (!store[name]) {
         debugLog('Attempted to remove the unregistered command', name, this.channelName);
         continue;
       }
 
-      if (
-        (!callback && !context) ||
-        callback && (callback === event.callback || callback === event.callback._callback) ||
-        context && context === event.context
-      ) {
-        delete store[name];
-        continue;
-      }
+      removeHandler(store, name, callback, context);
     }
 
     return this;
@@ -300,26 +300,12 @@ Radio.Requests = {
 
       // If there's no event by this name, log it and continue
       // with the loop
-      var event = store[name];
-      if (!event) {
+      if (!store[name]) {
         debugLog('Attempted to remove the unregistered request', name, this.channelName);
         continue;
       }
 
-      // Remove all callbacks for this event.
-      if (!callback && !context) {
-        delete store[name];
-        continue;
-      }
-
-      if (
-        (!callback && !context) ||
-        callback && (callback === event.callback || callback === event.callback._callback) ||
-        context && context === event.context
-      ) {
-        delete store[name];
-        continue;
-      }
+      removeHandler(store, name, callback, context);
     }
 
     return this;
