@@ -354,7 +354,8 @@ myChannel.stopReplying('startTime');
 
 Tuning into a Channel is another useful tool for debugging. It passes all
 triggers, commands, and requests made on the channel to
-[`Radio.log`](https://github.com/jmeas/backbone.radio/blob/tune-in/README.md#log-channelname-eventname--args-).
+
+[`Radio.log`](https://github.com/jmeas/backbone.radio#log-channelname-eventname--args-).
 Returns `Backbone.Radio`.
 
 ```js
