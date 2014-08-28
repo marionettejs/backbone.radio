@@ -30,24 +30,37 @@ function debugLog(warning, eventName, channelName) {
   }
 }
 
+var eventSplitter = /\s+/;
+
 // An internal method used to handle Radio's method overloading for Requests and
 // Commands. It's borrowed from Backbone.Events. It differs from Backbone's overload
 // API (which is used in Backbone.Events) in that it doesn't support space-separated
 // event names.
 function eventsApi(obj, action, name, rest) {
   if (!name) {
-    return true;
+    return false;
   }
+
+  var results = [];
 
   // Handle event maps.
   if (typeof name === 'object') {
     for (var key in name) {
-      obj[action].apply(obj, [key, name[key]].concat(rest));
+      results.push(obj[action].apply(obj, [key, name[key]].concat(rest)));
     }
-    return false;
+    return results;
   }
 
-  return true;
+  // Handle space separated event names.
+  if (eventSplitter.test(name)) {
+    var names = name.split(eventSplitter);
+    for (var i = 0, l = names.length; i < l; i++) {
+      results.push(obj[action].apply(obj, [names[i]].concat(rest)));
+    }
+    return results;
+  }
+
+  return false;
 }
 
 // An optimized way to execute callbacks.
@@ -117,7 +130,7 @@ Radio.Commands = {
   // Issue a command
   command: function(name) {
     var args = slice.call(arguments, 1);
-    if (!eventsApi(this, 'command', name, args)) {
+    if (eventsApi(this, 'command', name, args)) {
       return this;
     }
     var channelName = this.channelName;
@@ -142,7 +155,7 @@ Radio.Commands = {
 
   // Register a handler for a command.
   comply: function(name, callback, context) {
-    if (!eventsApi(this, 'comply', name, [callback, context])) {
+    if (eventsApi(this, 'comply', name, [callback, context])) {
       return this;
     }
     this._commands || (this._commands = {});
@@ -157,7 +170,7 @@ Radio.Commands = {
 
   // Register a handler for a command that happens just once.
   complyOnce: function(name, callback, context) {
-    if (!eventsApi(this, 'complyOnce', name, [callback, context])) {
+    if (eventsApi(this, 'complyOnce', name, [callback, context])) {
       return this;
     }
     var self = this;
@@ -172,7 +185,7 @@ Radio.Commands = {
 
   // Remove handler(s)
   stopComplying: function(name) {
-    if (!eventsApi(this, 'stopComplying', name)) {
+    if (eventsApi(this, 'stopComplying', name)) {
       return this;
     }
     var store = this._commands;
@@ -205,6 +218,10 @@ Radio.Requests = {
   // Make a request
   request: function(name) {
     var args = slice.call(arguments, 1);
+    var results = eventsApi(this, 'request', name, args);
+    if (results) {
+      return results;
+    }
     var channelName = this.channelName;
     var requests = this._requests;
 
@@ -225,7 +242,7 @@ Radio.Requests = {
 
   // Set up a handler for a request
   reply: function(name, callback, context) {
-    if (!eventsApi(this, 'reply', name, [callback, context])) {
+    if (eventsApi(this, 'reply', name, [callback, context])) {
       return this;
     }
 
@@ -241,7 +258,7 @@ Radio.Requests = {
 
   // Set up a handler that can only be requested once
   replyOnce: function(name, callback, context) {
-    if (!eventsApi(this, 'replyOnce', name, [callback, context])) {
+    if (eventsApi(this, 'replyOnce', name, [callback, context])) {
       return this;
     }
 
@@ -257,7 +274,7 @@ Radio.Requests = {
 
   // Remove handler(s)
   stopReplying: function(name) {
-    if (!eventsApi(this, 'stopReplying', name)) {
+    if (eventsApi(this, 'stopReplying', name)) {
       return this;
     }
 
