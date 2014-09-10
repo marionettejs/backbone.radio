@@ -59,6 +59,80 @@ describe('DEBUG mode:', function() {
       this.warning = 'Attempted to remove the unregistered request: "some:event"';
       expect(console.warn).to.have.been.calledOnce.and.calledWithExactly(this.warning);
     });
+
+    it('should log a console warning when unregistering a command that was never registered on an object', function() {
+      this.Commands.comply('some:event');
+      this.Commands.stopComplying('some:event');
+      expect(console.warn).to.not.have.been.called;
+    });
+
+    it('should log a console warning when unregistering a request that was never registered on an object', function() {
+      this.Requests.reply('some:event');
+      this.Requests.stopReplying('some:event');
+      expect(console.warn).to.not.have.been.called;
+    });
+
+    it('should log a console warning when unregistering a callback that was never registered on an object', function() {
+      this.Commands.stopComplying(undefined, function() {});
+      this.warning = 'Attempted to remove the unregistered command: "undefined"';
+      expect(console.warn).to.have.been.calledOnce.and.calledWithExactly(this.warning);
+    });
+
+    it('should log a console warning when unregistering a callback that was never registered on an object', function() {
+      this.Requests.stopReplying(undefined, function() {});
+      this.warning = 'Attempted to remove the unregistered request: "undefined"';
+      expect(console.warn).to.have.been.calledOnce.and.calledWithExactly(this.warning);
+    });
+
+    it('should not log a console warning when unregistering a callback that was registered on an object', function() {
+      this.callback = function() {};
+      this.Commands.comply('some:event', this.callback);
+      this.Commands.stopComplying(undefined, this.callback);
+      expect(console.warn).to.not.have.been.called;
+    });
+
+    it('should not log a console warning when unregistering a callback that was registered on an object', function() {
+      this.callback = function() {};
+      this.Requests.reply('some:event', this.callback);
+      this.Requests.stopReplying(undefined, this.callback);
+      expect(console.warn).to.not.have.been.called;
+    });
+
+    it('should log a console warning when unregistering a context that was never registered on an object', function() {
+      this.Commands.stopComplying(undefined, undefined, {});
+      this.warning = 'Attempted to remove the unregistered command: "undefined"';
+      expect(console.warn).to.have.been.calledOnce.and.calledWithExactly(this.warning);
+    });
+
+    it('should log a console warning when unregistering a context that was never registered on an object', function() {
+      this.Requests.stopReplying(undefined, undefined, {});
+      this.warning = 'Attempted to remove the unregistered request: "undefined"';
+      expect(console.warn).to.have.been.calledOnce.and.calledWithExactly(this.warning);
+    });
+
+    it('should not log a console warning when unregistering a context that was registered on an object', function() {
+      this.context = {};
+      this.Commands.comply('some:event', function() {}, this.context);
+      this.Commands.stopComplying(undefined, undefined, this.context);
+      expect(console.warn).to.not.have.been.called;
+    });
+
+    it('should not log a console warning when unregistering a context that was registered on an object', function() {
+      this.context = {};
+      this.Requests.reply('some:event', function() {}, this.context);
+      this.Requests.stopReplying(undefined, undefined, this.context);
+      expect(console.warn).to.not.have.been.called;
+    });
+
+    it('should not log a console warning when unregistering all commands when none were registered', function() {
+      this.Commands.stopComplying();
+      expect(console.warn).to.not.have.been.called;
+    });
+
+    it('should not log a console warning when unregistering all requests when none were registered', function() {
+      this.Requests.stopReplying();
+      expect(console.warn).to.not.have.been.called;
+    });
   });
 
   describe('when turned off', function() {

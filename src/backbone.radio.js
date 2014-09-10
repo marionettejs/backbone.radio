@@ -84,7 +84,30 @@ function removeHandler(store, name, callback, context) {
     context && context === event.context
   ) {
     delete store[name];
+    return true;
   }
+}
+
+function removeHandlers(store, name, callback, context) {
+  store || (store = {});
+  var names = name ? [name] : _.keys(store);
+  var matched = false;
+
+  for (var i = 0, length = names.length; i < length; i++) {
+    name = names[i];
+
+    // If there's no event by this name, log it and continue
+    // with the loop
+    if (!store[name]) {
+      continue;
+    }
+
+    if (removeHandler(store, name, callback, context)) {
+      matched = true;
+    }
+  }
+
+  return matched;
 }
 
 /*
@@ -201,26 +224,11 @@ Radio.Commands = {
       return this;
     }
 
-    var store = this._commands || {};
-
     // Remove everything if there are no arguments passed
     if (!name && !callback && !context) {
       delete this._commands;
-    }
-
-    var names = name ? [name] : _.keys(store);
-
-    for (var i = 0, length = names.length; i < length; i++) {
-      name = names[i];
-
-      // If there's no event by this name, log it and continue
-      // with the loop
-      if (!store[name]) {
-        debugLog('Attempted to remove the unregistered command', name, this.channelName);
-        continue;
-      }
-
-      removeHandler(store, name, callback, context);
+    } else if (!removeHandlers(this._commands, name, callback, context)) {
+      debugLog('Attempted to remove the unregistered command', name, this.channelName);
     }
 
     return this;
@@ -303,26 +311,11 @@ Radio.Requests = {
       return this;
     }
 
-    var store = this._requests || {};
-
     // Remove everything if there are no arguments passed
     if (!name && !callback && !context) {
       delete this._requests;
-    }
-
-    var names = name ? [name] : _.keys(store);
-
-    for (var i = 0, length = names.length; i < length; i++) {
-      name = names[i];
-
-      // If there's no event by this name, log it and continue
-      // with the loop
-      if (!store[name]) {
-        debugLog('Attempted to remove the unregistered request', name, this.channelName);
-        continue;
-      }
-
-      removeHandler(store, name, callback, context);
+    } else if (!removeHandlers(this._requests, name, callback, context)) {
+      debugLog('Attempted to remove the unregistered request', name, this.channelName);
     }
 
     return this;
