@@ -223,8 +223,14 @@ describe('Commands:', function() {
     beforeEach(function() {
       this.commandOne = stub();
       this.commandTwo = stub();
+      this.commandThree = stub();
+      this.contextOne = {};
+      this.contextTwo = {};
       this.Commands.comply('commandOne', this.commandOne);
       this.Commands.comply('commandTwo', this.commandTwo);
+      this.Commands.comply('commandThree', this.commandTwo, this.contextOne);
+      this.Commands.comply('commandFour', this.commandTwo, this.contextTwo);
+      this.Commands.comply('commandFive', this.commandThree, this.contextTwo);
     });
 
     describe('and passing a name', function() {
@@ -234,6 +240,10 @@ describe('Commands:', function() {
 
       it('should remove the specified handler', function() {
         expect(this.Commands._commands).to.not.contain.keys('commandOne');
+      });
+
+      it('should leave the other handlers untouched', function() {
+        expect(this.Commands._commands).to.have.keys(['commandTwo', 'commandThree', 'commandFour', 'commandFive']);
       });
 
       it('should return the instance of Commands from stopComplying', function() {
@@ -248,6 +258,60 @@ describe('Commands:', function() {
 
       it('should remove all of the handlers', function() {
         expect(this.Commands._commands).to.be.undefined;
+      });
+
+      it('should return the instance of Commands from stopComplying', function() {
+        expect(this.Commands.stopComplying).to.have.always.returned(this.Commands);
+      });
+    });
+
+    describe('and passing just a callback', function() {
+      beforeEach(function() {
+        this.Commands.stopComplying(undefined, this.commandTwo);
+      });
+
+      it('should remove all handlers with that callback', function() {
+        expect(this.Commands._commands).to.not.contain.keys('commandTwo', 'commandThree', 'commandFour');
+      });
+
+      it('should leave the other handlers', function() {
+        expect(this.Commands._commands).to.have.keys(['commandOne', 'commandFive']);
+      });
+
+      it('should return the instance of Commands from stopComplying', function() {
+        expect(this.Commands.stopComplying).to.have.always.returned(this.Commands);
+      });
+    });
+
+    describe('and passing just a context', function() {
+      beforeEach(function() {
+        this.Commands.stopComplying(undefined, undefined, this.contextTwo);
+      });
+
+      it('should remove all handlers with that context', function() {
+        expect(this.Commands._commands).to.not.contain.keys('commandFour', 'commandFive');
+      });
+
+      it('should leave the other handlers', function() {
+        expect(this.Commands._commands).to.have.keys(['commandOne', 'commandTwo', 'commandThree']);
+      });
+
+      it('should return the instance of Commands from stopComplying', function() {
+        expect(this.Commands.stopComplying).to.have.always.returned(this.Commands);
+      });
+    });
+
+    describe('and passing a name, callback, and context', function() {
+      beforeEach(function() {
+        this.Commands.stopComplying('commandThree', this.commandTwo, this.contextOne);
+      });
+
+      it('should remove that handler', function() {
+        expect(this.Commands._commands).to.not.contain.keys('commandThree');
+      });
+
+      it('should leave the other handlers', function() {
+        expect(this.Commands._commands).to.have.keys(['commandOne', 'commandTwo', 'commandFour', 'commandFive']);
       });
 
       it('should return the instance of Commands from stopComplying', function() {
