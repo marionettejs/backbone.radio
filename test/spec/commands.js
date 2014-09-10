@@ -345,4 +345,56 @@ describe('Commands:', function() {
         .and.calledWith('commandTwo');
     });
   });
+
+  describe('when calling `command` with space-separated commands', function() {
+    beforeEach(function() {
+      this.Commands.command('commandOne commandTwo', 'argOne', 'argTwo');
+    });
+
+    it('should call `command` with the correct commands', function() {
+      expect(this.Commands.command)
+        .to.have.been.calledThrice
+        .and.calledWith('commandOne', 'argOne', 'argTwo')
+        .and.calledWith('commandTwo', 'argOne', 'argTwo');
+    });
+  });
+
+  describe('when calling `comply` with space-separated commands', function() {
+    beforeEach(function() {
+      this.Commands.comply('commandOne commandTwo', 'argOne', 'argTwo');
+    });
+
+    it('should call `comply` with the correct commands', function() {
+      expect(this.Commands.comply)
+        .to.have.been.calledThrice
+        .and.calledWith('commandOne', 'argOne', 'argTwo')
+        .and.calledWith('commandTwo', 'argOne', 'argTwo');
+    });
+  });
+
+  describe('when calling `complyOnce` with space-separated commands', function() {
+    beforeEach(function() {
+      this.Commands.complyOnce('commandOne commandTwo', 'argOne', 'argTwo');
+    });
+
+    it('should call `complyOnce` with the correct commands', function() {
+      expect(this.Commands.complyOnce)
+        .to.have.been.calledThrice
+        .and.calledWith('commandOne', 'argOne', 'argTwo')
+        .and.calledWith('commandTwo', 'argOne', 'argTwo');
+    });
+  });
+
+  describe('when calling `stopComplying` with space-separated commands', function() {
+    beforeEach(function() {
+      this.Commands.stopComplying('commandOne commandTwo');
+    });
+
+    it('should call `stopComplying` with the correct commands', function() {
+      expect(this.Commands.stopComplying)
+        .to.have.been.calledThrice
+        .and.calledWith('commandOne')
+        .and.calledWith('commandTwo');
+    });
+  });
 });

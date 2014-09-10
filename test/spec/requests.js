@@ -265,6 +265,29 @@ describe('Requests:', function() {
     });
   });
 
+  describe('when calling `request` with object', function() {
+    beforeEach(function() {
+      this.Requests.reply('requestOne', 'replyOne');
+      this.Requests.reply('requestTwo', 'replyTwo');
+      this.Requests.request({
+        'requestOne' : 'argOne',
+        'requestTwo' : 'argTwo'
+      });
+    });
+
+    it('should call the set of requests', function() {
+      expect(this.Requests.request)
+        .to.have.been.calledThrice
+        .and.calledWith('requestOne', 'argOne')
+        .and.calledWith('requestTwo', 'argTwo');
+    });
+
+    it('should return an array of replies', function() {
+      expect(this.Requests.request)
+        .to.have.returned(['replyOne', 'replyTwo']);
+    });
+  });
+
   describe('when calling `reply` with object', function() {
     beforeEach(function() {
       this.requestOneStub = stub();
@@ -328,6 +351,65 @@ describe('Requests:', function() {
     });
 
     it('should call the set of requests', function() {
+      expect(this.Requests.stopReplying)
+        .to.have.been.calledThrice
+        .and.calledWith('requestOne')
+        .and.calledWith('requestTwo');
+    });
+  });
+
+  describe('when calling `request` with space-separated requests', function() {
+    beforeEach(function() {
+      this.Requests.reply('requestOne', 'replyOne');
+      this.Requests.reply('requestTwo', 'replyTwo');
+      this.Requests.request('requestOne requestTwo', 'argOne', 'argTwo');
+    });
+
+    it('should call `request` with the correct requests', function() {
+      expect(this.Requests.request)
+        .to.have.been.calledThrice
+        .and.calledWith('requestOne', 'argOne', 'argTwo')
+        .and.calledWith('requestTwo', 'argOne', 'argTwo');
+    });
+
+    it('should return an array of replies', function() {
+      expect(this.Requests.request)
+        .to.have.returned(['replyOne', 'replyTwo']);
+    });
+  });
+
+  describe('when calling `reply` with space-separated requests', function() {
+    beforeEach(function() {
+      this.Requests.reply('requestOne requestTwo', 'argOne', 'argTwo');
+    });
+
+    it('should call `reply` with the correct requests', function() {
+      expect(this.Requests.reply)
+        .to.have.been.calledThrice
+        .and.calledWith('requestOne', 'argOne', 'argTwo')
+        .and.calledWith('requestTwo', 'argOne', 'argTwo');
+    });
+  });
+
+  describe('when calling `replyOnce` with space-separated requests', function() {
+    beforeEach(function() {
+      this.Requests.replyOnce('requestOne requestTwo', 'argOne', 'argTwo');
+    });
+
+    it('should call `replyOnce` with the correct requests', function() {
+      expect(this.Requests.replyOnce)
+        .to.have.been.calledThrice
+        .and.calledWith('requestOne', 'argOne', 'argTwo')
+        .and.calledWith('requestTwo', 'argOne', 'argTwo');
+    });
+  });
+
+  describe('when calling `stopReplying` with space-separated requests', function() {
+    beforeEach(function() {
+      this.Requests.stopReplying('requestOne requestTwo');
+    });
+
+    it('should call `stopReplying` with the correct requests', function() {
       expect(this.Requests.stopReplying)
         .to.have.been.calledThrice
         .and.calledWith('requestOne')
