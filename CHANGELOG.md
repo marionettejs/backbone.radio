@@ -1,3 +1,10 @@
+### [0.7.0](https://github.com/jmeas/backbone.radio/releases/tag/v0.7.0)
+
+- **Feature**: All API methods of Commands ands Requests now support the space-separated syntax.
+- **Enhancement**: Only Channels created through Radio's factory method will register themselves on the internal
+  store of Channels
+- **Enhancement**: Callback execution has been optimized
+
 ### [0.6.0](https://github.com/jmeas/backbone.radio/releases/tag/v0.6.0)
 
 *This update is not backwards compatible.*
