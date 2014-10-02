@@ -193,12 +193,23 @@ only uses verbs that start with R: `request`, `reply`, and so on.
 
 ## API
 
+Like Backbone.Events, **all** of the following methods support both the object-syntax and space-separated syntax. For the sake of brevity,
+I only provide examples for these alternate syntaxes in the most common use cases.
+
 ### Commands
 
 ##### `command( commandName [, args...] )`
 
 Order a command to be completed. Optionally pass arguments to send along to the callback. Like Backbone.Event's `trigger` method,
 this method returns the instance of Commands.
+
+You can order multiple commands at once by using the space-separated syntax.
+
+```js
+myChannel.command('commandOne commandTwo');
+```
+
+This method always returns `undefined`.
 
 ##### `comply( commandName, callback [, context] )`
 
@@ -241,7 +252,7 @@ Returns the instance of Commands.
 
 If `commandName` is passed then that handler is removed from the object. Otherwise, all handlers are removed.
 
-Like `comply`, you may also pass a hash of commands to remove many at once. Refer to the `comply` documentation above
+You may also pass a hash of commands or space-separated list to remove many commands at once. Refer to the `comply` documentation above
 for an example.
 
 Returns the instance of Commands.
@@ -252,6 +263,14 @@ Returns the instance of Commands.
 
 Make a request for `requestName`. Optionally pass arguments to send along to the callback. Returns the reply, if one
 exists. If there is no request then `undefined` will be returned.
+
+You can make multiple requests at once by using the space-separated syntax.
+
+```js
+myChannel.request('commandOne commandTwo');
+```
+
+When using the space-separated syntax, the responses will be returned to you as an array.
 
 ##### `reply( requestName, callback [, context] )`
 
@@ -294,8 +313,7 @@ Returns the instance of Requests.
 
 If `requestName` is passed then this method will remove that reply. Otherwise, all replies are removed from the object.
 
-Like `reply`, you may also pass a hash of replies to remove many replies. Refer to the `reply` documentation above
-for an example.
+You may also pass a hash of replies or space-separated replies to remove many at once.
 
 Returns the instance of Requests.
 
