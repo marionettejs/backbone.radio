@@ -212,7 +212,7 @@ I only provide examples for these alternate syntaxes in the most common use case
 
 ### Commands
 
-##### `command( commandName [, args...] )`
+#### `command( commandName [, args...] )`
 
 Order a command to be completed. Optionally pass arguments to send along to the callback. Like Backbone.Event's `trigger` method,
 this method returns the instance of Commands.
@@ -225,7 +225,7 @@ myChannel.command('commandOne commandTwo');
 
 This method always returns `undefined`.
 
-##### `comply( commandName, callback [, context] )`
+#### `comply( commandName, callback [, context] )`
 
 Register a handler for `commandName` on this object. `callback` will be executed whenever the command is run. Optionally
 pass a `context` for the callback, defaulting to `this`.
@@ -253,7 +253,7 @@ myChannel.comply({
 
 Returns the instance of Commands.
 
-##### `complyOnce( commandName, callback [, context] )`
+#### `complyOnce( commandName, callback [, context] )`
 
 Register a handler for `commandName` that only executes a single time.
 
@@ -262,7 +262,7 @@ for an example.
 
 Returns the instance of Commands.
 
-##### `stopComplying( [commandName] )`
+#### `stopComplying( [commandName] )`
 
 If `commandName` is passed then that handler is removed from the object. Otherwise, all handlers are removed.
 
@@ -273,7 +273,7 @@ Returns the instance of Commands.
 
 ### Requests
 
-##### `request( requestName [, args...] )`
+#### `request( requestName [, args...] )`
 
 Make a request for `requestName`. Optionally pass arguments to send along to the callback. Returns the reply, if one
 exists. If there is no request then `undefined` will be returned.
@@ -286,7 +286,7 @@ myChannel.request('commandOne commandTwo');
 
 When using the space-separated syntax, the responses will be returned to you as an array.
 
-##### `reply( requestName, callback [, context] )`
+#### `reply( requestName, callback [, context] )`
 
 Register a handler for `requestName` on this object. `callback` will be executed whenever the request is made. Optionally
 pass a `context` for the callback, defaulting to `this`.
@@ -314,7 +314,7 @@ myChannel.reply({
 
 Returns the instance of Requests.
 
-##### `replyOnce( requestName, callback [, context] )`
+#### `replyOnce( requestName, callback [, context] )`
 
 Register a handler for `requestName` that will only be called a single time.
 
@@ -323,7 +323,7 @@ for an example.
 
 Returns the instance of Requests.
 
-##### `stopReplying( [requestName] )`
+#### `stopReplying( [requestName] )`
 
 If `requestName` is passed then this method will remove that reply. Otherwise, all replies are removed from the object.
 
@@ -333,17 +333,17 @@ Returns the instance of Requests.
 
 ### Channel
 
-##### `channelName`
+#### `channelName`
 
 The name of the channel.
 
-##### `reset()`
+#### `reset()`
 
 Destroy all handlers from Backbone.Events, Radio.Commands, and Radio.Requests from the channel. Returns the channel.
 
 ### Radio
 
-##### `channel( channelName )`
+#### `channel( channelName )`
 
 Get a reference to a channel by name. If a name is not provided an Error will be thrown.
 
@@ -351,7 +351,7 @@ Get a reference to a channel by name. If a name is not provided an Error will be
 var globalChannel = Backbone.Radio.channel('hello');
 ```
 
-##### `DEBUG`
+#### `DEBUG`
 
 This is a Boolean property. Setting it to `true` will cause console warnings to be issued
 whenever you interact with a `request` or `command` that isn't registered. This is useful in development when you want to
@@ -368,7 +368,7 @@ myChannel.command('show:view');
 myChannel.stopReplying('startTime');
 ```
 
-##### `tuneIn( channelName )`
+#### `tuneIn( channelName )`
 
 Tuning into a Channel is another useful tool for debugging. It passes all
 triggers, commands, and requests made on the channel to
@@ -380,7 +380,7 @@ Returns `Backbone.Radio`.
 Backbone.Radio.tuneIn('calendar');
 ```
 
-##### `tuneOut( channelName )`
+#### `tuneOut( channelName )`
 
 Once you're done tuning in you can call `tuneOut` to stop the logging. Returns `Backbone.Radio`.
 
@@ -388,7 +388,7 @@ Once you're done tuning in you can call `tuneOut` to stop the logging. Returns `
 Backbone.Radio.tuneOut('calendar');
 ```
 
-##### `log( channelName, eventName [, args...] )`
+#### `log( channelName, eventName [, args...] )`
 
 When tuned into a Channel, this method will be called for all activity on
 a channel. The default implementation is to `console.log` the following message:
