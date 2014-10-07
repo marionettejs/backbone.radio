@@ -264,7 +264,9 @@ Returns the instance of Commands.
 
 #### `stopComplying( [commandName] )`
 
-If `commandName` is passed then that handler is removed from the object. Otherwise, all handlers are removed.
+If `context` is passed, then all handlers with that context will be removed from the object. If `callback` is
+passed then all handlers with that callback will be removed. If `commandName` is passed then this method will
+remove that handler. If no arguments are passed then all handlers are removed from the object.
 
 You may also pass a hash of commands or space-separated list to remove many commands at once. Refer to the `comply` documentation above
 for an example.
@@ -323,9 +325,11 @@ for an example.
 
 Returns the instance of Requests.
 
-#### `stopReplying( [requestName] )`
+#### `stopReplying( [requestName] [, callback] [, context] )`
 
-If `requestName` is passed then this method will remove that reply. Otherwise, all replies are removed from the object.
+If `context` is passed, then all replies with that context will be removed from the object. If `callback` is
+passed then all requests with that callback will be removed. If `requestName` is passed then this method will
+remove that reply. If no arguments are passed then all replies are removed from the object.
 
 You may also pass a hash of replies or space-separated replies to remove many at once.
 
