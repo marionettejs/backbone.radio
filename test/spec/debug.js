@@ -59,6 +59,20 @@ describe('DEBUG mode:', function() {
       this.warning = 'Attempted to remove the unregistered request: "some:event"';
       expect(console.warn).to.have.been.calledOnce.and.calledWithExactly(this.warning);
     });
+
+    it('should log a console warning when registering a command that already was registered', function() {
+      this.Commands.comply('some:event', function() {});
+      this.Commands.comply('some:event', function() {});
+      this.warning = 'A command was overwritten: "some:event"';
+      expect(console.warn).to.have.been.calledOnce.and.calledWithExactly(this.warning);
+    });
+
+    it('should log a console warning when registering a request that already was registered', function() {
+      this.Requests.reply('some:event', function() {});
+      this.Requests.reply('some:event', function() {});
+      this.warning = 'A request was overwritten: "some:event"';
+      expect(console.warn).to.have.been.calledOnce.and.calledWithExactly(this.warning);
+    });
   });
 
   describe('when turned off', function() {
@@ -99,6 +113,18 @@ describe('DEBUG mode:', function() {
 
     it('should not log a console warning when unregistering a request that was never registered on an object', function() {
       this.Requests.stopReplying('some:event');
+      expect(console.warn).to.not.have.been.called;
+    });
+
+    it('should not log a console warning when registering a command that already was registered', function() {
+      this.Commands.comply('some:event', function() {});
+      this.Commands.comply('some:event', function() {});
+      expect(console.warn).to.not.have.been.called;
+    });
+
+    it('should not log a console warning when registering a request that already was registered', function() {
+      this.Requests.reply('some:event', function() {});
+      this.Requests.reply('some:event', function() {});
       expect(console.warn).to.not.have.been.called;
     });
   });
