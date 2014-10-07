@@ -75,6 +75,41 @@ function callHandler(callback, context, args) {
   }
 }
 
+// A helper used by `off` methods to the handler from the store
+function removeHandler(store, name, callback, context) {
+  var event = store[name];
+  if (
+    (!callback && !context) ||
+    callback && (callback === event.callback || callback === event.callback._callback) ||
+    context && context === event.context
+  ) {
+    delete store[name];
+    return true;
+  }
+}
+
+function removeHandlers(store, name, callback, context) {
+  store || (store = {});
+  var names = name ? [name] : _.keys(store);
+  var matched = false;
+
+  for (var i = 0, length = names.length; i < length; i++) {
+    name = names[i];
+
+    // If there's no event by this name, log it and continue
+    // with the loop
+    if (!store[name]) {
+      continue;
+    }
+
+    if (removeHandler(store, name, callback, context)) {
+      matched = true;
+    }
+  }
+
+  return matched;
+}
+
 /*
  * tune-in
  * -------
@@ -184,17 +219,15 @@ Radio.Commands = {
   },
 
   // Remove handler(s)
-  stopComplying: function(name) {
+  stopComplying: function(name, callback, context) {
     if (eventsApi(this, 'stopComplying', name)) {
       return this;
     }
-    var store = this._commands;
 
-    if (!name) {
+    // Remove everything if there are no arguments passed
+    if (!name && !callback && !context) {
       delete this._commands;
-    } else if (store && store[name]) {
-      delete store[name];
-    } else {
+    } else if (!removeHandlers(this._commands, name, callback, context)) {
       debugLog('Attempted to remove the unregistered command', name, this.channelName);
     }
 
@@ -273,18 +306,15 @@ Radio.Requests = {
   },
 
   // Remove handler(s)
-  stopReplying: function(name) {
+  stopReplying: function(name, callback, context) {
     if (eventsApi(this, 'stopReplying', name)) {
       return this;
     }
 
-    var store = this._requests;
-
-    if (!name) {
+    // Remove everything if there are no arguments passed
+    if (!name && !callback && !context) {
       delete this._requests;
-    } else if (store && store[name]) {
-      delete store[name];
-    } else {
+    } else if (!removeHandlers(this._requests, name, callback, context)) {
       debugLog('Attempted to remove the unregistered request', name, this.channelName);
     }
 
