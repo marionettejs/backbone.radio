@@ -195,6 +195,10 @@ Radio.Commands = {
     }
     this._commands || (this._commands = {});
 
+    if (this._commands[name]) {
+      debugLog('A command was overwritten', name, this.channelName);
+    }
+
     this._commands[name] = {
       callback: callback,
       context: context || this
@@ -280,6 +284,10 @@ Radio.Requests = {
     }
 
     this._requests || (this._requests = {});
+
+    if (this._requests[name]) {
+      debugLog('A request was overwritten', name, this.channelName);
+    }
 
     this._requests[name] = {
       callback: makeCallback(callback),
