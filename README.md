@@ -156,34 +156,32 @@ it's a standalone message bus comprised of all three systems.
 Getting a handle of a Channel is easy.
 
 ```js
-// Get a reference to the channel named 'global'
-var globalChannel = Backbone.Radio.channel('global');
+// Get a reference to the channel named 'user'
+var userChannel = Backbone.Radio.channel('user');
 ```
 
 Once you've got a channel, you can attach handlers to it.
 
 ```js
-globalChannel.on('some:event', function() {
+userChannel.on('some:event', function() {
   console.log('An event has happened!');
 });
 
-globalChannel.comply('some:action', function() {
+userChannel.comply('some:action', function() {
   console.log('I was told to execute some action');
 });
 
-globalChannel.reply('some:request', function() {
-  return 'food is good';
-});
+userChannel.reply('some:request', 'food is good');
 ```
 
 You can also use the 'trigger' methods on the Channel.
 
 ```js
-globalChannel.trigger('some:event');
+userChannel.trigger('some:event');
 
-globalChannel.command('some:command');
+userChannel.command('some:command');
 
-globalChannel.request('some:request');
+userChannel.request('some:request');
 ```
 
 You can have as many channels as you'd like
@@ -348,7 +346,7 @@ Destroy all handlers from Backbone.Events, Radio.Commands, and Radio.Requests fr
 Get a reference to a channel by name. If a name is not provided an Error will be thrown.
 
 ```js
-var globalChannel = Backbone.Radio.channel('hello');
+var authChannel = Backbone.Radio.channel('auth');
 ```
 
 #### `DEBUG`
@@ -406,8 +404,8 @@ If you'd like to execute a method on a channel, yet you don't need to keep a han
 functions directly on the `Backbone.Radio` object.
 
 ```js
-// Trigger 'some:event' on the global channel
-Backbone.Radio.trigger('global', 'some:event');
+// Trigger 'some:event' on the settings channel
+Backbone.Radio.trigger('settings', 'some:event');
 ```
 
 All of the methods for all three messaging systems are available from the top-level API.
