@@ -1,5 +1,3 @@
-var slice = Array.prototype.slice;
-
 var previousRadio = Backbone.Radio;
 
 var Radio = Backbone.Radio = {};
@@ -129,7 +127,7 @@ _.extend(Radio, {
 
   // Log information about the channel and event
   log: function(channelName, eventName) {
-    var args = slice.call(arguments, 2);
+    var args = _.rest(arguments, 2);
     console.log('[' + channelName + '] "' + eventName + '"', args);
   },
 
@@ -164,7 +162,7 @@ Radio.Commands = {
 
   // Issue a command
   command: function(name) {
-    var args = slice.call(arguments, 1);
+    var args = _.rest(arguments);
     if (eventsApi(this, 'command', name, args)) {
       return this;
     }
@@ -254,7 +252,7 @@ Radio.Requests = {
 
   // Make a request
   request: function(name) {
-    var args = slice.call(arguments, 1);
+    var args = _.rest(arguments);
     var results = eventsApi(this, 'request', name, args);
     if (results) {
       return results;
@@ -388,7 +386,7 @@ var channel, args, systems = [Backbone.Events, Radio.Commands, Radio.Requests];
 _.each(systems, function(system) {
   _.each(system, function(method, methodName) {
     Radio[methodName] = function(channelName) {
-      args = slice.call(arguments, 1);
+      args = _.rest(arguments);
       channel = this.channel(channelName);
       return channel[methodName].apply(channel, args);
     };
