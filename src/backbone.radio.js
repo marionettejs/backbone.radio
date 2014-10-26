@@ -229,8 +229,41 @@ Radio.Commands = {
     }
 
     return this;
+  },
+
+  stopComplyingFor: function(obj, name, callback) {
+    var complyingFor = this._complyingFor;
+    if (!complyingFor) { return this; }
+    var remove = !name && !callback;
+    if (!callback && typeof name === 'object') { callback = this; }
+    if (obj) { (complyingFor = {})[obj._commandId] = obj; }
+    for (var id in complyingFor) {
+      obj = complyingFor[id];
+      obj.stopComplying(name, callback, this);
+      if (remove || _.isEmpty(obj._commands)) { delete this._complyingFor[id]; }
+    }
+    return this;
   }
 };
+
+// listenTo equivalent for Commands
+var listenMethods = {complyFor: 'comply', complyForOnce: 'complyOnce'};
+_.each(listenMethods, function(implementation, method) {
+  Radio.Commands[method] = function(obj, name, callback) {
+    var complyingFor = this._complyingFor || (this._complyingFor = {});
+    var id = obj._commandId || (obj._commandId = _.uniqueId('c'));
+    complyingFor[id] = obj;
+    if (!callback && typeof name === 'object') { callback = this; }
+    if (implementation === 'once') {
+      callback = _.compose(function(result) {
+        this.stopListening(_.rest(arguments));
+        return result;
+      }, callback);
+    }
+    obj[implementation](name, callback, this);
+    return this;
+  };
+});
 
 //
 // Backbone.Radio.Requests
@@ -318,8 +351,41 @@ Radio.Requests = {
     }
 
     return this;
+  },
+
+  stopReplyingFor: function(obj, name, callback) {
+    var replyingFor = this._replyingFor;
+    if (!replyingFor) { return this; }
+    var remove = !name && !callback;
+    if (!callback && typeof name === 'object') { callback = this; }
+    if (obj) { (replyingFor = {})[obj._requestId] = obj; }
+    for (var id in replyingFor) {
+      obj = replyingFor[id];
+      obj.stopReplying(name, callback, this);
+      if (remove || _.isEmpty(obj._requests)) { delete this._replyingFor[id]; }
+    }
+    return this;
   }
 };
+
+// listenTo equivalent for Requests
+var listenMethods = {replyFor: 'reply', replyForOnce: 'replyOnce'};
+_.each(listenMethods, function(implementation, method) {
+  Radio.Requests[method] = function(obj, name, callback) {
+    var replyingFor = this._replyingFor || (this._replyingFor = {});
+    var id = obj._requestId || (obj._requestId = _.uniqueId('r'));
+    replyingFor[id] = obj;
+    if (!callback && typeof name === 'object') { callback = this; }
+    if (implementation === 'once') {
+      callback = _.compose(function(result) {
+        this.stopListening(_.rest(arguments));
+        return result;
+      }, callback);
+    }
+    obj[implementation](name, callback, this);
+    return this;
+  };
+});
 
 //
 // Backbone.Radio.channel

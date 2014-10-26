@@ -271,6 +271,20 @@ for an example.
 
 Returns the instance of Commands.
 
+#### `complyFor( other, commandName, callback )`
+
+An analogous method to `Events.listenTo`. Registers a callback on `other`. The advantage to using this form is that it allows the object
+to remove its own handlers at a later date. This is particularly useful for registering events on a channel.
+
+#### `complyForOnce( other, commandName, callback )`
+
+An analogous method to `Events.listenToOnce`. Just like `complyFor`, but the callback will only be executed once before being removed.
+
+#### `stopComplyingFor( [other] [, commandName] [, callback] )
+
+An analogous method to `Events.stopListening`. Removes callbacks registered on `other`. Pass no arguments to remove all callbacks,
+or pass any combination of the arguments for fine-grained control over what is removed.
+
 ### Requests
 
 #### `request( requestName [, args...] )`
@@ -332,6 +346,20 @@ remove that reply. If no arguments are passed then all replies are removed from 
 You may also pass a hash of replies or space-separated replies to remove many at once.
 
 Returns the instance of Requests.
+
+#### `replyFor( other, requestName, callback )`
+
+An analogous method to `Events.listenTo`. Registers a callback on `other`. The advantage to using this form is that it allows the object
+to remove its own handlers at a later date. This is particularly useful for registering requests on a channel.
+
+#### `replyForOnce( other, requestName, callback )`
+
+An analogous method to `Events.listenToOnce`. Just like `replyFor`, but the callback will only be executed once before being removed.
+
+#### `stopReplyingFor( [other] [, requestName] [, callback] )
+
+An analogous method to `Events.stopListening`. Removes replies registered on `other`. Pass no arguments to remove all callbacks,
+or pass any combination of the arguments for fine-grained control over what is removed.
 
 ### Channel
 

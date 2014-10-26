@@ -493,4 +493,224 @@ describe('Commands:', function() {
         .and.calledWith('commandTwo');
     });
   });
+
+  describe('when registering a command with `complyFor`, then executing it', function() {
+    beforeEach(function() {
+      this.CommandsTwo = _.clone(Backbone.Radio.Commands);
+      this.callback = stub();
+      this.Commands.complyFor(this.CommandsTwo, 'myCommand', this.callback);
+      this.CommandsTwo.command('myCommand');
+    });
+
+    it('should execute the callback with the correct context', function() {
+      expect(this.callback)
+        .to.have.been.calledOnce
+        .and.to.have.always.been.calledOn(this.Commands);
+    });
+  });
+
+  describe('when registering a command with `complyFor` and an event map, and then executing one of the commands', function() {
+    beforeEach(function() {
+      this.CommandsTwo = _.clone(Backbone.Radio.Commands);
+      this.callbackOne = stub();
+      this.callbackTwo = stub();
+      this.Commands.complyFor(this.CommandsTwo, {
+        commandOne: this.callbackOne,
+        commandTwo: this.callbackTwo
+      });
+      this.CommandsTwo.command('commandOne');
+    });
+
+    it('should execute the callback with the correct context', function() {
+      expect(this.callbackOne)
+        .to.have.been.calledOnce
+        .and.to.have.always.been.calledOn(this.Commands);
+    });
+
+    it('should not execute the callbacks not specified', function() {
+      expect(this.callbackTwo).to.not.have.been.called;
+    });
+  });
+
+  describe('`complyForOnce`', function() {
+    beforeEach(function() {
+      this.CommandsTwo = _.clone(Backbone.Radio.Commands);
+      this.callback = stub();
+      this.Commands.complyForOnce(this.CommandsTwo, 'myCommand', this.callback);
+      this.CommandsTwo.command('myCommand');
+    });
+
+    it('should execute the callback with the correct context', function() {
+      expect(this.callback)
+        .to.have.been.calledOnce
+        .and.to.have.always.been.calledOn(this.Commands);
+    });
+
+    it('should remove the reference from the original object', function() {
+      expect(this.CommandsTwo._commands).to.deep.equal({});
+    });
+  });
+
+  describe('`complyForOnce` with an event map', function() {
+    beforeEach(function() {
+      this.CommandsTwo = _.clone(Backbone.Radio.Commands);
+      this.callbackOne = stub();
+      this.callbackTwo = stub();
+      this.Commands.complyForOnce(this.CommandsTwo, {
+        commandOne: this.callbackOne,
+        commandTwo: this.callbackTwo
+      });
+      this.CommandsTwo.command('commandOne');
+    });
+
+    it('should execute the callback with the correct context', function() {
+      expect(this.callbackOne)
+        .to.have.been.calledOnce
+        .and.to.have.always.been.calledOn(this.Commands);
+    });
+
+    it('should not execute the callbacks not specified', function() {
+      expect(this.callbackTwo).to.not.have.been.called;
+    });
+
+    it('should remove the key for a', function() {
+      expect(this.CommandsTwo._commands).to.not.have.key('commandOne');
+    });
+
+    it('should keep the key for b', function() {
+      expect(this.CommandsTwo._commands).to.have.key('commandTwo');
+    });
+  });
+
+  describe('`stopComplyingFor` with the first argument', function() {
+    beforeEach(function() {
+      this.CommandsTwo = _.clone(Backbone.Radio.Commands);
+      this.CommandsThree = _.clone(Backbone.Radio.Commands);
+      this.callbackOne = stub();
+      this.callbackTwo = stub();
+      this.callbackThree = stub();
+      this.Commands.complyFor(this.CommandsTwo, {
+        commandOne: this.callbackOne,
+        commandTwo: this.callbackTwo
+      });
+      this.Commands.complyFor(this.CommandsThree, 'commandThree', this.callbackThree);
+      this.Commands.stopComplyingFor(this.CommandsTwo);
+    });
+    
+    it('should only remove the callbacks on CommandsTwo', function() {
+      expect(this.CommandsTwo._commands).to.deep.equal({});
+    });
+
+    it('should leave the callback on CommandThree', function() {
+      expect(this.CommandsThree._commands).to.have.key('commandThree');
+    });
+  });
+
+  describe('`stopComplyingFor` with the first two arguments', function() {
+    beforeEach(function() {
+      this.CommandsTwo = _.clone(Backbone.Radio.Commands);
+      this.CommandsThree = _.clone(Backbone.Radio.Commands);
+      this.callbackOne = stub();
+      this.callbackTwo = stub();
+      this.callbackThree = stub();
+      this.Commands.complyFor(this.CommandsTwo, {
+        commandOne: this.callbackOne,
+        commandTwo: this.callbackTwo
+      });
+      this.Commands.complyFor(this.CommandsThree, 'commandThree', this.callbackThree);
+      this.Commands.stopComplyingFor(this.CommandsTwo, 'commandOne');
+    });
+    
+    it('should only remove the proper callback on CommandsTwo', function() {
+      expect(this.CommandsTwo._commands).to.not.have.key('commandOne');
+    });
+
+    it('should not touch the other callback on CommandsTwo', function() {
+      expect(this.CommandsTwo._commands).to.have.key('commandTwo');
+    });
+
+    it('should leave the callback on CommandThree', function() {
+      expect(this.CommandsThree._commands).to.have.key('commandThree');
+    });
+  });
+
+  describe('`stopComplyingFor` with the all three arguments', function() {
+    beforeEach(function() {
+      this.CommandsTwo = _.clone(Backbone.Radio.Commands);
+      this.CommandsThree = _.clone(Backbone.Radio.Commands);
+      this.callbackOne = stub();
+      this.callbackTwo = stub();
+      this.callbackThree = stub();
+      this.Commands.complyFor(this.CommandsTwo, {
+        commandOne: this.callbackOne,
+        commandTwo: this.callbackTwo
+      });
+      this.Commands.complyFor(this.CommandsThree, 'commandThree', this.callbackThree);
+      this.Commands.stopComplyingFor(this.CommandsTwo, 'commandOne', this.callbackOne);
+    });
+    
+    it('should only remove the proper callback on CommandsTwo', function() {
+      expect(this.CommandsTwo._commands).to.not.have.key('commandOne');
+    });
+
+    it('should not touch the other callback on CommandsTwo', function() {
+      expect(this.CommandsTwo._commands).to.have.key('commandTwo');
+    });
+
+    it('should leave the callback on CommandThree', function() {
+      expect(this.CommandsThree._commands).to.have.key('commandThree');
+    });
+  });
+
+  describe('`stopComplyingFor` with just the second argument', function() {
+    beforeEach(function() {
+      this.CommandsTwo = _.clone(Backbone.Radio.Commands);
+      this.CommandsThree = _.clone(Backbone.Radio.Commands);
+      this.callbackOne = stub();
+      this.callbackTwo = stub();
+      this.callbackThree = stub();
+      this.Commands.complyFor(this.CommandsTwo, {
+        commandOne: this.callbackOne,
+        commandTwo: this.callbackOne
+      });
+      this.Commands.complyFor(this.CommandsThree, {
+        commandTwo: this.callbackThree,
+        commandThree: this.callbackThree
+      });
+      this.Commands.stopComplyingFor(undefined, 'commandTwo');
+    });
+    
+    it('should only remove the proper callback on CommandsTwo', function() {
+      expect(this.CommandsTwo._commands).to.not.have.key('commandTwo');
+      expect(this.CommandsTwo._commands).to.have.key('commandOne');
+    });
+
+    it('should not touch the other callback on CommandsTwo', function() {
+      expect(this.CommandsThree._commands).to.not.have.key('commandTwo');
+      expect(this.CommandsThree._commands).to.have.key('commandThree');
+    });
+  });
+
+  describe('`stopComplyingFor` with just the third argument', function() {
+    beforeEach(function() {
+      this.CommandsTwo = _.clone(Backbone.Radio.Commands);
+      this.CommandsThree = _.clone(Backbone.Radio.Commands);
+      this.callbackOne = stub();
+      this.callbackTwo = stub();
+      this.Commands.complyFor(this.CommandsTwo, {
+        commandOne: this.callbackOne,
+        commandTwo: this.callbackOne
+      });
+      this.Commands.complyFor(this.CommandsThree, 'commandThree', this.callbackTwo);
+      this.Commands.stopComplyingFor(undefined, undefined, this.callbackOne);
+    });
+    
+    it('should only remove the proper callback on CommandsTwo', function() {
+      expect(this.CommandsTwo._commands).to.deep.equal({});
+    });
+
+    it('should not touch the other callback on CommandsTwo', function() {
+      expect(this.CommandsThree._commands).to.have.key('commandThree');
+    });
+  });
 });

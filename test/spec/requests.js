@@ -512,4 +512,92 @@ describe('Requests:', function() {
         .and.calledWith('requestTwo');
     });
   });
+
+  describe('when registering a request with `replyFor`, then executing it', function() {
+    beforeEach(function() {
+      this.RequestsTwo = _.clone(Backbone.Radio.Requests);
+      this.callback = stub();
+      this.Requests.replyFor(this.RequestsTwo, 'myRequest', this.callback);
+      this.RequestsTwo.request('myRequest');
+    });
+
+    it('should execute the callback with the correct context', function() {
+      expect(this.callback)
+        .to.have.been.calledOnce
+        .and.to.have.always.been.calledOn(this.Requests);
+    });
+  });
+
+  describe('when registering a request with `replyFor` and an event map, and then executing one of the requests', function() {
+    beforeEach(function() {
+      this.RequestsTwo = _.clone(Backbone.Radio.Requests);
+      this.callbackOne = stub();
+      this.callbackTwo = stub();
+      this.Requests.replyFor(this.RequestsTwo, {
+        requestOne: this.callbackOne,
+        requestTwo: this.callbackTwo
+      });
+      this.RequestsTwo.request('requestOne');
+    });
+
+    it('should execute the callback with the correct context', function() {
+      expect(this.callbackOne)
+        .to.have.been.calledOnce
+        .and.to.have.always.been.calledOn(this.Requests);
+    });
+
+    it('should not execute the callbacks not specified', function() {
+      expect(this.callbackTwo).to.not.have.been.called;
+    });
+  });
+
+  describe('`replyForOnce` should clean up after itself', function() {
+    beforeEach(function() {
+      this.RequestsTwo = _.clone(Backbone.Radio.Requests);
+      this.callback = stub();
+      this.Requests.replyForOnce(this.RequestsTwo, 'myRequest', this.callback);
+      this.RequestsTwo.request('myRequest');
+    });
+
+    it('should execute the callback with the correct context', function() {
+      expect(this.callback)
+        .to.have.been.calledOnce
+        .and.to.have.always.been.calledOn(this.Requests);
+    });
+
+    it('should remove the reference from the original object', function() {
+      expect(this.RequestsTwo._requests).to.deep.equal({});
+    });
+  });
+
+  describe('`replyForOnce` with an event map should clean up after itself', function() {
+    beforeEach(function() {
+      this.RequestsTwo = _.clone(Backbone.Radio.Requests);
+      this.callbackOne = stub();
+      this.callbackTwo = stub();
+      this.Requests.replyForOnce(this.RequestsTwo, {
+        requestOne: this.callbackOne,
+        requestTwo: this.callbackTwo
+      });
+      this.RequestsTwo.request('requestOne');
+    });
+
+    it('should execute the callback with the correct context', function() {
+      expect(this.callbackOne)
+        .to.have.been.calledOnce
+        .and.to.have.always.been.calledOn(this.Requests);
+    });
+
+    it('should not execute the callbacks not specified', function() {
+      expect(this.callbackTwo).to.not.have.been.called;
+    });
+
+    it('should remove the key for a', function() {
+      expect(this.RequestsTwo._requests).to.not.have.key('requestOne');
+    });
+
+    it('should keep the key for b', function() {
+      expect(this.RequestsTwo._requests).to.have.key('requestTwo');
+    });
+  });
 });
