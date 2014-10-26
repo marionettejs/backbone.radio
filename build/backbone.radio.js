@@ -1,4 +1,4 @@
-// Backbone.Radio v0.7.0
+// Backbone.Radio v0.7.1
 (function(root, factory) {
   if (typeof define === 'function' && define.amd) {
     define(['backbone', 'underscore'], function(Backbone, _) {
@@ -22,7 +22,7 @@
   
   var Radio = Backbone.Radio = {};
   
-  Radio.VERSION = '0.7.0';
+  Radio.VERSION = '0.7.1';
   
   // This allows you to run multiple instances of Radio on the same
   // webapp. After loading the new version, call `noConflict()` to
