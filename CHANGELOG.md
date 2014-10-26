@@ -1,3 +1,8 @@
+### [0.8.0](https://github.com/jmeas/backbone.radio/releases/tag/v0.8.0)
+
+- **Feature**: DEBUG now warns when an already-registered Command or Request is overwritten
+- **Feature**: `stopComplying` and `stopReplying` now accept the same arguments as `off`
+
 ### [0.7.2](https://github.com/jmeas/backbone.radio/releases/tag/v0.7.2)
 
 - Corrects Underscore dependency in bower.json.
