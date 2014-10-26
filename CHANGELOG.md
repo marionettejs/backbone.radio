@@ -1,3 +1,7 @@
+### [0.7.2](https://github.com/jmeas/backbone.radio/releases/tag/v0.7.2)
+
+- Corrects Underscore dependency in bower.json.
+
 ### [0.7.1](https://github.com/jmeas/backbone.radio/releases/tag/v0.7.1)
 
 - Corrects Underscore dependency.
