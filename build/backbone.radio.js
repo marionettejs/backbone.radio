@@ -1,4 +1,4 @@
-// Backbone.Radio v0.7.2
+// Backbone.Radio v0.8.0
 (function(root, factory) {
   if (typeof define === 'function' && define.amd) {
     define(['backbone', 'underscore'], function(Backbone, _) {
@@ -16,13 +16,11 @@
 }(this, function(Backbone, _) {
   'use strict';
 
-  var slice = Array.prototype.slice;
-  
   var previousRadio = Backbone.Radio;
   
   var Radio = Backbone.Radio = {};
   
-  Radio.VERSION = '0.7.2';
+  Radio.VERSION = '0.8.0';
   
   // This allows you to run multiple instances of Radio on the same
   // webapp. After loading the new version, call `noConflict()` to
@@ -93,6 +91,41 @@
     }
   }
   
+  // A helper used by `off` methods to the handler from the store
+  function removeHandler(store, name, callback, context) {
+    var event = store[name];
+    if (
+      (!callback && !context) ||
+      callback && (callback === event.callback || callback === event.callback._callback) ||
+      context && context === event.context
+    ) {
+      delete store[name];
+      return true;
+    }
+  }
+  
+  function removeHandlers(store, name, callback, context) {
+    store || (store = {});
+    var names = name ? [name] : _.keys(store);
+    var matched = false;
+  
+    for (var i = 0, length = names.length; i < length; i++) {
+      name = names[i];
+  
+      // If there's no event by this name, log it and continue
+      // with the loop
+      if (!store[name]) {
+        continue;
+      }
+  
+      if (removeHandler(store, name, callback, context)) {
+        matched = true;
+      }
+    }
+  
+    return matched;
+  }
+  
   /*
    * tune-in
    * -------
@@ -112,7 +145,7 @@
   
     // Log information about the channel and event
     log: function(channelName, eventName) {
-      var args = slice.call(arguments, 2);
+      var args = _.rest(arguments, 2);
       console.log('[' + channelName + '] "' + eventName + '"', args);
     },
   
@@ -147,7 +180,7 @@
   
     // Issue a command
     command: function(name) {
-      var args = slice.call(arguments, 1);
+      var args = _.rest(arguments);
       if (eventsApi(this, 'command', name, args)) {
         return this;
       }
@@ -178,6 +211,10 @@
       }
       this._commands || (this._commands = {});
   
+      if (this._commands[name]) {
+        debugLog('A command was overwritten', name, this.channelName);
+      }
+  
       this._commands[name] = {
         callback: callback,
         context: context || this
@@ -202,17 +239,15 @@
     },
   
     // Remove handler(s)
-    stopComplying: function(name) {
+    stopComplying: function(name, callback, context) {
       if (eventsApi(this, 'stopComplying', name)) {
         return this;
       }
-      var store = this._commands;
   
-      if (!name) {
+      // Remove everything if there are no arguments passed
+      if (!name && !callback && !context) {
         delete this._commands;
-      } else if (store && store[name]) {
-        delete store[name];
-      } else {
+      } else if (!removeHandlers(this._commands, name, callback, context)) {
         debugLog('Attempted to remove the unregistered command', name, this.channelName);
       }
   
@@ -235,7 +270,7 @@
   
     // Make a request
     request: function(name) {
-      var args = slice.call(arguments, 1);
+      var args = _.rest(arguments);
       var results = eventsApi(this, 'request', name, args);
       if (results) {
         return results;
@@ -266,6 +301,10 @@
   
       this._requests || (this._requests = {});
   
+      if (this._requests[name]) {
+        debugLog('A request was overwritten', name, this.channelName);
+      }
+  
       this._requests[name] = {
         callback: makeCallback(callback),
         context: context || this
@@ -291,18 +330,15 @@
     },
   
     // Remove handler(s)
-    stopReplying: function(name) {
+    stopReplying: function(name, callback, context) {
       if (eventsApi(this, 'stopReplying', name)) {
         return this;
       }
   
-      var store = this._requests;
-  
-      if (!name) {
+      // Remove everything if there are no arguments passed
+      if (!name && !callback && !context) {
         delete this._requests;
-      } else if (store && store[name]) {
-        delete store[name];
-      } else {
+      } else if (!removeHandlers(this._requests, name, callback, context)) {
         debugLog('Attempted to remove the unregistered request', name, this.channelName);
       }
   
@@ -368,7 +404,7 @@
   _.each(systems, function(system) {
     _.each(system, function(method, methodName) {
       Radio[methodName] = function(channelName) {
-        args = slice.call(arguments, 1);
+        args = _.rest(arguments);
         channel = this.channel(channelName);
         return channel[methodName].apply(channel, args);
       };
