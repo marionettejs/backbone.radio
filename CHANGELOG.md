@@ -1,3 +1,7 @@
+### [0.7.1](https://github.com/jmeas/backbone.radio/releases/tag/v0.7.1)
+
+- Corrects Underscore dependency.
+
 ### [0.7.0](https://github.com/jmeas/backbone.radio/releases/tag/v0.7.0)
 
 - **Feature**: All API methods of Commands ands Requests now support the space-separated syntax.
