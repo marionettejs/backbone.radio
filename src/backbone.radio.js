@@ -107,12 +107,10 @@ function removeHandlers(store, name, callback, context) {
   return matched;
 }
 
-/*
- * tune-in
- * -------
- * Get console logs of a channel's activity
- *
- */
+//
+// tune-in
+// Get console logs of a channel's activity
+//
 
 var _logs = {};
 
@@ -150,12 +148,10 @@ _.extend(Radio, {
   }
 });
 
-/*
- * Backbone.Radio.Commands
- * -----------------------
- * A messaging system for sending orders.
- *
- */
+//
+// Backbone.Radio.Commands
+// A messaging system for sending orders.
+//
 
 Radio.Commands = {
 
@@ -236,12 +232,10 @@ Radio.Commands = {
   }
 };
 
-/*
- * Backbone.Radio.Requests
- * -----------------------
- * A messaging system for requesting data.
- *
- */
+//
+// Backbone.Radio.Requests
+// A messaging system for requesting data.
+//
 
 function makeCallback(callback) {
   return _.isFunction(callback) ? callback : _.constant(callback);
@@ -327,12 +321,10 @@ Radio.Requests = {
   }
 };
 
-/*
- * Backbone.Radio.channel
- * ----------------------
- * Get a reference to a channel by name.
- *
- */
+//
+// Backbone.Radio.channel
+// Get a reference to a channel by name.
+//
 
 Radio._channels = {};
 
@@ -348,13 +340,11 @@ Radio.channel = function(channelName) {
   }
 };
 
-/*
- * Backbone.Radio.Channel
- * ----------------------
- * A Channel is an object that extends from Backbone.Events,
- * Radio.Commands, and Radio.Requests.
- *
- */
+//
+// Backbone.Radio.Channel
+// A Channel is an object that extends from Backbone.Events,
+// Radio.Commands, and Radio.Requests.
+//
 
 Radio.Channel = function(channelName) {
   this.channelName = channelName;
@@ -372,13 +362,11 @@ _.extend(Radio.Channel.prototype, Backbone.Events, Radio.Commands, Radio.Request
   }
 });
 
-/*
- * Top-level API
- * -------------
- * Supplies the 'top-level API' for working with Channels directly
- * from Backbone.Radio.
- *
- */
+//
+// Top-level API
+// Supplies the 'top-level API' for working with Channels directly
+// from Backbone.Radio.
+//
 
 var channel, args, systems = [Backbone.Events, Radio.Commands, Radio.Requests];
 
