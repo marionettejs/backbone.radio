@@ -28,6 +28,6 @@
   ],
   "dependencies": {
     "backbone": ">=0.9.9 <=1.1.2",
-    "underscore": ">=1.6.0 <=1.7.0"
+    "underscore": ">=1.4.4 <=1.7.0"
   }
 }
