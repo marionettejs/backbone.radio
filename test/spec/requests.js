@@ -324,6 +324,24 @@ describe('Requests:', function() {
       });
     });
 
+    describe('and passing a callback and a context', function() {
+      beforeEach(function() {
+        this.Requests.stopReplying(undefined, this.requestTwo, this.contextTwo);
+      });
+
+      it('should remove only matched handlers', function() {
+        expect(this.Requests._requests).to.not.contain.keys('requestFour');
+      });
+
+      it('should leave the other handlers', function() {
+        expect(this.Requests._requests).to.have.keys(['requestOne', 'requestTwo', 'requestThree', 'requestFive']);
+      });
+
+      it('should return the instance of Requests from stopReplying', function() {
+        expect(this.Requests.stopReplying).to.have.always.returned(this.Requests);
+      });
+    });
+
     describe('and passing a name, callback, and context', function() {
       beforeEach(function() {
         this.Requests.stopReplying('requestThree', this.requestTwo, this.contextOne);

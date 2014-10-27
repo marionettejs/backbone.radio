@@ -315,6 +315,24 @@ describe('Commands:', function() {
       });
     });
 
+    describe('and passing a callback and a context', function() {
+      beforeEach(function() {
+        this.Commands.stopComplying(undefined, this.commandTwo, this.contextTwo);
+      });
+
+      it('should remove only matched handlers', function() {
+        expect(this.Commands._commands).to.not.contain.keys('commandFour');
+      });
+
+      it('should leave the other handlers', function() {
+        expect(this.Commands._commands).to.have.keys(['commandOne', 'commandTwo', 'commandThree', 'commandFive']);
+      });
+
+      it('should return the instance of Commands from stopComplying', function() {
+        expect(this.Commands.stopComplying).to.have.always.returned(this.Commands);
+      });
+    });
+
     describe('and passing a name, callback, and context', function() {
       beforeEach(function() {
         this.Commands.stopComplying('commandThree', this.commandTwo, this.contextOne);
