@@ -244,7 +244,7 @@ Radio.Commands = {
  */
 
 function makeCallback(callback) {
-  return _.isFunction(callback) ? callback : _.constant(callback);
+  return _.isFunction(callback) ? callback : function () { return callback; };
 }
 
 Radio.Requests = {
