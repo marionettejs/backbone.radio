@@ -77,9 +77,8 @@ function callHandler(callback, context, args) {
 function removeHandler(store, name, callback, context) {
   var event = store[name];
   if (
-    (!callback && !context) ||
-    callback && (callback === event.callback || callback === event.callback._callback) ||
-    context && context === event.context
+     (!callback || (callback === event.callback || callback === event.callback._callback)) &&
+     (!context || (context === event.context))
   ) {
     delete store[name];
     return true;
