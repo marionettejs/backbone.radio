@@ -1,4 +1,4 @@
-// Backbone.Radio v0.8.0
+// Backbone.Radio v0.8.1
 (function(root, factory) {
   if (typeof define === 'function' && define.amd) {
     define(['backbone', 'underscore'], function(Backbone, _) {
@@ -20,7 +20,7 @@
   
   var Radio = Backbone.Radio = {};
   
-  Radio.VERSION = '0.8.0';
+  Radio.VERSION = '0.8.1';
   
   // This allows you to run multiple instances of Radio on the same
   // webapp. After loading the new version, call `noConflict()` to
@@ -95,9 +95,8 @@
   function removeHandler(store, name, callback, context) {
     var event = store[name];
     if (
-      (!callback && !context) ||
-      callback && (callback === event.callback || callback === event.callback._callback) ||
-      context && context === event.context
+       (!callback || (callback === event.callback || callback === event.callback._callback)) &&
+       (!context || (context === event.context))
     ) {
       delete store[name];
       return true;

@@ -1,3 +1,8 @@
+### [0.8.1](https://github.com/jmeas/backbone.radio/releases/tag/v0.8.1)
+
+- **Bug fix**: Fixes bug where `stopComplying` and `stopReplying` would not remove the correct
+  callbacks in certain situations
+
 ### [0.8.0](https://github.com/jmeas/backbone.radio/releases/tag/v0.8.0)
 
 - **Feature**: DEBUG now warns when an already-registered Command or Request is overwritten
