@@ -1,3 +1,7 @@
+### [0.8.2](https://github.com/jmeas/backbone.radio/releases/tag/v0.8.2)
+
+- **Refactor**: A small refactor to support Underscore 1.4.4 (the lowest version that Marionette supports)
+
 ### [0.8.1](https://github.com/jmeas/backbone.radio/releases/tag/v0.8.1)
 
 - **Bug fix**: Fixes bug where `stopComplying` and `stopReplying` would not remove the correct
