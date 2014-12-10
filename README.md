@@ -27,6 +27,7 @@ npm install backbone.radio
   - [Radio.Commands](#backboneradiocommands)
   - [Radio.Requests](#backboneradiorequests)
   - [Channels](#channels)
+  - [Using With Marionette](#using-with-marionette)
 - [API](#api)
   - [Radio.Commands](#commands)
   - [Radio.Requests](#requests)
@@ -202,6 +203,10 @@ If you're having difficulty remembering the API of Channels here's a useful mnem
 Events is the API that you know; `on`, `off`, `stopListening` and so on. Commands, which starts with a C, only
 uses verbs that start with C: `command`, `comply`, `stopComplying`. And lastly, Requests, which starts with an R,
 only uses verbs that start with R: `request`, `reply`, and so on.
+
+### Using With Marionette
+
+[Marionette](https://github.com/marionettejs/backbone.marionette) does not use Radio by default, although it will in the next major release: v3. However, you can use Radio today by including a small shim after you load Marionette, but before you load your application's code. To get the shim, refer to [this Gist](https://gist.github.com/jmeas/7992474cdb1c5672d88b).
 
 ## API
 
