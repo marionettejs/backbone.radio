@@ -7,6 +7,28 @@ describe('DEBUG mode:', function() {
     stub(console, 'warn');
   });
 
+  describe('when overwriting debugLog', function() {
+    beforeEach(function() {
+      this.sinon.stub(Backbone.Radio, 'debugLog');
+      this.originalDebugLog = Backbone.Radio.debugLog;
+      Backbone.Radio.debugLog = spy();
+      Backbone.Radio.DEBUG = true;
+      this.channel.command('some:event');
+    });
+
+    afterEach(function() {
+      Backbone.Radio.debugLog = this.originalDebugLog;
+    });
+
+    it('should execute your custom method', function() {
+      expect(Backbone.Radio.debugLog).to.have.been.calledOnce;
+    });
+
+    it('should not execute the original method', function() {
+      expect(this.originalDebugLog).to.not.have.been.called;
+    });
+  });
+
   describe('when turned on', function() {
     beforeEach(function() {
       Backbone.Radio.DEBUG = true;
