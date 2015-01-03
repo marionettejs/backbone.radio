@@ -21,13 +21,13 @@ Radio.DEBUG = false;
 // By default, it logs warning to the console. By overriding this you could
 // make it throw an Error, for instance. This would make firing a nonexistent event
 // have the same consequence as firing a nonexistent method on an Object.
-function debugLog(warning, eventName, channelName) {
+Radio.debugLog = function(warning, eventName, channelName) {
   if (!Radio.DEBUG) { return; }
   var channelText = channelName ? ' on the ' + channelName + ' channel' : '';
   if (console && console.warn) {
     console.warn(warning + channelText + ': "' + eventName + '"');
   }
-}
+};
 
 var eventSplitter = /\s+/;
 
@@ -180,7 +180,7 @@ Radio.Commands = {
       args = commands[name] ? args : arguments;
       callHandler(handler.callback, handler.context, args);
     } else {
-      debugLog('An unhandled command was fired', name, channelName);
+      Radio.debugLog('An unhandled command was fired', name, channelName);
     }
 
     return this;
@@ -194,7 +194,7 @@ Radio.Commands = {
     this._commands || (this._commands = {});
 
     if (this._commands[name]) {
-      debugLog('A command was overwritten', name, this.channelName);
+      Radio.debugLog('A command was overwritten', name, this.channelName);
     }
 
     this._commands[name] = {
@@ -230,7 +230,7 @@ Radio.Commands = {
     if (!name && !callback && !context) {
       delete this._commands;
     } else if (!removeHandlers(this._commands, name, callback, context)) {
-      debugLog('Attempted to remove the unregistered command', name, this.channelName);
+      Radio.debugLog('Attempted to remove the unregistered command', name, this.channelName);
     }
 
     return this;
@@ -271,7 +271,7 @@ Radio.Requests = {
       args = requests[name] ? args : arguments;
       return callHandler(handler.callback, handler.context, args);
     } else {
-      debugLog('An unhandled request was fired', name, channelName);
+      Radio.debugLog('An unhandled request was fired', name, channelName);
     }
   },
 
@@ -284,7 +284,7 @@ Radio.Requests = {
     this._requests || (this._requests = {});
 
     if (this._requests[name]) {
-      debugLog('A request was overwritten', name, this.channelName);
+      Radio.debugLog('A request was overwritten', name, this.channelName);
     }
 
     this._requests[name] = {
@@ -321,7 +321,7 @@ Radio.Requests = {
     if (!name && !callback && !context) {
       delete this._requests;
     } else if (!removeHandlers(this._requests, name, callback, context)) {
-      debugLog('Attempted to remove the unregistered request', name, this.channelName);
+      Radio.debugLog('Attempted to remove the unregistered request', name, this.channelName);
     }
 
     return this;
