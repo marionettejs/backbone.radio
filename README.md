@@ -409,8 +409,8 @@ may overwrite it with your own logging message if you wish.
 
 ### 'Top-level' API
 
-If you'd like to execute a method on a channel, yet you don't need to keep a handle of the channel around, you can do so with the proxy
-functions directly on the `Backbone.Radio` object.
+If you'd like to execute a method on a channel, yet you don't need to keep a handle of the
+channel around, you can do so with the proxy functions directly on the `Backbone.Radio` object.
 
 ```js
 // Trigger 'some:event' on the settings channel
@@ -418,3 +418,14 @@ Backbone.Radio.trigger('settings', 'some:event');
 ```
 
 All of the methods for all three messaging systems are available from the top-level API.
+
+#### `reset( [channelName] )`
+
+You can also reset a single channel, or all Channels, from the `Radio` object directly. Pass a
+`channelName` to reset just that specific channel, or call the method without any arguments
+to reset every channel.
+
+```js
+// Reset all channels
+Radio.reset();
+```
