@@ -12,6 +12,23 @@ describe('DEBUG mode:', function() {
       Backbone.Radio.DEBUG = true;
     });
 
+    describe('and console.warn does not exist', function() {
+      beforeEach(function() {
+        this.originalWarn = console.warn;
+        delete console.warn;
+      });
+
+      afterEach(function() {
+        console.warn = this.originalWarn;
+      });
+
+      it('should not throw an error', function() {
+        expect(function() {
+          this.channel.command('some:event');
+        }).to.not.throw(ReferenceError);
+      });
+    });
+
     it('should log a console warning when firing a command on a channel without a handler', function() {
       this.channel.command('some:event');
       this.warning = 'An unhandled command was fired on the myChannel channel: "some:event"';
