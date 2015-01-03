@@ -22,8 +22,9 @@ Radio.DEBUG = false;
 // make it throw an Error, for instance. This would make firing a nonexistent event
 // have the same consequence as firing a nonexistent method on an Object.
 function debugLog(warning, eventName, channelName) {
-  if (Radio.DEBUG) {
-    var channelText = channelName ? ' on the ' + channelName + ' channel' : '';
+  if (!Radio.DEBUG) { return; }
+  var channelText = channelName ? ' on the ' + channelName + ' channel' : '';
+  if (console && console.warn) {
     console.warn(warning + channelText + ': "' + eventName + '"');
   }
 }
