@@ -1,11 +1,11 @@
 {
   "name": "backbone.radio",
-  "version": "0.8.3",
+  "version": "0.8.4",
   "homepage": "https://github.com/marionettejs/backbone.radio",
   "authors": [
     "Jmeas <jellyes2@gmail.com>"
   ],
-  "description": "The semantic messaging system for Backbone applications.",
+  "description": "Messaging patterns for Backbone applications.",
   "main": "build/backbone.radio.js",
   "keywords": [
     "backbone",

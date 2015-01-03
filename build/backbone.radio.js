@@ -1,4 +1,4 @@
-// Backbone.Radio v0.8.3
+// Backbone.Radio v0.8.4
 (function(root, factory) {
   if (typeof define === 'function' && define.amd) {
     define(['backbone', 'underscore'], function(Backbone, _) {
@@ -20,7 +20,7 @@
   
   var Radio = Backbone.Radio = {};
   
-  Radio.VERSION = '0.8.3';
+  Radio.VERSION = '0.8.4';
   
   // This allows you to run multiple instances of Radio on the same
   // webapp. After loading the new version, call `noConflict()` to
@@ -40,8 +40,9 @@
   // make it throw an Error, for instance. This would make firing a nonexistent event
   // have the same consequence as firing a nonexistent method on an Object.
   function debugLog(warning, eventName, channelName) {
-    if (Radio.DEBUG) {
-      var channelText = channelName ? ' on the ' + channelName + ' channel' : '';
+    if (!Radio.DEBUG) { return; }
+    var channelText = channelName ? ' on the ' + channelName + ' channel' : '';
+    if (console && console.warn) {
       console.warn(warning + channelText + ': "' + eventName + '"');
     }
   }
