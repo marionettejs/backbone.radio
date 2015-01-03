@@ -392,3 +392,8 @@ _.each(systems, function(system) {
     };
   });
 });
+
+Radio.reset = function(channelName) {
+  var channels = !channelName ? this._channels : [this._channels[channelName]];
+  _.invoke(channels, 'reset');
+};
