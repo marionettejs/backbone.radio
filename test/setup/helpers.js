@@ -7,7 +7,7 @@ function setupTestHelpers() {
 
   afterEach(function() {
     Backbone.Radio.DEBUG = false;
-    _.invoke(Backbone.Radio._channels, 'reset');
+    Backbone.Radio.reset();
     this.sinon.restore();
     delete global.stub;
     delete global.spy;
