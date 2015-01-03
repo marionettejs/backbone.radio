@@ -4,6 +4,43 @@ describe('Top-level API:', function() {
     stub(this.channel);
   });
 
+  describe('Reset', function() {
+    beforeEach(function() {
+      this.channelOne = Backbone.Radio.channel('channelOne');
+      this.channelTwo = Backbone.Radio.channel('channelTwo');
+
+      stub(this.channelOne, 'reset');
+      stub(this.channelTwo, 'reset');
+    });
+
+    describe('when passing a channel name', function() {
+      beforeEach(function() {
+        Backbone.Radio.reset('channelOne');
+      });
+
+      it('should reset that channel', function() {
+        expect(this.channelOne.reset).to.have.been.calledOnce;
+      });
+
+      it('should not reset the other channels', function() {
+        expect(this.channel.reset).to.not.have.been.called;
+        expect(this.channelTwo.reset).to.not.have.been.called;
+      });
+    });
+
+    describe('when not passing a channel name', function() {
+      beforeEach(function() {
+        Backbone.Radio.reset();
+      });
+
+      it('should reset all channels', function() {
+        expect(this.channel.reset).to.have.been.calledOnce;
+        expect(this.channelOne.reset).to.have.been.calledOnce;
+        expect(this.channelTwo.reset).to.have.been.calledOnce;
+      });
+    });
+  });
+
   describe('when executing Commands methods', function() {
     beforeEach(function() {
       Backbone.Radio.comply('myChannel', 'some:command', 'firstArg1', 'secondArg1');
