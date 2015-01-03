@@ -375,6 +375,18 @@ myChannel.command('show:view');
 myChannel.stopReplying('startTime');
 ```
 
+#### `debugLog(warning, eventName, channelName)`
+
+A function executed whenever an unregistered command or request is interacted with on a Channel. Only
+called when `DEBUG` is set to `true`. By overriding this you could, for instance, make unhandled
+events throw Errors.
+
+The warning is a string describing the type of problem, such as:
+
+> Attempted to remove the unregistered command
+
+while the `eventName` and `channelName` are what you would expect.
+
 #### `tuneIn( channelName )`
 
 Tuning into a Channel is another useful tool for debugging. It passes all
