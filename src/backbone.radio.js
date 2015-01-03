@@ -108,12 +108,10 @@ function removeHandlers(store, name, callback, context) {
   return matched;
 }
 
-/*
- * tune-in
- * -------
- * Get console logs of a channel's activity
- *
- */
+//
+// tune-in
+// Get console logs of a channel's activity
+//
 
 var _logs = {};
 
@@ -151,12 +149,10 @@ _.extend(Radio, {
   }
 });
 
-/*
- * Backbone.Radio.Commands
- * -----------------------
- * A messaging system for sending orders.
- *
- */
+//
+// Backbone.Radio.Commands
+// A messaging system for sending orders.
+//
 
 Radio.Commands = {
 
@@ -234,15 +230,46 @@ Radio.Commands = {
     }
 
     return this;
+  },
+
+  stopComplyingFor: function(obj, name, callback) {
+    var complyingFor = this._complyingFor;
+    if (!complyingFor) { return this; }
+    var remove = !name && !callback;
+    if (!callback && typeof name === 'object') { callback = this; }
+    if (obj) { (complyingFor = {})[obj._commandId] = obj; }
+    for (var id in complyingFor) {
+      obj = complyingFor[id];
+      obj.stopComplying(name, callback, this);
+      if (remove || _.isEmpty(obj._commands)) { delete this._complyingFor[id]; }
+    }
+    return this;
   }
 };
 
-/*
- * Backbone.Radio.Requests
- * -----------------------
- * A messaging system for requesting data.
- *
- */
+// listenTo equivalent for Commands
+var listenMethods = {complyFor: 'comply', complyForOnce: 'complyOnce'};
+_.each(listenMethods, function(implementation, method) {
+  Radio.Commands[method] = function(obj, name, callback) {
+    var complyingFor = this._complyingFor || (this._complyingFor = {});
+    var id = obj._commandId || (obj._commandId = _.uniqueId('c'));
+    complyingFor[id] = obj;
+    if (!callback && typeof name === 'object') { callback = this; }
+    if (implementation === 'once') {
+      callback = _.compose(function(result) {
+        this.stopListening(_.rest(arguments));
+        return result;
+      }, callback);
+    }
+    obj[implementation](name, callback, this);
+    return this;
+  };
+});
+
+//
+// Backbone.Radio.Requests
+// A messaging system for requesting data.
+//
 
 function makeCallback(callback) {
   return _.isFunction(callback) ? callback : function () { return callback; };
@@ -325,15 +352,46 @@ Radio.Requests = {
     }
 
     return this;
+  },
+
+  stopReplyingFor: function(obj, name, callback) {
+    var replyingFor = this._replyingFor;
+    if (!replyingFor) { return this; }
+    var remove = !name && !callback;
+    if (!callback && typeof name === 'object') { callback = this; }
+    if (obj) { (replyingFor = {})[obj._requestId] = obj; }
+    for (var id in replyingFor) {
+      obj = replyingFor[id];
+      obj.stopReplying(name, callback, this);
+      if (remove || _.isEmpty(obj._requests)) { delete this._replyingFor[id]; }
+    }
+    return this;
   }
 };
 
-/*
- * Backbone.Radio.channel
- * ----------------------
- * Get a reference to a channel by name.
- *
- */
+// listenTo equivalent for Requests
+var listenMethods = {replyFor: 'reply', replyForOnce: 'replyOnce'};
+_.each(listenMethods, function(implementation, method) {
+  Radio.Requests[method] = function(obj, name, callback) {
+    var replyingFor = this._replyingFor || (this._replyingFor = {});
+    var id = obj._requestId || (obj._requestId = _.uniqueId('r'));
+    replyingFor[id] = obj;
+    if (!callback && typeof name === 'object') { callback = this; }
+    if (implementation === 'once') {
+      callback = _.compose(function(result) {
+        this.stopListening(_.rest(arguments));
+        return result;
+      }, callback);
+    }
+    obj[implementation](name, callback, this);
+    return this;
+  };
+});
+
+//
+// Backbone.Radio.channel
+// Get a reference to a channel by name.
+//
 
 Radio._channels = {};
 
@@ -349,13 +407,11 @@ Radio.channel = function(channelName) {
   }
 };
 
-/*
- * Backbone.Radio.Channel
- * ----------------------
- * A Channel is an object that extends from Backbone.Events,
- * Radio.Commands, and Radio.Requests.
- *
- */
+//
+// Backbone.Radio.Channel
+// A Channel is an object that extends from Backbone.Events,
+// Radio.Commands, and Radio.Requests.
+//
 
 Radio.Channel = function(channelName) {
   this.channelName = channelName;
@@ -373,13 +429,11 @@ _.extend(Radio.Channel.prototype, Backbone.Events, Radio.Commands, Radio.Request
   }
 });
 
-/*
- * Top-level API
- * -------------
- * Supplies the 'top-level API' for working with Channels directly
- * from Backbone.Radio.
- *
- */
+//
+// Top-level API
+// Supplies the 'top-level API' for working with Channels directly
+// from Backbone.Radio.
+//
 
 var channel, args, systems = [Backbone.Events, Radio.Commands, Radio.Requests];
 
