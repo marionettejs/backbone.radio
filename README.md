@@ -195,6 +195,12 @@ var profileChannel = Backbone.Radio.channel('profile');
 var settingsChannel = Backbone.Radio.channel('settings');
 ```
 
+You are able to access the full list of channels available using the `getChannel` method. This can be useful when you have many subscribing channels listening to one main event publisher and you need to iterate over available channels in Radio.
+
+```js
+var channels = Backbone.Radio.getChannels();
+```
+
 The whole point of Channels is that they provide a way to explicitly namespace events in your application. It gives you greater
 control over which objects are able to talk to one another.
 

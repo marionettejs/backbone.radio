@@ -349,6 +349,10 @@ Radio.channel = function(channelName) {
   }
 };
 
+Radio.getChannels = function() {
+  return Radio._channels;
+};
+
 /*
  * Backbone.Radio.Channel
  * ----------------------

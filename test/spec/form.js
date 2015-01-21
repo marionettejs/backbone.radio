@@ -15,6 +15,10 @@ describe('When Radio is attached to your application', function() {
     expect(Backbone.Radio.channel).to.exist;
   });
 
+  it('should have the getChannels method', function() {
+    expect(Backbone.Radio.getChannels).to.exist;
+  });
+
   it('should have the Channel Class attached to it', function() {
     expect(Backbone.Radio.Channel).to.exist;
   });
