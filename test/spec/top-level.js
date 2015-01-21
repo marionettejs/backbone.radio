@@ -4,6 +4,13 @@ describe('Top-level API:', function() {
     stub(this.channel);
   });
 
+  describe('when excuting the getChannels method', function () {
+    it('should return the full list of channels', function() {
+      var channels = Backbone.Radio.getChannels();
+      expect(channels.myChannel).to.exist;
+    });
+  });
+
   describe('when executing Commands methods', function() {
     beforeEach(function() {
       Backbone.Radio.comply('myChannel', 'some:command', 'firstArg1', 'secondArg1');
