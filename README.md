@@ -281,7 +281,7 @@ Returns the instance of Commands.
 #### `request( requestName [, args...] )`
 
 Make a request for `requestName`. Optionally pass arguments to send along to the callback. Returns the reply, if one
-exists. If there is no request then `undefined` will be returned.
+exists. If there is no reply registered then `undefined` will be returned.
 
 You can make multiple requests at once by using the space-separated syntax.
 
