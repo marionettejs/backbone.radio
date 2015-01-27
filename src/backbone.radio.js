@@ -45,7 +45,8 @@ function eventsApi(obj, action, name, rest) {
   // Handle event maps.
   if (typeof name === 'object') {
     for (var key in name) {
-      results.push(obj[action].apply(obj, [key, name[key]].concat(rest)));
+      var result = obj[action].apply(obj, [key, name[key]].concat(rest));
+      eventSplitter.test(key) ? (results = results.concat(result)) : results.push(result);
     }
     return results;
   }
