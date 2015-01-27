@@ -17,15 +17,19 @@ Radio.noConflict = function () {
 // get around the issues of lack of warnings when events are mis-typed.
 Radio.DEBUG = false;
 
+// Format debug text.
+Radio._debugText = function(warning, eventName, channelName) {
+  return warning + (channelName ? ' on the ' + channelName + ' channel' : '') +
+    ': "' + eventName + '"';
+};
+
 // This is the method that's called when an unregistered event was called.
 // By default, it logs warning to the console. By overriding this you could
 // make it throw an Error, for instance. This would make firing a nonexistent event
 // have the same consequence as firing a nonexistent method on an Object.
 Radio.debugLog = function(warning, eventName, channelName) {
-  if (!Radio.DEBUG) { return; }
-  var channelText = channelName ? ' on the ' + channelName + ' channel' : '';
-  if (console && console.warn) {
-    console.warn(warning + channelText + ': "' + eventName + '"');
+  if (Radio.DEBUG && console && console.warn) {
+    console.warn(Radio._debugText(warning, eventName, channelName));
   }
 };
 
