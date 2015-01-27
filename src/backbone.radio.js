@@ -44,13 +44,13 @@ Radio._eventsApi = function(obj, action, name, rest) {
     return false;
   }
 
-  var results = [];
+  var results = {};
 
   // Handle event maps.
   if (typeof name === 'object') {
     for (var key in name) {
       var result = obj[action].apply(obj, [key, name[key]].concat(rest));
-      eventSplitter.test(key) ? (results = results.concat(result)) : results.push(result);
+      eventSplitter.test(key) ? _.extend(results, result) : results[key] = result;
     }
     return results;
   }
@@ -59,7 +59,7 @@ Radio._eventsApi = function(obj, action, name, rest) {
   if (eventSplitter.test(name)) {
     var names = name.split(eventSplitter);
     for (var i = 0, l = names.length; i < l; i++) {
-      results.push(obj[action].apply(obj, [names[i]].concat(rest)));
+      results[names[i]] = obj[action].apply(obj, [names[i]].concat(rest));
     }
     return results;
   }
