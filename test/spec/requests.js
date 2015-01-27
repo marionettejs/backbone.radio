@@ -512,4 +512,29 @@ describe('Requests:', function() {
         .and.calledWith('requestTwo');
     });
   });
+
+  describe('when calling `request` with object with space-separated keys of requests', function() {
+    beforeEach(function() {
+      this.Requests.reply('requestOne', 'replyOne');
+      this.Requests.reply('requestTwo', 'replyTwo');
+      this.Requests.reply('requestThree', 'replyThree');
+      this.Requests.request({
+        'requestOne requestTwo' : 'argOne',
+        'requestThree' : 'argTwo'
+      });
+    });
+
+    it('should call the set of requests', function() {
+      expect(this.Requests.request)
+        .to.have.callCount(5)
+        .and.calledWith('requestOne', 'argOne')
+        .and.calledWith('requestTwo', 'argOne')
+        .and.calledWith('requestThree', 'argTwo');
+    });
+
+    it('should return an array of replies', function() {
+      expect(this.Requests.request)
+        .to.have.returned(['replyOne', 'replyTwo', 'replyThree']);
+    });
+  });
 });
