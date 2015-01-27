@@ -35,7 +35,7 @@ var eventSplitter = /\s+/;
 // Commands. It's borrowed from Backbone.Events. It differs from Backbone's overload
 // API (which is used in Backbone.Events) in that it doesn't support space-separated
 // event names.
-function eventsApi(obj, action, name, rest) {
+Radio._eventsApi = function(obj, action, name, rest) {
   if (!name) {
     return false;
   }
@@ -60,10 +60,10 @@ function eventsApi(obj, action, name, rest) {
   }
 
   return false;
-}
+};
 
 // An optimized way to execute callbacks.
-function callHandler(callback, context, args) {
+Radio._callHandler = function(callback, context, args) {
   var a1 = args[0], a2 = args[1], a3 = args[2];
   switch(args.length) {
     case 0: return callback.call(context);
@@ -72,7 +72,7 @@ function callHandler(callback, context, args) {
     case 3: return callback.call(context, a1, a2, a3);
     default: return callback.apply(context, args);
   }
-}
+};
 
 // A helper used by `off` methods to the handler from the store
 function removeHandler(store, name, callback, context) {
@@ -163,7 +163,7 @@ Radio.Commands = {
   // Issue a command
   command: function(name) {
     var args = _.rest(arguments);
-    if (eventsApi(this, 'command', name, args)) {
+    if (Radio._eventsApi(this, 'command', name, args)) {
       return this;
     }
     var channelName = this.channelName;
@@ -178,7 +178,7 @@ Radio.Commands = {
     if (commands && (commands[name] || commands['default'])) {
       var handler = commands[name] || commands['default'];
       args = commands[name] ? args : arguments;
-      callHandler(handler.callback, handler.context, args);
+      Radio._callHandler(handler.callback, handler.context, args);
     } else {
       debugLog('An unhandled command was fired', name, channelName);
     }
@@ -188,7 +188,7 @@ Radio.Commands = {
 
   // Register a handler for a command.
   comply: function(name, callback, context) {
-    if (eventsApi(this, 'comply', name, [callback, context])) {
+    if (Radio._eventsApi(this, 'comply', name, [callback, context])) {
       return this;
     }
     this._commands || (this._commands = {});
@@ -207,7 +207,7 @@ Radio.Commands = {
 
   // Register a handler for a command that happens just once.
   complyOnce: function(name, callback, context) {
-    if (eventsApi(this, 'complyOnce', name, [callback, context])) {
+    if (Radio._eventsApi(this, 'complyOnce', name, [callback, context])) {
       return this;
     }
     var self = this;
@@ -222,7 +222,7 @@ Radio.Commands = {
 
   // Remove handler(s)
   stopComplying: function(name, callback, context) {
-    if (eventsApi(this, 'stopComplying', name)) {
+    if (Radio._eventsApi(this, 'stopComplying', name)) {
       return this;
     }
 
@@ -253,7 +253,7 @@ Radio.Requests = {
   // Make a request
   request: function(name) {
     var args = _.rest(arguments);
-    var results = eventsApi(this, 'request', name, args);
+    var results = Radio._eventsApi(this, 'request', name, args);
     if (results) {
       return results;
     }
@@ -269,7 +269,7 @@ Radio.Requests = {
     if (requests && (requests[name] || requests['default'])) {
       var handler = requests[name] || requests['default'];
       args = requests[name] ? args : arguments;
-      return callHandler(handler.callback, handler.context, args);
+      return Radio._callHandler(handler.callback, handler.context, args);
     } else {
       debugLog('An unhandled request was fired', name, channelName);
     }
@@ -277,7 +277,7 @@ Radio.Requests = {
 
   // Set up a handler for a request
   reply: function(name, callback, context) {
-    if (eventsApi(this, 'reply', name, [callback, context])) {
+    if (Radio._eventsApi(this, 'reply', name, [callback, context])) {
       return this;
     }
 
@@ -297,7 +297,7 @@ Radio.Requests = {
 
   // Set up a handler that can only be requested once
   replyOnce: function(name, callback, context) {
-    if (eventsApi(this, 'replyOnce', name, [callback, context])) {
+    if (Radio._eventsApi(this, 'replyOnce', name, [callback, context])) {
       return this;
     }
 
@@ -313,7 +313,7 @@ Radio.Requests = {
 
   // Remove handler(s)
   stopReplying: function(name, callback, context) {
-    if (eventsApi(this, 'stopReplying', name)) {
+    if (Radio._eventsApi(this, 'stopReplying', name)) {
       return this;
     }
 
