@@ -1,4 +1,4 @@
-// Backbone.Radio v0.8.4
+// Backbone.Radio v0.8.5
 (function(root, factory) {
   if (typeof define === 'function' && define.amd) {
     define(['backbone', 'underscore'], function(Backbone, _) {
@@ -20,7 +20,7 @@
   
   var Radio = Backbone.Radio = {};
   
-  Radio.VERSION = '0.8.4';
+  Radio.VERSION = '0.8.5';
   
   // This allows you to run multiple instances of Radio on the same
   // webapp. After loading the new version, call `noConflict()` to
@@ -63,7 +63,8 @@
     // Handle event maps.
     if (typeof name === 'object') {
       for (var key in name) {
-        results.push(obj[action].apply(obj, [key, name[key]].concat(rest)));
+        var result = obj[action].apply(obj, [key, name[key]].concat(rest));
+        eventSplitter.test(key) ? (results = results.concat(result)) : results.push(result);
       }
       return results;
     }
