@@ -289,7 +289,8 @@ You can make multiple requests at once by using the space-separated syntax.
 myChannel.request('commandOne commandTwo');
 ```
 
-When using the space-separated syntax, the responses will be returned to you as an array.
+When using the space-separated syntax, the responses will be returned to you as an object, where
+the keys are the name of the request, and the values are the replies.
 
 #### `reply( requestName, callback [, context] )`
 
