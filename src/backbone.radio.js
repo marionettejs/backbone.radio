@@ -126,8 +126,10 @@ _.extend(Radio, {
 
   // Log information about the channel and event
   log: function(channelName, eventName) {
-    var args = _.rest(arguments, 2);
-    console.log('[' + channelName + '] "' + eventName + '"', args);
+    if (typeof console != 'undefined') {
+      var args = _.tail(arguments, 2);
+      console.log('[' + channelName + '] "' + eventName + '"', args);
+    }
   },
 
   // Logs all events on this channel to the console. It sets an
