@@ -158,7 +158,7 @@ Getting a handle of a Channel is easy.
 
 ```js
 // Get a reference to the channel named 'user'
-var userChannel = Backbone.Radio.channel('user');
+var userChannel = new Backbone.Radio.channel('user');
 ```
 
 Once you've got a channel, you can attach handlers to it.
