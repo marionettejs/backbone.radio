@@ -28,5 +28,7 @@ before_install:
   - npm config set ca ""
 install:
   - curl -L https://rawgit.com/marionettejs/travis-ci-setup/master/ci.sh | bash
+script: "gulp coverage"
 after_success:
-  - if [[ $MAINRUN == true ]]; then npm run-script coverage; fi
+  - npm install -g codeclimate-test-reporter
+  - if [[ $MAINRUN == true ]]; then codeclimate < coverage/lcov.info
