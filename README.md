@@ -1,5 +1,7 @@
 # Backbone.Radio
 
+[![Join the chat at https://gitter.im/marionettejs/backbone.radio](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/marionettejs/backbone.radio?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 [![Travis Build Status](http://img.shields.io/travis/marionettejs/backbone.radio.svg?style=flat)](https://travis-ci.org/marionettejs/backbone.radio)
 [![Coverage Status](https://img.shields.io/coveralls/marionettejs/backbone.radio.svg?style=flat)](https://coveralls.io/r/marionettejs/backbone.radio)
 [![Gitter chat room](https://img.shields.io/badge/gitter-backbone.radio-brightgreen.svg?style=flat)](https://gitter.im/marionettejs/backbone.radio)
