@@ -19,14 +19,12 @@ matrix:
       env: UNDERSCORE=1.5 BACKBONE=1.1
     - node_js: "0.10"
       env: LODASH=2.4 BACKBONE=1.1
-    - node_js: "0.10"
-      env: LODASH=3.0 BACKBONE=1.1
-    - node_js: "0.10"
-      env: LODASH=3.1 BACKBONE=1.0
 env: MAINRUN=true
 before_install:
   - npm config set ca ""
 install:
   - curl -L https://rawgit.com/marionettejs/travis-ci-setup/master/ci.sh | bash
+script: "gulp coverage"
 after_success:
-  - if [[ $MAINRUN == true ]]; then npm run-script coverage; fi
+  - if [[ $MAINRUN == true ]]; then npm install -g codeclimate-test-reporter; fi
+  - if [[ $MAINRUN == true ]]; then codeclimate < coverage/lcov.info; fi
