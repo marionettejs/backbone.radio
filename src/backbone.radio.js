@@ -1,3 +1,6 @@
+import _ from 'underscore';
+import Backbone from 'backbone';
+
 var previousRadio = Backbone.Radio;
 
 var Radio = Backbone.Radio = {};
@@ -132,7 +135,8 @@ _.extend(Radio, {
 
   // Log information about the channel and event
   log: function(channelName, eventName) {
-    var args = _.rest(arguments, 2);
+    if (typeof console === 'undefined') { return; }
+    var args = _.drop(arguments, 2);
     console.log('[' + channelName + '] "' + eventName + '"', args);
   },
 
@@ -402,3 +406,5 @@ Radio.reset = function(channelName) {
   var channels = !channelName ? this._channels : [this._channels[channelName]];
   _.invoke(channels, 'reset');
 };
+
+export default Radio;

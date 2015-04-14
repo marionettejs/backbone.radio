@@ -1,8 +1,11 @@
 # Backbone.Radio
 
 [![Travis Build Status](http://img.shields.io/travis/marionettejs/backbone.radio.svg?style=flat)](https://travis-ci.org/marionettejs/backbone.radio)
-[![Coverage Status](https://img.shields.io/coveralls/marionettejs/backbone.radio.svg?style=flat)](https://coveralls.io/r/marionettejs/backbone.radio)
+[![Code Climate Score](http://img.shields.io/codeclimate/github/marionettejs/backbone.radio.svg?style=flat)](https://codeclimate.com/github/marionettejs/backbone.radio)
+[![Coverage](http://img.shields.io/codeclimate/coverage/github/marionettejs/backbone.radio.svg?style=flat)](https://codeclimate.com/github/marionettejs/backbone.radio)
+[![Dependency Status](http://img.shields.io/david/marionettejs/backbone.radio.svg?style=flat)](https://david-dm.org/marionettejs/backbone.radio)
 [![Gitter chat room](https://img.shields.io/badge/gitter-backbone.radio-brightgreen.svg?style=flat)](https://gitter.im/marionettejs/backbone.radio)
+
 
 Use Backbone.Radio to build large, maintainable, and decoupled applications.
 
