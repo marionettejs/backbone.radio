@@ -1,3 +1,6 @@
+import _ from 'underscore';
+import Backbone from 'backbone';
+
 var previousRadio = Backbone.Radio;
 
 var Radio = Backbone.Radio = {};
@@ -402,3 +405,5 @@ Radio.reset = function(channelName) {
   var channels = !channelName ? this._channels : [this._channels[channelName]];
   _.invoke(channels, 'reset');
 };
+
+export default Radio;
