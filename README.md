@@ -352,6 +352,10 @@ The name of the channel.
 
 Destroy all handlers from Backbone.Events, Radio.Commands, and Radio.Requests from the channel. Returns the channel.
 
+#### `extend( [protoProps, [staticProps]] )`
+
+You can extend Channel if you wish, although it is very rare that you would want to.
+
 ### Radio
 
 #### `channel( channelName )`

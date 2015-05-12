@@ -119,4 +119,20 @@ describe('Channel:', function () {
       });
     });
   });
+
+  describe('#extend', function() {
+    beforeEach(function() {
+      this.Channel = Radio.Channel.extend({
+        myProperty: 'myValue'
+      });
+      this.channel = new this.Channel();
+    });
+
+    it('should be able to extend Channel', function() {
+      expect(this.channel)
+        .to.be.instanceOf(Radio.Channel)
+        .and.instanceOf(this.Channel)
+        .and.have.property('myProperty', 'myValue');
+    });
+  });
 });
