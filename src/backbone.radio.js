@@ -369,6 +369,8 @@ Radio.Channel = function(channelName) {
   this.channelName = channelName;
 };
 
+Radio.Channel.extend = Backbone.Model.extend;
+
 _.extend(Radio.Channel.prototype, Backbone.Events, Radio.Commands, Radio.Requests, {
 
   // Remove all handlers from the messaging systems of this channel
