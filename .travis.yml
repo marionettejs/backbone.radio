@@ -8,6 +8,8 @@ matrix:
     - node_js: "0.10"
       env: UNDERSCORE=1.5 BACKBONE=1.0
     - node_js: "0.10"
+      env: UNDERSCORE=1.7 BACKBONE=1.2
+    - node_js: "0.10"
       env: UNDERSCORE=1.7 BACKBONE=1.1
     - node_js: "0.10"
       env: UNDERSCORE=1.7 BACKBONE=1.0
@@ -17,6 +19,8 @@ matrix:
       env: UNDERSCORE=1.4.4 BACKBONE=1.1.0
     - node_js: "0.10"
       env: UNDERSCORE=1.5 BACKBONE=1.1
+    - node_js: "0.10"
+      env: UNDERSCORE=1.8 BACKBONE=1.2
     - node_js: "0.10"
       env: LODASH=2.4 BACKBONE=1.1
 env: MAINRUN=true
