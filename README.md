@@ -9,8 +9,8 @@
 Use Backbone.Radio to build large, maintainable, and decoupled applications.
 
 Backbone.Radio is a collection of messaging patterns for Backbone applications. It uses Backbone.Events as a
-pub-sub message bus, then adds semantics to your communications through the addition of two new messaging
-patterns, Commands and Requests. The three systems are bound together as Channels, which provide explicit
+pub-sub message bus, then adds semantics to your communications through the addition of a new messaging
+pattern, Requests. The two systems are bound together as Channels, which provide explicit
 namespacing to your communications.
 
 ## Installation
@@ -26,12 +26,10 @@ npm install backbone.radio
 
 - [Getting Started](#getting-started)
   - [Backbone.Events](#backboneevents)
-  - [Radio.Commands](#backboneradiocommands)
   - [Radio.Requests](#backboneradiorequests)
   - [Channels](#channels)
   - [Using With Marionette](#using-with-marionette)
 - [API](#api)
-  - [Radio.Commands](#commands)
   - [Radio.Requests](#requests)
   - [Channel](#channel)
   - [Radio](#radio)
@@ -74,62 +72,19 @@ myBus.trigger('some:event');
 ```
 
 This is the first principle of Backbone.Radio: building a message bus out of Backbone.Events is useful. But before we go more
-into that, let's look at the two other messaging systems of Backbone.Radio.
+into that, let's look at another messaging system of Backbone.Radio.
 
-### Backbone.Radio.Commands
-
-Commands is similar to Backbone.Events in many ways. You can mix it into your objects, or use it as a standalone message
-bus.
-
-```js
-// You should be familiar with attaching Backbone.Events to an object...
-_.extend(myObj, Backbone.Events);
-
-// Well, attaching Commands is identical
-_.extend(myObj, Backbone.Radio.Commands);
-```
-
-Once you've attached Commands to your object your object will now have access to the Commands API.
-
-The next question, then, is what *are* Commands? Commands are a semantic implementation of Backbone.Events. One of the primary
-differences between Backbone.Events and Commands is that Commands have **intent**, whereas Events do not. For example, when a model triggers its
-change event, it has no goal in mind. Instead, the listeners of that event decide what to do with that information. Commands are different.
-You fire a Command when you do have a goal in mind. And to be even more specific, you fire a Command when you want another object to perform a
-particular task.
-
-```js
-// Set up a view to comply with a command
-myView.comply('render', myView.render);
-
-// Causes the view to render
-myView.command('render');
-```
-
-Commands have a few other things that make it distinct from Backbone.Events. First, you can only register one 'listener' at a time, unlike
-Backbone.Events where there can be many listeners for each trigger. Instead, Commands is a one-to-one relationship. Another difference is that
-no information is returned from the executed callback. This is also unlike Events, where information can travel from the triggerer to its listeners.
-
-The following diagram illustrates the Commands pattern:
-
-<p align='center'>
-  <img src='https://i.cloudup.com/7e9M5rKFOr.svg' alt='Backbone.Commands diagram'>
-</p>
-
-You might ask yourself, 'Now why in the world would I fire the command when I can
-just call the method directly?' The answer is that you wouldn't. I only meant for the above example to be used as a means to familiarize yourself
-with the way Commands works. The real utility of Commands comes when it is used in an independent message bus. But more on that later – let's
-first look at Requests.
 
 ### Backbone.Radio.Requests
 
-Requests is the last piece of Backbone.Radio. You use it just like Events and Commands: mix it into an object.
+You use it just like Events: mix it into an object.
 
 ```js
 _.extend(myObj, Backbone.Radio.Requests);
 ```
 
-Requests share more similarities to Commands than they do Events. They are semantic, by which I mean that there is an intention when making a
-request. Of course, the intent here is that you are asking for information to be returned. Just like Commands, requests have a one-to-one system;
+Requests are semantic, by which I mean that there is an intention when making a
+request. Of course, the intent here is that you are asking for information to be returned. Unlike events, requests have a one-to-one system;
 you can't have multiple 'listeners' to the triggerer.
 
 Let's look at a basic example.
@@ -153,8 +108,8 @@ Here's a diagram of the Requests pattern:
 
 ### Channels
 
-The real draw of Backbone.Radio are channels. A Channel is simply an object that has Backbone.Events, Radio.Commands, and Radio.Requests mixed into it;
-it's a standalone message bus comprised of all three systems.
+The real draw of Backbone.Radio are channels. A Channel is simply an object that has Backbone.Events and Radio.Requests mixed into it;
+it's a standalone message bus comprised of both systems.
 
 Getting a handle of a Channel is easy.
 
@@ -170,10 +125,6 @@ userChannel.on('some:event', function() {
   console.log('An event has happened!');
 });
 
-userChannel.comply('some:action', function() {
-  console.log('I was told to execute some action');
-});
-
 userChannel.reply('some:request', 'food is good');
 ```
 
@@ -181,8 +132,6 @@ You can also use the 'trigger' methods on the Channel.
 
 ```js
 userChannel.trigger('some:event');
-
-userChannel.command('some:command');
 
 userChannel.request('some:request');
 ```
@@ -202,9 +151,8 @@ control over which objects are able to talk to one another.
 
 If you're having difficulty remembering the API of Channels here's a useful mnemonic for you.
 
-Events is the API that you know; `on`, `off`, `stopListening` and so on. Commands, which starts with a C, only
-uses verbs that start with C: `command`, `comply`, `stopComplying`. And lastly, Requests, which starts with an R,
-only uses verbs that start with R: `request`, `reply`, and so on.
+Events is the API that you know; `on`, `off`, `stopListening` and so on. Requests, which starts with an R,
+only uses verbs that start with R: `request`, `reply`, `stopReplying` and so on.
 
 ### Using With Marionette
 
@@ -215,68 +163,6 @@ only uses verbs that start with R: `request`, `reply`, and so on.
 Like Backbone.Events, **all** of the following methods support both the object-syntax and space-separated syntax. For the sake of brevity,
 I only provide examples for these alternate syntaxes in the most common use cases.
 
-### Commands
-
-#### `command( commandName [, args...] )`
-
-Order a command to be completed. Optionally pass arguments to send along to the callback. Like Backbone.Event's `trigger` method,
-this method returns the instance of Commands.
-
-You can order multiple commands at once by using the space-separated syntax.
-
-```js
-myChannel.command('commandOne commandTwo');
-```
-
-This method always returns `undefined`.
-
-#### `comply( commandName, callback [, context] )`
-
-Register a handler for `commandName` on this object. `callback` will be executed whenever the command is run. Optionally
-pass a `context` for the callback, defaulting to `this`.
-
-To register a default handler for Commands use the `default` commandName. The unhandled `commandName` will be passed as the first argument.
-
-```js
-myChannel.comply('default', function(commandName) {
-  console.log('No handler was found for this command: ' + commandName);
-});
-
-// This will be handled by the default handler
-myChannel.command('someUnhandledCommand');
-```
-
-To register multiple commands at once you may also pass in a hash.
-
-```js
-// Connect all of the commands at once
-myChannel.comply({
-  'some:command': myCallback,
-  'some:other:command': someOtherCallback
-}, context);
-```
-
-Returns the instance of Commands.
-
-#### `complyOnce( commandName, callback [, context] )`
-
-Register a handler for `commandName` that only executes a single time.
-
-Like `comply`, you may also pass a hash of commands to register many at once. Refer to the `comply` documentation above
-for an example.
-
-Returns the instance of Commands.
-
-#### `stopComplying( [commandName] [, callback] [, context] )`
-
-If `context` is passed, then all handlers with that context will be removed from the object. If `callback` is
-passed then all handlers with that callback will be removed. If `commandName` is passed then this method will
-remove that handler. If no arguments are passed then all handlers are removed from the object.
-
-You may also pass a hash of commands or space-separated list to remove many commands at once. Refer to the `comply` documentation above
-for an example.
-
-Returns the instance of Commands.
 
 ### Requests
 
@@ -288,7 +174,7 @@ exists. If there is no reply registered then `undefined` will be returned.
 You can make multiple requests at once by using the space-separated syntax.
 
 ```js
-myChannel.request('commandOne commandTwo');
+myChannel.request('requestOne requestTwo');
 ```
 
 When using the space-separated syntax, the responses will be returned to you as an object, where
@@ -349,7 +235,7 @@ The name of the channel.
 
 #### `reset()`
 
-Destroy all handlers from Backbone.Events, Radio.Commands, and Radio.Requests from the channel. Returns the channel.
+Destroy all handlers from Backbone.Events and Radio.Requests from the channel. Returns the channel.
 
 ### Radio
 
@@ -364,7 +250,7 @@ var authChannel = Backbone.Radio.channel('auth');
 #### `DEBUG`
 
 This is a Boolean property. Setting it to `true` will cause console warnings to be issued
-whenever you interact with a `request` or `command` that isn't registered. This is useful in development when you want to
+whenever you interact with a `request` that isn't registered. This is useful in development when you want to
 ensure that you've got your event names in order.
 
 ```js
@@ -372,7 +258,7 @@ ensure that you've got your event names in order.
 Backbone.Radio.DEBUG = true;
 
 // This will log a warning to the console if it goes unhandled
-myChannel.command('show:view');
+myChannel.request('show:view');
 
 // Likewise, this will too, helping to prevent memory leaks
 myChannel.stopReplying('startTime');
@@ -380,20 +266,20 @@ myChannel.stopReplying('startTime');
 
 #### `debugLog(warning, eventName, channelName)`
 
-A function executed whenever an unregistered command or request is interacted with on a Channel. Only
+A function executed whenever an unregistered request is interacted with on a Channel. Only
 called when `DEBUG` is set to `true`. By overriding this you could, for instance, make unhandled
 events throw Errors.
 
 The warning is a string describing the type of problem, such as:
 
-> Attempted to remove the unregistered command
+> Attempted to remove the unregistered request
 
 while the `eventName` and `channelName` are what you would expect.
 
 #### `tuneIn( channelName )`
 
 Tuning into a Channel is another useful tool for debugging. It passes all
-triggers, commands, and requests made on the channel to
+triggers and requests made on the channel to
 
 [`Radio.log`](https://github.com/jmeas/backbone.radio#log-channelname-eventname--args-).
 Returns `Backbone.Radio`.
@@ -432,7 +318,7 @@ channel around, you can do so with the proxy functions directly on the `Backbone
 Backbone.Radio.trigger('settings', 'some:event');
 ```
 
-All of the methods for all three messaging systems are available from the top-level API.
+All of the methods for both messaging systems are available from the top-level API.
 
 #### `reset( [channelName] )`
 
