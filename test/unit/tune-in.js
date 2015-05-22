@@ -71,32 +71,10 @@ describe('Tune-in:', function() {
     });
   });
 
-  describe('when tuned into a channel and ordering a command', function() {
-    beforeEach(function() {
-      this.channel.command('some:event', 'argOne', 'argTwo');
-      this.warning = '[myChannel] "some:event"';
-    });
-
-    it('should log that activity', function() {
-      expect(console.log).to.have.been.calledOnce.and.calledWithExactly(this.warning, ['argOne', 'argTwo']);
-    });
-  });
-
-  describe('when tuning in, then out, and ordering a command', function() {
-    beforeEach(function() {
-      Backbone.Radio.tuneOut('myChannel');
-      this.channel.command('some:event');
-    });
-
-    it('should not log that activity', function() {
-      expect(console.log).to.not.have.been.called;
-    });
-  });
-
   describe('When providing a custom logging function and tuning it', function() {
     beforeEach(function() {
       stub(Backbone.Radio, 'log');
-      this.channel.command('some:event', 'argOne', 'argTwo');
+      this.channel.request('some:event', 'argOne', 'argTwo');
     });
 
     it('should log your custom message', function() {
