@@ -23,10 +23,6 @@ describe('Channel:', function () {
       expect(this.channel).to.contain(Backbone.Events);
     });
 
-    it('should have all of the Radio.Commands methods', function() {
-      expect(this.channel).to.contain(Backbone.Radio.Commands);
-    });
-
     it('should have all of the Radio.Requests methods', function() {
       expect(this.channel).to.contain(Backbone.Radio.Requests);
     });
@@ -46,7 +42,6 @@ describe('Channel:', function () {
     beforeEach(function() {
       stub(this.channel, 'off');
       stub(this.channel, 'stopListening');
-      stub(this.channel, 'stopComplying');
       stub(this.channel, 'stopReplying');
       spy(this.channel, 'reset');
 
@@ -56,10 +51,6 @@ describe('Channel:', function () {
     it('should call the reset functions of Backbone.Events', function() {
       expect(this.channel.off).to.have.been.calledOnce;
       expect(this.channel.stopListening).to.have.been.calledOnce;
-    });
-
-    it('should call the reset functions of Backbone.Radio.Commands', function() {
-      expect(this.channel.stopComplying).to.have.been.calledOnce;
     });
 
     it('should call the reset functions of Backbone.Radio.Requests', function() {
@@ -83,20 +74,6 @@ describe('Channel:', function () {
         this.channelTwo.on('some:event', this.callbackOne);
 
         this.channel.trigger('some:event');
-      });
-
-      it('should only trigger the callback on the channel specified', function() {
-        expect(this.callbackOne).to.have.been.calledOnce;
-        expect(this.callbackTwo).to.not.have.been.called;
-      });
-    });
-
-    describe('on Commands', function() {
-      beforeEach(function() {
-        this.channel.comply('some:command', this.callbackOne);
-        this.channelTwo.comply('some:command', this.callbackOne);
-
-        this.channel.command('some:command');
       });
 
       it('should only trigger the callback on the channel specified', function() {
