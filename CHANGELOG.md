@@ -1,3 +1,24 @@
+### [0.9.1](https://github.com/jmeas/backbone.radio/releases/tag/v0.8.2)
+
+- **Refactor**: Structure and build using babel-boilerplate
+- Update Underscore and Backbone dependencies to 1.8.3 and 1.2.1 respectively to match Marionette.
+
+### [0.9.0](https://github.com/jmeas/backbone.radio/releases/tag/v0.9.0)
+
+- **Breaking change**: Space-separated requests no longer return an Array. Instead, an Object is returned.
+  ```js
+  // old
+  myChannel.request('thingOne thingTwo');
+  // => [replyOne, replyTwo]
+
+  // new
+  myChannel.request('thingOne thingTwo');
+  // => { thingOne: replyOne, thingTwo: replyTwo }
+  ```
+
+- **New feature**: `Radio.reset()` is now a top-level API method that can be used to reset a channel, or all channels. Do note that channels continue to have their own `reset` method.
+- **New feature**: `Radio.debugLog()` is now exposed...go forth and customize how Radio logs potential errors!
+
 ### [0.8.2](https://github.com/jmeas/backbone.radio/releases/tag/v0.8.2)
 
 - **Refactor**: A small refactor to support Underscore 1.4.4 (the lowest version that Marionette supports)
