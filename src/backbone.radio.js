@@ -38,8 +38,8 @@ Radio.debugLog = function(warning, eventName, channelName) {
 
 var eventSplitter = /\s+/;
 
-// An internal method used to handle Radio's method overloading for Requests and
-// Commands. It's borrowed from Backbone.Events. It differs from Backbone's overload
+// An internal method used to handle Radio's method overloading for Requests.
+// It's borrowed from Backbone.Events. It differs from Backbone's overload
 // API (which is used in Backbone.Events) in that it doesn't support space-separated
 // event names.
 Radio._eventsApi = function(obj, action, name, rest) {
@@ -159,91 +159,6 @@ _.extend(Radio, {
   }
 });
 
-/*
- * Backbone.Radio.Commands
- * -----------------------
- * A messaging system for sending orders.
- *
- */
-
-Radio.Commands = {
-
-  // Issue a command
-  command: function(name) {
-    var args = _.rest(arguments);
-    if (Radio._eventsApi(this, 'command', name, args)) {
-      return this;
-    }
-    var channelName = this.channelName;
-    var commands = this._commands;
-
-    // Check if we should log the command, and if so, do it
-    if (channelName && this._tunedIn) {
-      Radio.log.apply(this, [channelName, name].concat(args));
-    }
-
-    // If the command isn't handled, log it in DEBUG mode and exit
-    if (commands && (commands[name] || commands['default'])) {
-      var handler = commands[name] || commands['default'];
-      args = commands[name] ? args : arguments;
-      Radio._callHandler(handler.callback, handler.context, args);
-    } else {
-      Radio.debugLog('An unhandled command was fired', name, channelName);
-    }
-
-    return this;
-  },
-
-  // Register a handler for a command.
-  comply: function(name, callback, context) {
-    if (Radio._eventsApi(this, 'comply', name, [callback, context])) {
-      return this;
-    }
-    this._commands || (this._commands = {});
-
-    if (this._commands[name]) {
-      Radio.debugLog('A command was overwritten', name, this.channelName);
-    }
-
-    this._commands[name] = {
-      callback: callback,
-      context: context || this
-    };
-
-    return this;
-  },
-
-  // Register a handler for a command that happens just once.
-  complyOnce: function(name, callback, context) {
-    if (Radio._eventsApi(this, 'complyOnce', name, [callback, context])) {
-      return this;
-    }
-    var self = this;
-
-    var once = _.once(function() {
-      self.stopComplying(name);
-      return callback.apply(this, arguments);
-    });
-
-    return this.comply(name, once, context);
-  },
-
-  // Remove handler(s)
-  stopComplying: function(name, callback, context) {
-    if (Radio._eventsApi(this, 'stopComplying', name)) {
-      return this;
-    }
-
-    // Remove everything if there are no arguments passed
-    if (!name && !callback && !context) {
-      delete this._commands;
-    } else if (!removeHandlers(this._commands, name, callback, context)) {
-      Radio.debugLog('Attempted to remove the unregistered command', name, this.channelName);
-    }
-
-    return this;
-  }
-};
 
 /*
  * Backbone.Radio.Requests
@@ -361,7 +276,7 @@ Radio.channel = function(channelName) {
  * Backbone.Radio.Channel
  * ----------------------
  * A Channel is an object that extends from Backbone.Events,
- * Radio.Commands, and Radio.Requests.
+ * and Radio.Requests.
  *
  */
 
@@ -369,13 +284,12 @@ Radio.Channel = function(channelName) {
   this.channelName = channelName;
 };
 
-_.extend(Radio.Channel.prototype, Backbone.Events, Radio.Commands, Radio.Requests, {
+_.extend(Radio.Channel.prototype, Backbone.Events, Radio.Requests, {
 
   // Remove all handlers from the messaging systems of this channel
   reset: function() {
     this.off();
     this.stopListening();
-    this.stopComplying();
     this.stopReplying();
     return this;
   }

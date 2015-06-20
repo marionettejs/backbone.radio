@@ -41,37 +41,6 @@ describe('Top-level API:', function() {
     });
   });
 
-  describe('when executing Commands methods', function() {
-    beforeEach(function() {
-      Backbone.Radio.comply('myChannel', 'some:command', 'firstArg1', 'secondArg1');
-      Backbone.Radio.complyOnce('myChannel', 'some:command', 'firstArg2', 'secondArg2');
-      Backbone.Radio.stopComplying('myChannel', 'some:command', 'firstArg3', 'secondArg3');
-      Backbone.Radio.command('myChannel', 'some:command', 'firstArg4', 'secondArg4');
-    });
-
-    it('should execute each method on the proper channel with the arguments.', function() {
-      expect(this.channel.comply)
-        .to.have.been.calledOnce
-        .and.to.have.been.calledOn(this.channel)
-        .and.calledWithExactly('some:command', 'firstArg1', 'secondArg1');
-
-      expect(this.channel.complyOnce)
-        .to.have.been.calledOnce
-        .and.to.have.been.calledOn(this.channel)
-        .and.calledWithExactly('some:command', 'firstArg2', 'secondArg2');
-
-      expect(this.channel.stopComplying)
-        .to.have.been.calledOnce
-        .and.to.have.been.calledOn(this.channel)
-        .and.calledWithExactly('some:command', 'firstArg3', 'secondArg3');
-
-      expect(this.channel.command)
-        .to.have.been.calledOnce
-        .and.to.have.been.calledOn(this.channel)
-        .and.calledWithExactly('some:command', 'firstArg4', 'secondArg4');
-    });
-  });
-
   describe('when executing Requests methods', function() {
     beforeEach(function() {
       Backbone.Radio.reply('myChannel', 'some:request', 'firstArg1', 'secondArg1');
