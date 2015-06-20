@@ -6,12 +6,16 @@
 [![Gitter chat room](https://img.shields.io/badge/gitter-backbone.radio-brightgreen.svg?style=flat)](https://gitter.im/marionettejs/backbone.radio)
 
 
-Use Backbone.Radio to build large, maintainable, and decoupled applications.
+Backbone.Radio provides additional messaging patterns for Backbone applications.
 
-Backbone.Radio is a collection of messaging patterns for Backbone applications. It uses Backbone.Events as a
-pub-sub message bus, then adds semantics to your communications through the addition of a new messaging
-pattern, Requests. The two systems are bound together as Channels, which provide explicit
-namespacing to your communications.
+Backbone includes an event system, Backbone.Events, which is an implementation of the publish-subscribe pattern. Pub-sub is by far the most
+common event pattern in client-side applications, and for good reason: it is incredibly useful. It should also be familiar to web developers
+in particular, because the DOM relies heavily on pub-sub. Consider, for instance, registering a handler on an element's `click` event. This isn't
+so much different than listening to a Model's `change` event, as both of these situations are using pub-sub.
+
+Backbone.Radio adds two additional messaging-related features. The first is Requests, an implementation of the request-reply pattern. Request-reply
+should also be familiar to web developers, as it's the messaging pattern that backs HTTP communications. The other feature are Channels: explicit
+namespaces to your communications.
 
 ## Installation
 
@@ -71,30 +75,32 @@ this.listenTo(myBus, 'some:event', myCallback);
 myBus.trigger('some:event');
 ```
 
-This is the first principle of Backbone.Radio: building a message bus out of Backbone.Events is useful. But before we go more
-into that, let's look the other messaging system of Backbone.Radio.
-
+As long as there was an easy way to access this message bus throughout your entire application, then you would have a central
+place to store a collection of events.  This is the idea behind Channels. But before we go more into that, let's take a look at Requests.
 
 ### Backbone.Radio.Requests
 
-You use Requests just like Events: mix it into an object.
+Requests is similar to Events in that it's another event system. And it has a similar API, too. For this reason, you *could* mix
+it into an object.
 
 ```js
-_.extend(myObj, Backbone.Radio.Requests);
+_.extend(myView, Backbone.Radio.Requests);
 ```
 
-Requests are semantic, by which I mean that there is an intention when making a
-request. Of course, the intent here is that you are asking for information to be returned. Unlike events, requests have a one-to-one system;
-you can't have multiple 'listeners' to the triggerer.
+Although this works, I wouldn't recommend it. Requests are most useful, I think, when they're used with a Channel.
+
+Perhaps the biggest difference between Events and Requests is that Requests have *intention*. Unlike Events, which notify
+nothing in particular about an occurrence, Requests are asking for a very specific thing to occur. As a consequence of this,
+requests are 'one-to-one,' which means that you cannot have multiple 'listeners' to a single request.
 
 Let's look at a basic example.
 
 ```js
 // Set up an object to reply to a request. In this case, whether or not its visible.
-myView.reply('visible', this.isVisible);
+myObject.reply('visible', this.isVisible);
 
 // Get whether it's visible or not.
-var isViewVisible = myView.request('visible');
+var isViewVisible = myObject.request('visible');
 ```
 
 The handler in `reply` can either return a flat value, like `true` or `false`, or a function to be executed. Either way, the value is sent back to
@@ -106,9 +112,28 @@ Here's a diagram of the Requests pattern:
   <img src='https://i.cloudup.com/tEVU_tuRIX.svg' alt='Backbone.Requests diagram'>
 </p>
 
+Although the name is 'Requests,' you can just as easily request information as you can request that an action be completed. Just like HTTP,
+where you can both make GET requests for information, or DELETE requests to order than a resource be deleted, Requests can be used for a variety
+of purposes.
+
+One thing to note is that this pattern is **identical** to a simple method call. One can just as easily rewrite the above example as:
+
+```js
+// Set up a method...
+myObject.isVisible = function() {
+  return this.viewIsVisible;
+}
+
+// Call that method
+var isViewVisible = myObject.isVisible();
+```
+
+This is why mixing Requests into something like a View or Model does not make much sense. If you have access to the View or Model, then
+you might as well just use methods.
+
 ### Channels
 
-The real draw of Backbone.Radio are channels. A Channel is simply an object that has Backbone.Events and Radio.Requests mixed into it;
+The real draw of Backbone.Radio are Channels. A Channel is simply an object that has Backbone.Events and Radio.Requests mixed into it:
 it's a standalone message bus comprised of both systems.
 
 Getting a handle of a Channel is easy.
@@ -146,13 +171,8 @@ var profileChannel = Backbone.Radio.channel('profile');
 var settingsChannel = Backbone.Radio.channel('settings');
 ```
 
-The whole point of Channels is that they provide a way to explicitly namespace events in your application. It gives you greater
-control over which objects are able to talk to one another.
-
-If you're having difficulty remembering the API of Channels here's a useful mnemonic for you.
-
-Events is the API that you know; `on`, `off`, `stopListening` and so on. Requests, which starts with an R,
-only uses verbs that start with R: `request`, `reply`, `stopReplying` and so on.
+The whole point of Channels is that they provide a way to explicitly namespace events in your application, and a means to easily access
+any of those namespaces.
 
 ### Using With Marionette
 
@@ -162,7 +182,6 @@ only uses verbs that start with R: `request`, `reply`, `stopReplying` and so on.
 
 Like Backbone.Events, **all** of the following methods support both the object-syntax and space-separated syntax. For the sake of brevity,
 I only provide examples for these alternate syntaxes in the most common use cases.
-
 
 ### Requests
 
