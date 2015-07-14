@@ -1,4 +1,8 @@
-### [0.9.1](https://github.com/jmeas/backbone.radio/releases/tag/v0.8.2)
+### [1.0.0](https://github.com/jmeas/backbone.radio/releases/tag/v1.0.0)
+
+- **Breaking change**: Commands have been removed. ([see explanation](https://github.com/marionettejs/backbone.radio/pull/221#issuecomment-104782925))
+
+### [0.9.1](https://github.com/jmeas/backbone.radio/releases/tag/v0.9.1)
 
 - **Refactor**: Structure and build using babel-boilerplate
 - Update Underscore and Backbone dependencies to 1.8.3 and 1.2.1 respectively to match Marionette.
