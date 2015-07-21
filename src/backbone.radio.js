@@ -168,7 +168,12 @@ _.extend(Radio, {
  */
 
 function makeCallback(callback) {
-  return _.isFunction(callback) ? callback : function() { return callback; };
+  if (_.isFunction(callback)) {
+    return callback;
+  }
+  var result = function () { return callback; };
+  result._callback = callback;
+  return result;
 }
 
 Radio.Requests = {
