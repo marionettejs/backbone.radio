@@ -31,4 +31,4 @@ install:
 script: "gulp coverage"
 after_success:
   - if [[ $MAINRUN == true ]]; then npm install -g codeclimate-test-reporter; fi
-  - if [[ $MAINRUN == true ]]; then codeclimate < coverage/lcov.info; fi
+  - if [[ $MAINRUN == true ]]; then codeclimate-test-reporter < coverage/lcov.info; fi
