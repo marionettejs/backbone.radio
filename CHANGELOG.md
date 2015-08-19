@@ -1,3 +1,7 @@
+### [1.0.1](https://github.com/marionettejs/backbone.radio/releases/tag/v1.0.1)
+
+- **Dependency Change**: Bumped Backbone to allow v1.2.2
+
 ### [1.0.0](https://github.com/jmeas/backbone.radio/releases/tag/v1.0.0)
 
 - **Breaking change**: Commands have been removed. ([see explanation](https://github.com/marionettejs/backbone.radio/pull/221#issuecomment-104782925))
