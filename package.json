@@ -41,7 +41,7 @@
   },
   "github": "https://github.com/marionettejs/backbone.radio",
   "dependencies": {
-    "backbone": "1.0.0 - 1.2.2",
+    "backbone": "1.0.0 - 1.2.3",
     "underscore": "1.4.4 - 1.8.3"
   },
   "devDependencies": {
