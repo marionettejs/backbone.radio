@@ -1,3 +1,7 @@
+### [1.0.2](https://github.com/marionettejs/backbone.radio/releases/tag/1.0.2)
+
+- Updated Backbone dep to allow v1.2.3
+
 ### [1.0.1](https://github.com/marionettejs/backbone.radio/releases/tag/1.0.1)
 
 - Updated Backbone dep to allow v1.2.2
