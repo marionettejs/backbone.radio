@@ -303,7 +303,7 @@ _.extend(Radio.Channel.prototype, Backbone.Events, Radio.Requests, {
  *
  */
 
-var channel, args, systems = [Backbone.Events, Radio.Commands, Radio.Requests];
+var channel, args, systems = [Backbone.Events, Radio.Requests];
 
 _.each(systems, function(system) {
   _.each(system, function(method, methodName) {
