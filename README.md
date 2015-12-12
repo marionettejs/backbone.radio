@@ -58,7 +58,7 @@ someModel.trigger('change');
 Let's look at a diagram for Backbone.Events:
 
 <p align='center'>
-  <img src='https://i.cloudup.com/u9oC3S1LxE.svg' alt='Backbone.Events diagram'>
+  <img src='https://cloud.githubusercontent.com/assets/10248067/11762943/5a927e54-a0bd-11e5-8aa5-e0fafae0e559.png' alt='Backbone.Events diagram'>
 </p>
 
 It goes without saying that Backbone.Events is incredibly useful when you mix it into instances of Classes. But what
@@ -109,7 +109,7 @@ the requester.
 Here's a diagram of the Requests pattern:
 
 <p align='center'>
-  <img src='https://i.cloudup.com/tEVU_tuRIX.svg' alt='Backbone.Requests diagram'>
+  <img src='https://cloud.githubusercontent.com/assets/10248067/11762945/5c302a36-a0bd-11e5-8e4e-0eee7cacbef1.png' alt='Backbone.Requests diagram'>
 </p>
 
 Although the name is 'Requests,' you can just as easily request information as you can request that an action be completed. Just like HTTP,
