@@ -25,7 +25,8 @@
 
   // Format debug text.
   Radio._debugText = function (warning, eventName, channelName) {
-    return warning + (channelName ? " on the " + channelName + " channel" : "") + ": \"" + eventName + "\"";
+    var forChannel = channelName ? " on the " + channelName + " channel" : "";
+    return "" + warning + "" + forChannel + ": \"" + eventName + "\"";
   };
 
   // This is the method that's called when an unregistered event was called.
@@ -312,7 +313,7 @@
 
   var channel,
       args,
-      systems = [Backbone.Events, Radio.Commands, Radio.Requests];
+      systems = [Backbone.Events, Radio.Requests];
 
   _.each(systems, function (system) {
     _.each(system, function (method, methodName) {
