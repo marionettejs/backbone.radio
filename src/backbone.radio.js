@@ -22,8 +22,8 @@ Radio.DEBUG = false;
 
 // Format debug text.
 Radio._debugText = function(warning, eventName, channelName) {
-  return warning + (channelName ? ' on the ' + channelName + ' channel' : '') +
-    ': "' + eventName + '"';
+  const forChannel = channelName ? ` on the ${channelName} channel` : '';
+  return `${warning}${forChannel}: "${eventName}"`;
 };
 
 // This is the method that's called when an unregistered event was called.
@@ -136,7 +136,7 @@ _.extend(Radio, {
   // Log information about the channel and event
   log: function(channelName, eventName) {
     var args = _.rest(arguments, 2);
-    console.log('[' + channelName + '] "' + eventName + '"', args);
+    console.log(`[${channelName}] "${eventName}"`, args);
   },
 
   // Logs all events on this channel to the console. It sets an
