@@ -11,7 +11,7 @@ Radio.VERSION = '<%= version %>';
 // webapp. After loading the new version, call `noConflict()` to
 // get a reference to it. At the same time the old version will be
 // returned to Backbone.Radio.
-Radio.noConflict = function () {
+Radio.noConflict = function() {
   Backbone.Radio = previousRadio;
   return this;
 };
@@ -21,7 +21,7 @@ Radio.noConflict = function () {
 Radio.DEBUG = false;
 
 // Format debug text.
-Radio._debugText = function(warning, eventName, channelName) {
+Radio._debugText = (warning, eventName, channelName) => {
   const forChannel = channelName ? ` on the ${channelName} channel` : '';
   return `${warning}${forChannel}: "${eventName}"`;
 };
@@ -30,7 +30,7 @@ Radio._debugText = function(warning, eventName, channelName) {
 // By default, it logs warning to the console. By overriding this you could
 // make it throw an Error, for instance. This would make firing a nonexistent event
 // have the same consequence as firing a nonexistent method on an Object.
-Radio.debugLog = function(warning, eventName, channelName) {
+Radio.debugLog = (warning, eventName, channelName) => {
   if (Radio.DEBUG && console && console.warn) {
     console.warn(Radio._debugText(warning, eventName, channelName));
   }
@@ -42,7 +42,7 @@ var eventSplitter = /\s+/;
 // It's borrowed from Backbone.Events. It differs from Backbone's overload
 // API (which is used in Backbone.Events) in that it doesn't support space-separated
 // event names.
-Radio._eventsApi = function(obj, action, name, rest) {
+Radio._eventsApi = (obj, action, name, rest) => {
   if (!name) {
     return false;
   }
@@ -71,7 +71,7 @@ Radio._eventsApi = function(obj, action, name, rest) {
 };
 
 // An optimized way to execute callbacks.
-Radio._callHandler = function(callback, context, args) {
+Radio._callHandler = (callback, context, args) => {
   var a1 = args[0], a2 = args[1], a3 = args[2];
   switch(args.length) {
     case 0: return callback.call(context);
@@ -168,7 +168,7 @@ _.extend(Radio, {
  */
 
 function makeCallback(callback) {
-  return _.isFunction(callback) ? callback : function () { return callback; };
+  return _.isFunction(callback) ? callback : () => { return callback; };
 }
 
 Radio.Requests = {
@@ -260,7 +260,7 @@ Radio.Requests = {
 
 Radio._channels = {};
 
-Radio.channel = function(channelName) {
+Radio.channel = (channelName) => {
   if (!channelName) {
     throw new Error('You must provide a name for the channel.');
   }
