@@ -134,7 +134,7 @@ function _partial(channelName) {
 _.extend(Radio, {
 
   // Log information about the channel and event
-  log: function(channelName, eventName) {
+  log(channelName, eventName) {
     var args = _.rest(arguments, 2);
     console.log(`[${channelName}] "${eventName}"`, args);
   },
@@ -142,7 +142,7 @@ _.extend(Radio, {
   // Logs all events on this channel to the console. It sets an
   // internal value on the channel telling it we're listening,
   // then sets a listener on the Backbone.Events
-  tuneIn: function(channelName) {
+  tuneIn(channelName) {
     var channel = Radio.channel(channelName);
     channel._tunedIn = true;
     channel.on('all', _partial(channelName));
@@ -150,7 +150,7 @@ _.extend(Radio, {
   },
 
   // Stop logging all of the activities on this channel to the console
-  tuneOut: function(channelName) {
+  tuneOut(channelName) {
     var channel = Radio.channel(channelName);
     channel._tunedIn = false;
     channel.off('all', _partial(channelName));
@@ -174,7 +174,7 @@ function makeCallback(callback) {
 Radio.Requests = {
 
   // Make a request
-  request: function(name) {
+  request(name) {
     var args = _.rest(arguments);
     var results = Radio._eventsApi(this, 'request', name, args);
     if (results) {
@@ -199,7 +199,7 @@ Radio.Requests = {
   },
 
   // Set up a handler for a request
-  reply: function(name, callback, context) {
+  reply(name, callback, context) {
     if (Radio._eventsApi(this, 'reply', name, [callback, context])) {
       return this;
     }
@@ -219,7 +219,7 @@ Radio.Requests = {
   },
 
   // Set up a handler that can only be requested once
-  replyOnce: function(name, callback, context) {
+  replyOnce(name, callback, context) {
     if (Radio._eventsApi(this, 'replyOnce', name, [callback, context])) {
       return this;
     }
@@ -235,7 +235,7 @@ Radio.Requests = {
   },
 
   // Remove handler(s)
-  stopReplying: function(name, callback, context) {
+  stopReplying(name, callback, context) {
     if (Radio._eventsApi(this, 'stopReplying', name)) {
       return this;
     }
@@ -287,7 +287,7 @@ Radio.Channel = function(channelName) {
 _.extend(Radio.Channel.prototype, Backbone.Events, Radio.Requests, {
 
   // Remove all handlers from the messaging systems of this channel
-  reset: function() {
+  reset() {
     this.off();
     this.stopListening();
     this.stopReplying();
