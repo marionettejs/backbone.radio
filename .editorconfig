@@ -1,10 +1,16 @@
-# http://editorconfig.org
-root = true
+# EditorConfig is awesome: http://EditorConfig.org
+
+root = true;
 
 [*]
-indent_style = space
-indent_size = 2
+#  Ensure there's no lingering whitespace
+trim_trailing_whitespace = true
+# Ensure a newline at the end of each file
+insert_final_newline = true
+
+[*.js]
+# Unix-style newlines
 end_of_line = lf
 charset = utf-8
-trim_trailing_whitespace = true
-insert_final_newline = true
+indent_style = space
+indent_size = 2
