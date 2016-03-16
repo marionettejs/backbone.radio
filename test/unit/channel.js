@@ -1,5 +1,5 @@
-describe('Channel:', function () {
-  beforeEach(function () {
+describe('Channel:', function() {
+  beforeEach(function() {
     this.channel = Backbone.Radio.channel('myChannel');
     this.channelTwo = Backbone.Radio.channel('myOtherChannel');
   });

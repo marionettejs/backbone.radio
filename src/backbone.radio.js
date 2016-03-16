@@ -11,7 +11,7 @@ Radio.VERSION = '<%= version %>';
 // webapp. After loading the new version, call `noConflict()` to
 // get a reference to it. At the same time the old version will be
 // returned to Backbone.Radio.
-Radio.noConflict = function () {
+Radio.noConflict = function() {
   Backbone.Radio = previousRadio;
   return this;
 };
@@ -73,7 +73,7 @@ Radio._eventsApi = function(obj, action, name, rest) {
 // An optimized way to execute callbacks.
 Radio._callHandler = function(callback, context, args) {
   var a1 = args[0], a2 = args[1], a3 = args[2];
-  switch(args.length) {
+  switch (args.length) {
     case 0: return callback.call(context);
     case 1: return callback.call(context, a1);
     case 2: return callback.call(context, a1, a2);
@@ -159,7 +159,6 @@ _.extend(Radio, {
   }
 });
 
-
 /*
  * Backbone.Radio.Requests
  * -----------------------
@@ -168,7 +167,7 @@ _.extend(Radio, {
  */
 
 function makeCallback(callback) {
-  return _.isFunction(callback) ? callback : function () { return callback; };
+  return _.isFunction(callback) ? callback : function() { return callback; };
 }
 
 Radio.Requests = {

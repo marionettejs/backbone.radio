@@ -1,11 +1,7 @@
 {
+  "preset": "google",
+  "maximumLineLength": null,
   "esnext": true,
-  "validateQuoteMarks": "'",
-  "requireCurlyBraces": ["if", "else", "for", "while", "do", "try", "catch"],
-  "requireCommaBeforeLineBreak": true,
-  "requireOperatorBeforeLineBreak": true,
-  "disallowTrailingWhitespace": true,
-  "disallowMultipleLineStrings": true,
-  "disallowMixedSpacesAndTabs": true,
-  "disallowEmptyBlocks": true
+  "disallowSpacesInsideObjectBrackets": null,
+  "disallowMultipleVarDecl": false
 }
