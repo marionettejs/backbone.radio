@@ -1,4 +1,4 @@
-module.exports = function() {
+module.exports = function(root) {
   global._ = require('underscore');
   global.Backbone = require('backbone');
   global.expect = global.chai.expect;
