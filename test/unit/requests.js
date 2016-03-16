@@ -366,8 +366,8 @@ describe('Requests:', function() {
       this.Requests.reply('requestOne', 'replyOne');
       this.Requests.reply('requestTwo', 'replyTwo');
       this.Requests.request({
-        'requestOne' : 'argOne',
-        'requestTwo' : 'argTwo'
+        'requestOne': 'argOne',
+        'requestTwo': 'argTwo'
       });
     });
 
@@ -525,8 +525,8 @@ describe('Requests:', function() {
       this.Requests.reply('requestTwo', 'replyTwo');
       this.Requests.reply('requestThree', 'replyThree');
       this.Requests.request({
-        'requestOne requestTwo' : 'argOne',
-        'requestThree' : 'argTwo'
+        'requestOne requestTwo': 'argOne',
+        'requestThree': 'argTwo'
       });
     });
 
@@ -552,8 +552,8 @@ describe('Requests:', function() {
     beforeEach(function() {
       this.Requests.reply('requestOne requestTwo', _.identity);
       this.Requests.request({
-        'requestOne requestTwo' : 'argOne',
-        'requestTwo' : 'argTwo'
+        'requestOne requestTwo': 'argOne',
+        'requestTwo': 'argTwo'
       });
     });
 
