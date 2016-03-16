@@ -61,7 +61,6 @@ function lintGulpfile() {
   return lint('gulpfile.babel.js');
 }
 
-
 function getBanner() {
   var banner = '// Backbone.Radio v<%= version %>\n';
   return _.template(banner)(manifest);
