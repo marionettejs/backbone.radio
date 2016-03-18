@@ -1,3 +1,7 @@
+### [1.0.4](https://github.com/marionettejs/backbone.radio/releases/tag/1.0.4)
+
+- **Bug fix**: The UMD generated from rollup was setting `global` to `undefined`.
+
 ### [1.0.3](https://github.com/marionettejs/backbone.radio/releases/tag/1.0.3)
 
 - Updated Backbone dep to allow v1.3.2
