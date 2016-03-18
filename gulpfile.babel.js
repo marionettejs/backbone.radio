@@ -9,6 +9,8 @@ import webpackStream from 'webpack-stream';
 
 import _ from 'underscore';
 import rollup from 'rollup';
+import babel from 'rollup-plugin-babel';
+import preset from 'babel-preset-es2015-rollup';
 import fs from 'fs';
 import mkdirp from 'mkdirp';
 
@@ -68,7 +70,14 @@ function getBanner() {
 
 function build(done) {
   rollup.rollup({
-    entry: path.join('src', config.entryFileName)
+    entry: path.join('src', config.entryFileName),
+    plugins: [
+      babel({
+        sourceMaps: true,
+        presets: [preset],
+        babelrc: false
+      })
+    ]
   }).then(function(bundle) {
     var banner = getBanner();
 
@@ -91,7 +100,6 @@ function build(done) {
     $.file(exportFileName + '.js', code, { src: true })
       .pipe($.plumber())
       .pipe($.sourcemaps.init({ loadMaps: true }))
-      .pipe($.babel())
       .pipe($.sourcemaps.write('./', {addComment: false}))
       .pipe(gulp.dest(destinationFolder))
       .pipe($.filter(['*', '!**/*.js.map']))
