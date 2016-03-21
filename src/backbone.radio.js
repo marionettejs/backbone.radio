@@ -136,7 +136,7 @@ _.extend(Radio, {
   // Log information about the channel and event
   log: function(channelName, eventName) {
     if (typeof console === 'undefined') { return; }
-    var args = _.drop(arguments, 2);
+    var args = _.toArray(arguments).slice(2);
     console.log('[' + channelName + '] "' + eventName + '"', args);
   },
 
@@ -175,7 +175,7 @@ Radio.Requests = {
 
   // Make a request
   request: function(name) {
-    var args = _.rest(arguments);
+    var args = _.toArray(arguments).slice(1);
     var results = Radio._eventsApi(this, 'request', name, args);
     if (results) {
       return results;
@@ -308,7 +308,7 @@ var channel, args, systems = [Backbone.Events, Radio.Requests];
 _.each(systems, function(system) {
   _.each(system, function(method, methodName) {
     Radio[methodName] = function(channelName) {
-      args = _.rest(arguments);
+      args = _.toArray(arguments).slice(1);
       channel = this.channel(channelName);
       return channel[methodName].apply(channel, args);
     };
