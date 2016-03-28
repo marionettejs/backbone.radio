@@ -128,7 +128,7 @@ var _logs = {};
 // This is to produce an identical function in both tuneIn and tuneOut,
 // so that Backbone.Events unregisters it.
 function _partial(channelName) {
-  return _logs[channelName] || (_logs[channelName] = _.partial(Radio.log, channelName));
+  return _logs[channelName] || (_logs[channelName] = _.bind(Radio.log, Radio, channelName));
 }
 
 _.extend(Radio, {
@@ -317,7 +317,7 @@ _.each(systems, function(system) {
 
 Radio.reset = function(channelName) {
   var channels = !channelName ? this._channels : [this._channels[channelName]];
-  _.each(channels, function(channel){ channel.reset();});
+  _.each(channels, function(channel) { channel.reset();});
 };
 
 export default Radio;
