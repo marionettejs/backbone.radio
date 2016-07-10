@@ -40,9 +40,13 @@
     "url": "https://github.com/marionettejs/backbone.radio.git"
   },
   "github": "https://github.com/marionettejs/backbone.radio",
+  "dependencies": {
+    "backbone": ">=1.3.3 <1.4.0",
+    "underscore": "^1.8.3"
+  },
   "peerDependencies": {
-    "backbone": "1.0.0 - 1.3.2",
-    "underscore": "1.4.4 - 1.8.3"
+    "backbone": "^1.3.3",
+    "underscore": "^1.8.3"
   },
   "devDependencies": {
     "babel-core": "^6.3.26",
@@ -52,7 +56,6 @@
     "babel-preset-es2015": "^6.3.13",
     "babel-preset-es2015-rollup": "^1.1.1",
     "babel-register": "^6.3.13",
-    "backbone": "1.0.0 - 1.3.2",
     "chai": "^3.4.1",
     "del": "^2.2.0",
     "glob": "^6.0.3",
@@ -79,7 +82,6 @@
     "rollup-plugin-babel": "^2.4.0",
     "sinon": "^1.17.2",
     "sinon-chai": "^2.8.0",
-    "underscore": "1.4.4 - 1.8.3",
     "webpack": "^1.12.9",
     "webpack-stream": "^3.1.0"
   },
