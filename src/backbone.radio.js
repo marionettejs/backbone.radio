@@ -33,6 +33,9 @@ Radio._debugText = function(warning, eventName, channelName) {
 Radio.debugLog = function(warning, eventName, channelName) {
   if (Radio.DEBUG && console && console.warn) {
     console.warn(Radio._debugText(warning, eventName, channelName));
+    if (console.trace) {
+      console.trace();
+    }
   }
 };
 
