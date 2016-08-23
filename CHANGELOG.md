@@ -1,3 +1,8 @@
+### [2.0.0](https://github.com/marionettejs/backbone.radio/releases/tag/2.0.0)
+
+- Updated Backbone and Underscore version ranges.
+- Moved Backbone and Underscore to peerDependencies.
+
 ### [2.0.0-pre.2](https://github.com/marionettejs/backbone.radio/releases/tag/2.0.0-pre.2)
 
 - Updated Backbone and Underscore version ranges.

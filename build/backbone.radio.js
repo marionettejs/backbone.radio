@@ -1,4 +1,4 @@
-// Backbone.Radio v2.0.0-pre.1
+// Backbone.Radio v2.0.0
 
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('underscore'), require('backbone')) :
@@ -19,7 +19,7 @@
 
   var Radio = Backbone.Radio = {};
 
-  Radio.VERSION = '2.0.0-pre.1';
+  Radio.VERSION = '2.0.0';
 
   // This allows you to run multiple instances of Radio on the same
   // webapp. After loading the new version, call `noConflict()` to
