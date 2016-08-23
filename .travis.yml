@@ -7,17 +7,7 @@ cache:
     - node_modules
 matrix:
   include:
-    - env: UNDERSCORE=1.4.4 BACKBONE=1.0
-    - env: UNDERSCORE=1.5 BACKBONE=1.0
-    - env: UNDERSCORE=1.7 BACKBONE=1.2.3
-    - env: UNDERSCORE=1.7 BACKBONE=1.1
-    - env: UNDERSCORE=1.7 BACKBONE=1.0
-    - env: UNDERSCORE=1.6 BACKBONE=1.0
-    - env: UNDERSCORE=1.4.4 BACKBONE=1.1.0
-    - env: UNDERSCORE=1.5 BACKBONE=1.1
-    - env: UNDERSCORE=1.8 BACKBONE=1.2.3
-    - env: UNDERSCORE=1.8 BACKBONE=1.3.2
-    - env: LODASH=2.4 BACKBONE=1.1
+    - env: UNDERSCORE=1.8 BACKBONE=1.3
     - env: LODASH=2.4 BACKBONE=1.3
 env: MAINRUN=true
 before_install:

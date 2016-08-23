@@ -1,4 +1,4 @@
-// Backbone.Radio v1.0.4
+// Backbone.Radio v2.0.0
 
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('underscore'), require('backbone')) :
@@ -9,19 +9,17 @@
   _ = 'default' in _ ? _['default'] : _;
   Backbone = 'default' in Backbone ? Backbone['default'] : Backbone;
 
-  var babelHelpers = {};
-  babelHelpers.typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
+  var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
     return typeof obj;
   } : function (obj) {
     return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
   };
-  babelHelpers;
 
   var previousRadio = Backbone.Radio;
 
   var Radio = Backbone.Radio = {};
 
-  Radio.VERSION = '1.0.4';
+  Radio.VERSION = '2.0.0';
 
   // This allows you to run multiple instances of Radio on the same
   // webapp. After loading the new version, call `noConflict()` to
@@ -65,7 +63,7 @@
     var results = {};
 
     // Handle event maps.
-    if ((typeof name === 'undefined' ? 'undefined' : babelHelpers.typeof(name)) === 'object') {
+    if ((typeof name === 'undefined' ? 'undefined' : _typeof(name)) === 'object') {
       for (var key in name) {
         var result = obj[action].apply(obj, [key, name[key]].concat(rest));
         eventSplitter.test(key) ? _.extend(results, result) : results[key] = result;

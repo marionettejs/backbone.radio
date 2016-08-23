@@ -26,6 +26,8 @@ bower install backbone.radio
 npm install backbone.radio
 ```
 
+You must also ensure that Backbone.Radio's dependencies on Underscore (or Lodash) and Backbone are installed.
+
 ## Documentation
 
 - [Getting Started](#getting-started)
