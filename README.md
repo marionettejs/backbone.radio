@@ -178,7 +178,7 @@ any of those namespaces.
 
 ### Using With Marionette
 
-[Marionette](https://github.com/marionettejs/backbone.marionette) does not use Radio by default, although it will in the next major release: v3. However, you can use Radio today by including a small shim after you load Marionette, but before you load your application's code. To get the shim, refer to [this Gist](https://gist.github.com/jmeas/7992474cdb1c5672d88b).
+[Marionette](https://github.com/marionettejs/backbone.marionette) v3 uses Radio by default, in earlier versions of Marionette you can still use Radio but you would have to include a small shim after you load Marionette, before you load your application's code. To get the shim refer to [this Gist](https://gist.github.com/jmeas/7992474cdb1c5672d88b).
 
 ## API
 
