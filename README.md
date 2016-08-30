@@ -173,12 +173,15 @@ var profileChannel = Backbone.Radio.channel('profile');
 var settingsChannel = Backbone.Radio.channel('settings');
 ```
 
-The whole point of Channels is that they provide a way to explicitly namespace events in your application, and a means to easily access
-any of those namespaces.
+The whole point of Channels is that they provide a way to explicitly namespace events in your application, and a means to easily access any of those namespaces.
 
 ### Using With Marionette
 
-[Marionette](https://github.com/marionettejs/backbone.marionette) does not use Radio by default, although it will in the next major release: v3. However, you can use Radio today by including a small shim after you load Marionette, but before you load your application's code. To get the shim, refer to [this Gist](https://gist.github.com/jmeas/7992474cdb1c5672d88b).
+[Marionette](https://github.com/marionettejs/backbone.marionette) v3 uses Radio by default, in earlier versions of Marionette you can still use Radio but you would have to include a small shim after you load Marionette, before you load your application's code. To get the shim, refer to [this Gist](https://gist.github.com/jmeas/7992474cdb1c5672d88b).
+
+Since Marionette v3, Radio is a dependency of Marionette and has been integrated to provide clearer interfaces to the existing API. In Marionette, anything that extends from `Mn.Object` has access to this API.
+
+To learn about how to use Radio in your Marionette application you can read [the Marionette Radio documentation here](http://marionettejs.com/docs/master/backbone.radio.html).
 
 ## API
 
