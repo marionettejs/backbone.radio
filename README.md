@@ -183,6 +183,10 @@ Since Marionette v3, Radio is a dependency of Marionette and has been integrated
 
 To learn about how to use Radio in your Marionette application you can read [the Marionette Radio documentation here](http://marionettejs.com/docs/master/backbone.radio.html).
 
+### Using With Marionette
+
+[Marionette](https://github.com/marionettejs/backbone.marionette) does not use Radio by default, although it will in the next major release: v3. However, you can use Radio today by including a small shim after you load Marionette, but before you load your application's code. To get the shim, refer to [this Gist](https://gist.github.com/jmeas/7992474cdb1c5672d88b).
+
 ## API
 
 Like Backbone.Events, **all** of the following methods support both the object-syntax and space-separated syntax. For the sake of brevity,
