@@ -190,7 +190,7 @@ I only provide examples for these alternate syntaxes in the most common use case
 
 ### Requests
 
-#### `request( requestName [, args...] )`
+#### `request( requestName, [args...] )`
 
 Make a request for `requestName`. Optionally pass arguments to send along to the callback. Returns the reply, if one
 exists. If there is no reply registered then `undefined` will be returned.
@@ -204,7 +204,7 @@ myChannel.request('requestOne requestTwo');
 When using the space-separated syntax, the responses will be returned to you as an object, where
 the keys are the name of the request, and the values are the replies.
 
-#### `reply( requestName, callback [, context] )`
+#### `reply( requestName, callback, [context] )`
 
 Register a handler for `requestName` on this object. `callback` will be executed whenever the request is made. Optionally
 pass a `context` for the callback, defaulting to `this`.
@@ -232,7 +232,7 @@ myChannel.reply({
 
 Returns the instance of Requests.
 
-#### `replyOnce( requestName, callback [, context] )`
+#### `replyOnce( requestName, callback, [context] )`
 
 Register a handler for `requestName` that will only be called a single time.
 
@@ -241,7 +241,7 @@ for an example.
 
 Returns the instance of Requests.
 
-#### `stopReplying( [requestName] [, callback] [, context] )`
+#### `stopReplying( [requestName], [callback], [context] )`
 
 If `context` is passed, then all replies with that context will be removed from the object. If `callback` is
 passed then all requests with that callback will be removed. If `requestName` is passed then this method will
@@ -320,7 +320,7 @@ Once you're done tuning in you can call `tuneOut` to stop the logging. Returns `
 Backbone.Radio.tuneOut('calendar');
 ```
 
-#### `log( channelName, eventName [, args...] )`
+#### `log( channelName, eventName, [args...] )`
 
 When tuned into a Channel, this method will be called for all activity on
 a channel. The default implementation is to `console.log` the following message:
