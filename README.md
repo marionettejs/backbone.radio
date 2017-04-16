@@ -17,6 +17,8 @@ Backbone.Radio adds two additional messaging-related features. The first is Requ
 should also be familiar to web developers, as it's the messaging pattern that backs HTTP communications. The other feature are Channels: explicit
 namespaces to your communications.
 
+Backbone.Radio will replace [Backbone.Wreqr](https://github.com/marionettejs/backbone.wreqr) used by [Marionette.js](https://github.com/marionettejs/backbone.marionette) framework in version 3.
+
 ## Installation
 
 Clone this repository or install via [Bower](http://bower.io/) or [npm](https://www.npmjs.org/).
