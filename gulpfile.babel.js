@@ -71,6 +71,7 @@ function getBanner() {
 function build(done) {
   rollup.rollup({
     entry: path.join('src', config.entryFileName),
+    external: ['underscore', 'backbone'],
     plugins: [
       babel({
         sourceMaps: true,
@@ -85,6 +86,10 @@ function build(done) {
       banner: banner,
       format: 'umd',
       sourceMap: 'inline',
+      globals: {
+        underscore: '_',
+        backbone: 'Backbone'
+      },
       sourceMapSource: config.entryFileName + '.js',
       sourceMapFile: exportFileName + '.js',
       moduleName: config.mainVarName
