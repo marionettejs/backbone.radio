@@ -4,6 +4,7 @@
   "homepage": "https://github.com/marionettejs/backbone.radio",
   "version": "2.0.0",
   "main": "build/backbone.radio.js",
+  "module": "build/backbone.radio.esm.js",
   "keywords": [
     "backbone",
     "marionette",
