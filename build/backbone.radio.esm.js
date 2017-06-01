@@ -1,13 +1,7 @@
 // Backbone.Radio v2.0.0
 
-(function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('underscore'), require('backbone')) :
-  typeof define === 'function' && define.amd ? define(['underscore', 'backbone'], factory) :
-  (global.Backbone = global.Backbone || {}, global.Backbone.Radio = factory(global._,global.Backbone));
-}(this, (function (_,Backbone) { 'use strict';
-
-_ = 'default' in _ ? _['default'] : _;
-Backbone = 'default' in Backbone ? Backbone['default'] : Backbone;
+import _ from 'underscore';
+import Backbone from 'backbone';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
   return typeof obj;
@@ -213,7 +207,7 @@ var previousRadio = Backbone.Radio;
 
 var Radio = Backbone.Radio = {};
 
-Radio.VERSION = '2.0.0';
+Radio.VERSION = '<%= version %>';
 
 // This allows you to run multiple instances of Radio on the same
 // webapp. After loading the new version, call `noConflict()` to
@@ -539,8 +533,5 @@ Radio.reset = function (channelName) {
   });
 };
 
-return Radio;
-
-})));
-
-//# sourceMappingURL=./backbone.radio.js.map
+export default Radio;
+//# sourceMappingURL=backbone.radio.esm.js.map
