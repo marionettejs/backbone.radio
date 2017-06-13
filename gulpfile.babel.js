@@ -82,8 +82,6 @@ function buildESModule(bundle) {
 }
 
 function build(done) {
-  var banner = getBanner();
-
   rollup({
     entry: path.join('src', config.entryFileName),
     external: ['underscore', 'backbone'],
