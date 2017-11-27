@@ -1,20 +1,9 @@
 import _ from 'underscore';
 import Backbone from 'backbone';
 
-var previousRadio = Backbone.Radio;
-
-var Radio = Backbone.Radio = {};
+var Radio = {};
 
 Radio.VERSION = '<%= version %>';
-
-// This allows you to run multiple instances of Radio on the same
-// webapp. After loading the new version, call `noConflict()` to
-// get a reference to it. At the same time the old version will be
-// returned to Backbone.Radio.
-Radio.noConflict = function() {
-  Backbone.Radio = previousRadio;
-  return this;
-};
 
 // Whether or not we're in DEBUG mode or not. DEBUG mode helps you
 // get around the issues of lack of warnings when events are mis-typed.
