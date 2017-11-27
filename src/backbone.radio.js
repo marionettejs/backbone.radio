@@ -171,7 +171,7 @@ function makeCallback(callback) {
   if (_.isFunction(callback)) {
     return callback;
   }
-  var result = function () { return callback; };
+  var result = function() { return callback; };
   result._callback = callback;
   return result;
 }
