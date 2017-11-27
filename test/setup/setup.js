@@ -3,7 +3,7 @@ module.exports = function(root) {
   global.Backbone = require('backbone');
   global.expect = global.chai.expect;
   global.slice = Array.prototype.slice;
-  global.Radio = require('../../src/backbone.radio');
+  global.Backbone.Radio = global.Radio = require('../../src/backbone.radio').default;
 
   beforeEach(function() {
     this.sinon = global.sinon.sandbox.create();
