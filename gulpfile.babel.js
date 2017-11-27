@@ -8,7 +8,7 @@ import webpack from 'webpack';
 import webpackStream from 'webpack-stream';
 
 import _ from 'underscore';
-import rollup from 'rollup';
+import {rollup} from 'rollup';
 import babel from 'rollup-plugin-babel';
 import preset from 'babel-preset-es2015-rollup';
 import fs from 'fs';
@@ -68,9 +68,23 @@ function getBanner() {
   return _.template(banner)(manifest);
 }
 
+function buildESModule(bundle) {
+  return bundle.write({
+    format: 'es',
+    dest: manifest.module,
+    sourceMap: true,
+    banner: getBanner()
+  }).then(function(gen) {
+    return gen;
+  }).catch(function(error) {
+    console.log(error);
+  });
+}
+
 function build(done) {
-  rollup.rollup({
+  rollup({
     entry: path.join('src', config.entryFileName),
+    external: ['underscore', 'backbone'],
     plugins: [
       babel({
         sourceMaps: true,
@@ -79,12 +93,15 @@ function build(done) {
       })
     ]
   }).then(function(bundle) {
-    var banner = getBanner();
-
+    buildESModule(bundle);
     var result = bundle.generate({
-      banner: banner,
+      banner: getBanner(),
       format: 'umd',
       sourceMap: 'inline',
+      globals: {
+        underscore: '_',
+        backbone: 'Backbone'
+      },
       sourceMapSource: config.entryFileName + '.js',
       sourceMapFile: exportFileName + '.js',
       moduleName: config.mainVarName
