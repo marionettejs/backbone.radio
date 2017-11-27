@@ -247,6 +247,7 @@ describe('Requests:', function() {
       this.requestOne = stub();
       this.requestTwo = stub();
       this.requestThree = stub();
+      this.requestFour = {};
       this.contextOne = {};
       this.contextTwo = {};
       this.Requests.reply('requestOne', this.requestOne);
@@ -254,6 +255,8 @@ describe('Requests:', function() {
       this.Requests.reply('requestThree', this.requestTwo, this.contextOne);
       this.Requests.reply('requestFour', this.requestTwo, this.contextTwo);
       this.Requests.reply('requestFive', this.requestThree, this.contextTwo);
+      this.Requests.reply('requestSix', this.requestFour);
+      this.Requests.reply('requestSeven', this.requestFour);
     });
 
     describe('and passing a name', function() {
@@ -266,7 +269,7 @@ describe('Requests:', function() {
       });
 
       it('should leave the other handlers untouched', function() {
-        expect(this.Requests._requests).to.have.keys(['requestTwo', 'requestThree', 'requestFour', 'requestFive']);
+        expect(this.Requests._requests).to.have.keys(['requestTwo', 'requestThree', 'requestFour', 'requestFive', 'requestSix', 'requestSeven']);
       });
 
       it('should return the instance of Requests from stopReplying', function() {
@@ -288,7 +291,7 @@ describe('Requests:', function() {
       });
     });
 
-    describe('and passing just a callback', function() {
+    describe('and passing just a callback function', function() {
       beforeEach(function() {
         this.Requests.stopReplying(undefined, this.requestTwo);
       });
@@ -298,7 +301,25 @@ describe('Requests:', function() {
       });
 
       it('should leave the other handlers', function() {
-        expect(this.Requests._requests).to.have.keys(['requestOne', 'requestFive']);
+        expect(this.Requests._requests).to.have.keys(['requestOne', 'requestFive', 'requestSix', 'requestSeven']);
+      });
+
+      it('should return the instance of Requests from stopReplying', function() {
+        expect(this.Requests.stopReplying).to.have.always.returned(this.Requests);
+      });
+    });
+
+    describe('and passing just a callback value', function() {
+      beforeEach(function() {
+        this.Requests.stopReplying(undefined, this.requestFour);
+      });
+
+      it('should remove all handlers with that callback', function() {
+        expect(this.Requests._requests).to.not.contain.keys('requestSix', 'requestSeven');
+      });
+
+      it('should leave the other handlers', function() {
+        expect(this.Requests._requests).to.have.keys(['requestOne', 'requestTwo', 'requestThree', 'requestFour', 'requestFive']);
       });
 
       it('should return the instance of Requests from stopReplying', function() {
@@ -316,7 +337,7 @@ describe('Requests:', function() {
       });
 
       it('should leave the other handlers', function() {
-        expect(this.Requests._requests).to.have.keys(['requestOne', 'requestTwo', 'requestThree']);
+        expect(this.Requests._requests).to.have.keys(['requestOne', 'requestTwo', 'requestThree', 'requestSix', 'requestSeven']);
       });
 
       it('should return the instance of Requests from stopReplying', function() {
@@ -334,7 +355,7 @@ describe('Requests:', function() {
       });
 
       it('should leave the other handlers', function() {
-        expect(this.Requests._requests).to.have.keys(['requestOne', 'requestTwo', 'requestThree', 'requestFive']);
+        expect(this.Requests._requests).to.have.keys(['requestOne', 'requestTwo', 'requestThree', 'requestFive', 'requestSix', 'requestSeven']);
       });
 
       it('should return the instance of Requests from stopReplying', function() {
@@ -352,7 +373,7 @@ describe('Requests:', function() {
       });
 
       it('should leave the other handlers', function() {
-        expect(this.Requests._requests).to.have.keys(['requestOne', 'requestTwo', 'requestFour', 'requestFive']);
+        expect(this.Requests._requests).to.have.keys(['requestOne', 'requestTwo', 'requestFour', 'requestFive', 'requestSix', 'requestSeven']);
       });
 
       it('should return the instance of Requests from stopReplying', function() {
