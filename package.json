@@ -74,6 +74,7 @@
     "gulp-uglify": "1.5.1",
     "gulp-util": "3.0.7",
     "isparta": "4.0.0",
+    "jquery": "^3.2.1",
     "json-loader": "0.5.3",
     "mkdirp": "0.5.1",
     "mocha": "2.3.4",
