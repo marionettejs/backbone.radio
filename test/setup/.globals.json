@@ -7,6 +7,10 @@
     "stub": true,
     "useFakeServer": true,
     "useFakeTimers": true,
-    "useFakeXMLHttpRequest": true
+    "useFakeXMLHttpRequest": true,
+    "_": true,
+    "Backbone": true,
+    "slice": true,
+    "Radio": true
   }
 }
