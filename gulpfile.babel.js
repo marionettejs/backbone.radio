@@ -123,7 +123,7 @@ function build(done) {
       .pipe($.rename(exportFileName + '.min.js'))
       .pipe($.sourcemaps.init({ loadMaps: true }))
       .pipe($.uglify())
-      .pipe($.header(banner))
+      .pipe($.header(getBanner()))
       .pipe($.sourcemaps.write('./'))
       .pipe(gulp.dest(destinationFolder))
       .on('end', done);
