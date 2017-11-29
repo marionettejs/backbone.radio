@@ -21,7 +21,7 @@ Radio.noConflict = function() {
 Radio.DEBUG = false;
 
 // Format debug text.
-Radio._debugText = function(warning, eventName, channelName) {
+function debugText(warning, eventName, channelName) {
   return warning + (channelName ? ' on the ' + channelName + ' channel' : '') +
     ': "' + eventName + '"';
 };
@@ -32,7 +32,7 @@ Radio._debugText = function(warning, eventName, channelName) {
 // have the same consequence as firing a nonexistent method on an Object.
 Radio.debugLog = function(warning, eventName, channelName) {
   if (Radio.DEBUG && console && console.warn) {
-    console.warn(Radio._debugText(warning, eventName, channelName));
+    console.warn(debugText(warning, eventName, channelName));
   }
 };
 
@@ -42,7 +42,7 @@ var eventSplitter = /\s+/;
 // It's borrowed from Backbone.Events. It differs from Backbone's overload
 // API (which is used in Backbone.Events) in that it doesn't support space-separated
 // event names.
-Radio._eventsApi = function(obj, action, name, rest) {
+function eventsApi(obj, action, name, rest) {
   if (!name) {
     return false;
   }
@@ -71,7 +71,7 @@ Radio._eventsApi = function(obj, action, name, rest) {
 };
 
 // An optimized way to execute callbacks.
-Radio._callHandler = function(callback, context, args) {
+function callHandler(callback, context, args) {
   var a1 = args[0], a2 = args[1], a3 = args[2];
   switch (args.length) {
     case 0: return callback.call(context);
@@ -181,7 +181,7 @@ Radio.Requests = {
   // Make a request
   request: function(name) {
     var args = _.toArray(arguments).slice(1);
-    var results = Radio._eventsApi(this, 'request', name, args);
+    var results = eventsApi(this, 'request', name, args);
     if (results) {
       return results;
     }
@@ -197,7 +197,7 @@ Radio.Requests = {
     if (requests && (requests[name] || requests['default'])) {
       var handler = requests[name] || requests['default'];
       args = requests[name] ? args : arguments;
-      return Radio._callHandler(handler.callback, handler.context, args);
+      return callHandler(handler.callback, handler.context, args);
     } else {
       Radio.debugLog('An unhandled request was fired', name, channelName);
     }
@@ -205,7 +205,7 @@ Radio.Requests = {
 
   // Set up a handler for a request
   reply: function(name, callback, context) {
-    if (Radio._eventsApi(this, 'reply', name, [callback, context])) {
+    if (eventsApi(this, 'reply', name, [callback, context])) {
       return this;
     }
 
@@ -225,7 +225,7 @@ Radio.Requests = {
 
   // Set up a handler that can only be requested once
   replyOnce: function(name, callback, context) {
-    if (Radio._eventsApi(this, 'replyOnce', name, [callback, context])) {
+    if (eventsApi(this, 'replyOnce', name, [callback, context])) {
       return this;
     }
 
@@ -241,7 +241,7 @@ Radio.Requests = {
 
   // Remove handler(s)
   stopReplying: function(name, callback, context) {
-    if (Radio._eventsApi(this, 'stopReplying', name)) {
+    if (eventsApi(this, 'stopReplying', name)) {
       return this;
     }
 
