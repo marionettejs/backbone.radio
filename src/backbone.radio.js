@@ -72,12 +72,11 @@ function eventsApi(obj, action, name, rest) {
 
 // An optimized way to execute callbacks.
 function callHandler(callback, context, args) {
-  var a1 = args[0], a2 = args[1], a3 = args[2];
   switch (args.length) {
     case 0: return callback.call(context);
-    case 1: return callback.call(context, a1);
-    case 2: return callback.call(context, a1, a2);
-    case 3: return callback.call(context, a1, a2, a3);
+    case 1: return callback.call(context, args[0]);
+    case 2: return callback.call(context, args[0], args[1]);
+    case 3: return callback.call(context, args[0], args[1], args[2]);
     default: return callback.apply(context, args);
   }
 };
