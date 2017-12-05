@@ -7,10 +7,6 @@ describe('When Radio is attached to your application', function() {
     expect(Backbone.Radio.VERSION).to.exist;
   });
 
-  it('should have a noConflict method', function() {
-    expect(Backbone.Radio.noConflict).to.exist;
-  });
-
   it('should have the channel method', function() {
     expect(Backbone.Radio.channel).to.exist;
   });
