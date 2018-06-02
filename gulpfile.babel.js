@@ -10,7 +10,6 @@ import webpackStream from 'webpack-stream';
 import _ from 'underscore';
 import {rollup} from 'rollup';
 import babel from 'rollup-plugin-babel';
-import preset from 'babel-preset-es2015-rollup';
 import fs from 'fs';
 import mkdirp from 'mkdirp';
 
@@ -25,6 +24,17 @@ const config = manifest.babelBoilerplateOptions;
 const mainFile = manifest.main;
 const destinationFolder = path.dirname(mainFile);
 const exportFileName = path.basename(mainFile, path.extname(mainFile));
+
+const preset = [
+  'env',
+  {
+    modules: false,
+    targets: {
+      browsers: ['ie 11']
+    },
+    exclude: ['babel-plugin-transform-es2015-typeof-symbol']
+  }
+];
 
 function cleanDist(done) {
   del([destinationFolder]).then(() => done());
