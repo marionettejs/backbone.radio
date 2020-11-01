@@ -1,21 +1,33 @@
+import { expect } from 'chai';
+import sinonCreate from 'sinon';
+import Radio from '../../src/';
+
+
 describe('Top-level API:', function() {
+  let sinon;
+
   beforeEach(function() {
-    this.channel = Backbone.Radio.channel('myChannel');
-    stub(this.channel);
+    sinon = sinonCreate.createSandbox();
+    this.channel = Radio.channel('myChannel');
+    sinon.stub(this.channel);
+  });
+
+  afterEach(() => {
+    sinon.restore();
   });
 
   describe('Reset', function() {
     beforeEach(function() {
-      this.channelOne = Backbone.Radio.channel('channelOne');
-      this.channelTwo = Backbone.Radio.channel('channelTwo');
+      this.channelOne = Radio.channel('channelOne');
+      this.channelTwo = Radio.channel('channelTwo');
 
-      stub(this.channelOne, 'reset');
-      stub(this.channelTwo, 'reset');
+      sinon.stub(this.channelOne, 'reset');
+      sinon.stub(this.channelTwo, 'reset');
     });
 
     describe('when passing a channel name', function() {
       beforeEach(function() {
-        Backbone.Radio.reset('channelOne');
+        Radio.reset('channelOne');
       });
 
       it('should reset that channel', function() {
@@ -30,7 +42,7 @@ describe('Top-level API:', function() {
 
     describe('when not passing a channel name', function() {
       beforeEach(function() {
-        Backbone.Radio.reset();
+        Radio.reset();
       });
 
       it('should reset all channels', function() {
@@ -43,10 +55,10 @@ describe('Top-level API:', function() {
 
   describe('when executing Requests methods', function() {
     beforeEach(function() {
-      Backbone.Radio.reply('myChannel', 'some:request', 'firstArg1', 'secondArg1');
-      Backbone.Radio.replyOnce('myChannel', 'some:request', 'firstArg2', 'secondArg2');
-      Backbone.Radio.stopReplying('myChannel', 'some:request', 'firstArg3', 'secondArg3');
-      Backbone.Radio.request('myChannel', 'some:request', 'firstArg4', 'secondArg4');
+      Radio.reply('myChannel', 'some:request', 'firstArg1', 'secondArg1');
+      Radio.replyOnce('myChannel', 'some:request', 'firstArg2', 'secondArg2');
+      Radio.stopReplying('myChannel', 'some:request', 'firstArg3', 'secondArg3');
+      Radio.request('myChannel', 'some:request', 'firstArg4', 'secondArg4');
     });
 
     it('should execute each method on the proper channel with the arguments.', function() {
@@ -74,13 +86,13 @@ describe('Top-level API:', function() {
 
   describe('when executing Events methods', function() {
     beforeEach(function() {
-      Backbone.Radio.listenTo('myChannel', 'some:event', 'firstArg1', 'secondArg1');
-      Backbone.Radio.listenToOnce('myChannel', 'some:event', 'firstArg2', 'secondArg2');
-      Backbone.Radio.stopListening('myChannel', 'some:event', 'firstArg3', 'secondArg3');
-      Backbone.Radio.trigger('myChannel', 'some:event', 'firstArg4', 'secondArg4');
-      Backbone.Radio.on('myChannel', 'some:event', 'firstArg5', 'secondArg5');
-      Backbone.Radio.once('myChannel', 'some:event', 'firstArg6', 'secondArg6');
-      Backbone.Radio.off('myChannel', 'some:event', 'firstArg7', 'secondArg7');
+      Radio.listenTo('myChannel', 'some:event', 'firstArg1', 'secondArg1');
+      Radio.listenToOnce('myChannel', 'some:event', 'firstArg2', 'secondArg2');
+      Radio.stopListening('myChannel', 'some:event', 'firstArg3', 'secondArg3');
+      Radio.trigger('myChannel', 'some:event', 'firstArg4', 'secondArg4');
+      Radio.on('myChannel', 'some:event', 'firstArg5', 'secondArg5');
+      Radio.once('myChannel', 'some:event', 'firstArg6', 'secondArg6');
+      Radio.off('myChannel', 'some:event', 'firstArg7', 'secondArg7');
     });
 
     it('should execute each method on the proper channel with the arguments.', function() {

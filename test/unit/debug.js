@@ -1,26 +1,38 @@
-describe('DEBUG mode:', function() {
-  beforeEach(function() {
-    this.channel = Backbone.Radio.channel('myChannel');
-    this.Requests = _.clone(Backbone.Radio.Requests);
+import _ from 'underscore';
+import { expect } from 'chai';
+import sinonCreate from 'sinon';
+import Radio, { Requests } from '../../src/';
 
-    stub(console, 'warn');
+describe('DEBUG mode:', function() {
+  let sinon;
+
+  beforeEach(function () {
+    Radio.DEBUG = false;
+    sinon = sinonCreate.createSandbox();
+    this.channel = Radio.channel('myChannel');
+    this.Requests = _.clone(Requests);
+    sinon.stub(console, 'warn');
+  });
+
+  afterEach(() => {
+    sinon.restore();
   });
 
   describe('when overwriting debugLog', function() {
     beforeEach(function() {
-      this.sinon.stub(Backbone.Radio, 'debugLog');
-      this.originalDebugLog = Backbone.Radio.debugLog;
-      Backbone.Radio.debugLog = spy();
-      Backbone.Radio.DEBUG = true;
+      sinon.stub(Radio, 'debugLog');
+      this.originalDebugLog = Radio.debugLog;
+      Radio.debugLog = sinon.spy();
+      Radio.DEBUG = true;
       this.channel.request('some:event');
     });
 
     afterEach(function() {
-      Backbone.Radio.debugLog = this.originalDebugLog;
+      Radio.debugLog = this.originalDebugLog;
     });
 
     it('should execute your custom method', function() {
-      expect(Backbone.Radio.debugLog).to.have.been.calledOnce;
+      expect(Radio.debugLog).to.have.been.calledOnce;
     });
 
     it('should not execute the original method', function() {
@@ -30,7 +42,7 @@ describe('DEBUG mode:', function() {
 
   describe('when turned on', function() {
     beforeEach(function() {
-      Backbone.Radio.DEBUG = true;
+      Radio.DEBUG = true;
     });
 
     it('should log a console warning when firing a request on a channel without a handler', function() {
@@ -52,6 +64,7 @@ describe('DEBUG mode:', function() {
     });
 
     it('should log a console warning when unregistering a request that was never registered on an object', function() {
+      this.Requests.reply('foo:event');
       this.Requests.stopReplying('some:event');
       this.warning = 'Attempted to remove the unregistered request: "some:event"';
       expect(console.warn).to.have.been.calledOnce.and.calledWithExactly(this.warning);
@@ -64,6 +77,7 @@ describe('DEBUG mode:', function() {
     });
 
     it('should log a console warning when unregistering a callback that was never registered on an object', function() {
+      this.Requests.reply('some:event');
       this.Requests.stopReplying(undefined, function() {});
       this.warning = 'Attempted to remove the unregistered request: "undefined"';
       expect(console.warn).to.have.been.calledOnce.and.calledWithExactly(this.warning);
@@ -77,6 +91,7 @@ describe('DEBUG mode:', function() {
     });
 
     it('should log a console warning when unregistering a context that was never registered on an object', function() {
+      this.Requests.reply('some:event');
       this.Requests.stopReplying(undefined, undefined, {});
       this.warning = 'Attempted to remove the unregistered request: "undefined"';
       expect(console.warn).to.have.been.calledOnce.and.calledWithExactly(this.warning);
@@ -108,7 +123,7 @@ describe('DEBUG mode:', function() {
       expect(console.warn).to.not.have.been.called;
     });
 
-    it('should not log a console warning when firing a request on an object without a handler', function() {
+    it('req should not log a console warning when firing a request on an object without a handler', function() {
       this.Requests.request('some:event');
       expect(console.warn).to.not.have.been.called;
     });
@@ -118,12 +133,12 @@ describe('DEBUG mode:', function() {
       expect(console.warn).to.not.have.been.called;
     });
 
-    it('should not log a console warning when unregistering a request that was never registered on an object', function() {
+    it('req should not log a console warning when unregistering a request that was never registered on an object', function() {
       this.Requests.stopReplying('some:event');
       expect(console.warn).to.not.have.been.called;
     });
 
-    it('should not log a console warning when registering a request that already was registered', function() {
+    it('req should not log a console warning when registering a request that already was registered', function() {
       this.Requests.reply('some:event', function() {});
       this.Requests.reply('some:event', function() {});
       expect(console.warn).to.not.have.been.called;

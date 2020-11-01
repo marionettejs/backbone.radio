@@ -1,6 +1,9 @@
 {
-  extends: "./setup/.globals.json",
-  "parser": "babel-eslint",
+  "extends": "eslint:recommended",
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module"
+  },
   "rules": {
     "strict": 0,
     "quotes": [2, "single"],
