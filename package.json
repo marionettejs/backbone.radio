@@ -83,7 +83,7 @@
     "sinon": "1.17.2",
     "sinon-chai": "2.8.0",
     "underscore": "1.8.3",
-    "webpack": "1.12.9",
+    "webpack": "5.94.0",
     "webpack-stream": "3.1.0"
   },
   "babelBoilerplateOptions": {
