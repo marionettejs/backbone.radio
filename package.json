@@ -78,7 +78,7 @@
     "json-loader": "0.5.3",
     "mkdirp": "0.5.1",
     "mocha": "2.3.4",
-    "rollup": "0.36.3",
+    "rollup": "2.79.2",
     "rollup-plugin-babel": "2.6.1",
     "sinon": "1.17.2",
     "sinon-chai": "2.8.0",
